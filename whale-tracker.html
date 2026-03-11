@@ -68,7 +68,7 @@
       margin-left: auto;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
@@ -91,16 +91,35 @@
       background: var(--surface2);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       transition: all .2s;
     }
     .btn:hover { border-color: var(--accent); color: var(--accent2); }
     .btn.primary { background: var(--whale); border-color: var(--whale); color: #fff; }
     .btn.primary:hover { background: #ff8c00; }
     .btn:disabled { opacity: .4; cursor: not-allowed; }
+    .btn.active-toggle { border-color: var(--green); color: var(--green); }
+
+    /* ── Price Banner ── */
+    .price-banner {
+      background: linear-gradient(90deg, #0d1a0d, #0d0f1e, #0d1a0d);
+      border-bottom: 1px solid #1a2e1a;
+      padding: 6px 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      overflow: hidden;
+    }
+    .price-item { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+    .price-item strong { color: var(--text); }
+    .price-item .up { color: var(--green); }
+    .price-item .down { color: var(--red); }
+    .price-sep { color: var(--border); }
 
     /* ── Whale Ticker ── */
     .ticker-wrap {
@@ -170,13 +189,13 @@
     .ticker-item .badge.dex { background: var(--green); color: #000; }
 
     /* ── Stats ── */
-    main { max-width: 1400px; margin: 0 auto; padding: 24px 24px; }
+    main { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     .stat-card {
       background: var(--surface);
@@ -190,22 +209,103 @@
     .stat-card .value { font-size: 1.4rem; font-weight: 700; margin-top: 4px; }
     .stat-card .sub { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
 
+    /* ── Watchlist ── */
+    .watchlist-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 14px;
+    }
+    .watchlist-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .watchlist-header .toggle-icon { transition: transform .2s; color: var(--muted); }
+    .watchlist-header .toggle-icon.open { transform: rotate(90deg); }
+    .watchlist-body { display: none; margin-top: 10px; }
+    .watchlist-body.open { display: block; }
+    .watchlist-input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+    .watchlist-input-row input {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      outline: none;
+    }
+    .watchlist-input-row input:focus { border-color: var(--accent); }
+    .watchlist-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .wchip {
+      background: var(--surface2);
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      padding: 3px 10px 3px 12px;
+      font-size: 0.75rem;
+      font-family: monospace;
+      color: var(--accent2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .wchip button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 0;
+      line-height: 1;
+    }
+    .wchip button:hover { color: var(--red); }
+    .card-watched { border-color: var(--accent2) !important; }
+    .card-watched .card-head { background: linear-gradient(90deg, rgba(0,229,255,.06), transparent) !important; }
+    .watched-badge {
+      background: linear-gradient(90deg, #006064, var(--accent2));
+      color: #000;
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
     /* ── Threshold Controls ── */
     .threshold-bar {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 14px 20px;
+      padding: 12px 16px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 14px;
       font-size: 0.82rem;
     }
     .threshold-bar span { color: var(--muted); font-size: 0.75rem; }
     .threshold-group { display: flex; align-items: center; gap: 8px; }
     .threshold-group label { color: var(--muted); font-size: 0.78rem; }
+    .presets { display: flex; gap: 5px; align-items: center; }
+    .preset-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.72rem;
+      transition: all .2s;
+    }
+    .preset-btn:hover { border-color: var(--whale); color: var(--whale); }
 
     input[type="number"], select {
       background: var(--surface2);
@@ -220,6 +320,90 @@
     }
     input[type="number"]:focus, select:focus { border-color: var(--accent); }
 
+    /* ── Search bar ── */
+    .search-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+    .search-bar input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color .2s;
+      width: auto;
+    }
+    .search-bar input:focus { border-color: var(--accent); }
+    .search-bar select {
+      width: auto;
+    }
+    .result-count { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+
+    /* ── Volume Chart ── */
+    .chart-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px 10px;
+      margin-bottom: 14px;
+    }
+    .chart-title {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 8px;
+    }
+    .chart-canvas {
+      width: 100%;
+      height: 70px;
+      display: block;
+    }
+    .chart-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.6rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── Buy/Sell Pressure ── */
+    .pressure-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      font-size: 0.82rem;
+    }
+    .pressure-title { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+    .pressure-track {
+      height: 10px;
+      background: var(--surface2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .pressure-fill-buy {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), #00c853);
+      border-radius: 10px;
+      transition: width .5s ease;
+    }
+    .pressure-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+    }
+    .pressure-labels .buy { color: var(--green); }
+    .pressure-labels .sell { color: var(--red); }
+
     /* ── Tabs ── */
     .tabs {
       display: flex;
@@ -227,12 +411,13 @@
       margin-bottom: 16px;
       border-bottom: 1px solid var(--border);
       padding-bottom: 0;
+      overflow-x: auto;
     }
     .tab {
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 8px 8px 0 0;
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       color: var(--muted);
       background: transparent;
       border: 1px solid transparent;
@@ -240,6 +425,7 @@
       transition: all .2s;
       position: relative;
       bottom: -1px;
+      white-space: nowrap;
     }
     .tab:hover { color: var(--text); }
     .tab.active {
@@ -264,6 +450,7 @@
     }
     .tab .count.blue { background: var(--accent); }
     .tab .count.green { background: var(--green); color: #000; }
+    .tab .count.gold { background: var(--gold); color: #000; }
 
     /* ── Panel ── */
     .panel { display: none; }
@@ -328,6 +515,7 @@
     .chip.from { border-color: var(--red); color: #ff8a80; }
     .chip.to { border-color: var(--green); color: #b9f6ca; }
     .chip.dex { border-color: var(--accent2); color: #80deea; }
+    .chip.watched { border-color: var(--accent2); background: rgba(0,229,255,.08); }
     .arrow { color: var(--muted); font-size: 0.8rem; flex-shrink: 0; }
 
     .card-meta {
@@ -399,6 +587,63 @@
     .ntag.tpl { border-color: var(--accent2); color: #80deea; }
     .ntag.tier { border-color: var(--gold); color: var(--gold); font-weight: 700; }
 
+    /* ── Leaderboard ── */
+    .leaders-list { display: flex; flex-direction: column; gap: 8px; }
+    .leader-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: fadeIn .3s ease;
+      transition: border-color .2s;
+    }
+    .leader-row:hover { border-color: var(--accent); }
+    .leader-row.top1 { border-color: var(--gold); }
+    .leader-row.top2 { border-color: #aaa; }
+    .leader-row.top3 { border-color: var(--orange); }
+    .leader-rank {
+      font-size: 1.2rem;
+      font-weight: 900;
+      min-width: 36px;
+      text-align: center;
+    }
+    .leader-account {
+      font-family: monospace;
+      font-size: 0.88rem;
+      color: var(--text);
+      flex: 1;
+    }
+    .leader-account.is-watched { color: var(--accent2); }
+    .leader-count {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent2);
+    }
+    .leader-bar-wrap {
+      flex: 1;
+      max-width: 160px;
+      height: 6px;
+      background: var(--surface2);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .leader-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 3px; }
+    .leader-watch-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .leader-watch-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+    .leader-watch-btn.watching { border-color: var(--accent2); color: var(--accent2); background: rgba(0,229,255,.08); }
+
     /* ── State ── */
     .state-box {
       text-align: center;
@@ -450,7 +695,7 @@
       header { padding: 14px 16px; flex-wrap: wrap; }
       main { padding: 14px 10px; }
       .tabs { overflow-x: auto; }
-      .tab { padding: 8px 14px; white-space: nowrap; }
+      .tab { padding: 8px 14px; }
     }
   </style>
 </head>
@@ -470,9 +715,23 @@
   <div class="header-right">
     <div class="live-dot" title="Live monitoring"></div>
     <span class="countdown" id="countdown">Refresh in 30s</span>
+    <button class="btn" id="soundBtn" onclick="toggleSound()" title="Toggle sound alerts">🔇 Sound</button>
+    <button class="btn" id="notifBtn" onclick="toggleNotifications()" title="Toggle browser notifications">🔔 Alerts</button>
+    <button class="btn" onclick="exportCSV()" title="Export data as CSV">📥 Export</button>
     <button class="btn primary" id="refreshBtn" onclick="refreshAll()">↻ Refresh All</button>
   </div>
 </header>
+
+<!-- Price Banner -->
+<div class="price-banner" id="priceBanner">
+  <span class="price-item">📈 PXJ Price: <strong id="pPXJ">—</strong></span>
+  <span class="price-sep">|</span>
+  <span class="price-item">💧 WAX/USD: <strong id="pWAX">—</strong></span>
+  <span class="price-sep">|</span>
+  <span class="price-item">📊 24h Vol: <strong id="pVol">—</strong></span>
+  <span class="price-sep">|</span>
+  <span class="price-item">🔄 Market: <strong id="pMarket">—</strong></span>
+</div>
 
 <!-- Whale Ticker -->
 <div class="ticker-wrap">
@@ -515,6 +774,22 @@
     </div>
   </div>
 
+  <!-- Watchlist -->
+  <div class="watchlist-bar">
+    <div class="watchlist-header" onclick="toggleWatchlistBody()">
+      <span class="toggle-icon" id="watchlistToggleIcon">▶</span>
+      <span>👁 Wallet Watchlist</span>
+      <span id="watchlistCount" style="color:var(--muted);font-size:.75rem;font-weight:400"></span>
+    </div>
+    <div class="watchlist-body" id="watchlistBody">
+      <div class="watchlist-input-row">
+        <input type="text" id="watchlistInput" placeholder="Enter WAX account name (e.g. someaccount)" />
+        <button class="btn primary" onclick="addWatchlistFromInput()">+ Watch</button>
+      </div>
+      <div class="watchlist-chips" id="watchlistChips"></div>
+    </div>
+  </div>
+
   <!-- Threshold controls -->
   <div class="threshold-bar">
     <span>🎚 Whale Thresholds:</span>
@@ -527,31 +802,59 @@
       <input type="number" id="threshNFT" value="5" min="1" max="100" style="width:70px" />
     </div>
     <div class="threshold-group">
-      <label>Swap qty (tokens)</label>
+      <label>Swap qty</label>
       <input type="number" id="threshDEX" value="100000" min="1" />
+    </div>
+    <div class="presets">
+      <span style="font-size:.72rem;color:var(--muted)">Presets:</span>
+      <button class="preset-btn" onclick="applyPreset('small')">🐟 Small</button>
+      <button class="preset-btn" onclick="applyPreset('medium')">🐬 Medium</button>
+      <button class="preset-btn" onclick="applyPreset('mega')">🐋 Mega</button>
     </div>
     <button class="btn primary" onclick="refreshAll()" style="margin-left:auto">Apply &amp; Refresh</button>
   </div>
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('tokens', this)">
+    <button class="tab active" onclick="switchTab('Tokens', this)">
       🪙 Token Transfers
       <span class="count" id="tabCountTokens">—</span>
     </button>
-    <button class="tab" onclick="switchTab('nfts', this)">
+    <button class="tab" onclick="switchTab('NFTs', this)">
       🖼 NFT Transfers
       <span class="count blue" id="tabCountNFTs">—</span>
     </button>
-    <button class="tab" onclick="switchTab('dex', this)">
+    <button class="tab" onclick="switchTab('DEX', this)">
       📊 DEX Activity
       <span class="count green" id="tabCountDEX">—</span>
+    </button>
+    <button class="tab" onclick="switchTab('Leaderboard', this)">
+      🏆 Leaderboard
+      <span class="count gold" id="tabCountLeaderboard">—</span>
     </button>
   </div>
 
   <!-- Token Panel -->
   <div class="panel active" id="panelTokens">
     <div class="api-error" id="errTokens"></div>
+    <div class="chart-wrap" id="tokenChartWrap" style="display:none">
+      <div class="chart-title">Token Transfer Volume — Last 24h (hourly)</div>
+      <canvas class="chart-canvas" id="tokenChart"></canvas>
+      <div class="chart-labels"><span>24h ago</span><span>12h ago</span><span>now</span></div>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="searchTokens" placeholder="Filter by account name..." oninput="filterTokens()" />
+      <select id="filterTokenDir" onchange="filterTokens()">
+        <option value="">All directions</option>
+        <option value="from">Outgoing</option>
+        <option value="to">Incoming</option>
+      </select>
+      <select id="filterTokenWhale" onchange="filterTokens()">
+        <option value="">All sizes</option>
+        <option value="whale">Whales only</option>
+      </select>
+      <span class="result-count" id="tokenResultCount"></span>
+    </div>
     <div class="card-list" id="listTokens">
       <div class="state-box"><div class="spinner"></div><p>Loading token transfers...</p></div>
     </div>
@@ -560,6 +863,14 @@
   <!-- NFT Panel -->
   <div class="panel" id="panelNFTs">
     <div class="api-error" id="errNFTs"></div>
+    <div class="search-bar">
+      <input type="text" id="searchNFTs" placeholder="Filter by account name..." oninput="filterNFTs()" />
+      <select id="filterNFTWhale" onchange="filterNFTs()">
+        <option value="">All sizes</option>
+        <option value="whale">Whales only</option>
+      </select>
+      <span class="result-count" id="nftResultCount"></span>
+    </div>
     <div class="card-list" id="listNFTs">
       <div class="state-box"><div class="spinner"></div><p>Loading NFT transfers...</p></div>
     </div>
@@ -568,8 +879,32 @@
   <!-- DEX Panel -->
   <div class="panel" id="panelDEX">
     <div class="api-error" id="errDEX"></div>
+    <div class="pressure-bar" id="pressureBar" style="display:none">
+      <div class="pressure-title">Buy / Sell Pressure (PXJ)</div>
+      <div class="pressure-track"><div class="pressure-fill-buy" id="pressureFill" style="width:50%"></div></div>
+      <div class="pressure-labels">
+        <span class="buy" id="pressureBuyLabel">Buys: —</span>
+        <span class="sell" id="pressureSellLabel">Sells: —</span>
+      </div>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="searchDEX" placeholder="Filter by account name..." oninput="filterDEX()" />
+      <select id="filterDEXWhale" onchange="filterDEX()">
+        <option value="">All sizes</option>
+        <option value="whale">Whales only</option>
+      </select>
+      <span class="result-count" id="dexResultCount"></span>
+    </div>
     <div class="card-list" id="listDEX">
       <div class="state-box"><div class="spinner"></div><p>Loading DEX activity...</p></div>
+    </div>
+  </div>
+
+  <!-- Leaderboard Panel -->
+  <div class="panel" id="panelLeaderboard">
+    <div class="api-error" id="errLeaderboard"></div>
+    <div class="leaders-list" id="listLeaderboard">
+      <div class="state-box"><div class="spinner"></div><p>Loading top holders...</p></div>
     </div>
   </div>
 </main>
@@ -583,16 +918,22 @@
   const ALCOR         = 'https://wax.alcor.exchange/api';
   const ACCOUNT       = 'pixeljourney';
   const COLLECTION    = 'pixeljourney';
-  const NFT_SENDER    = 'swap.taco';
   const DEX_ACCOUNTS  = ['swap.alcor', 'swap.taco'];
   const REFRESH_SEC   = 30;
 
   /* ═══════════════════════ STATE ════════════════════════ */
-  let whaleAlerts   = [];
-  let countdownVal  = REFRESH_SEC;
+  let whaleAlerts    = [];
+  let countdownVal   = REFRESH_SEC;
   let countdownTimer = null;
-  let refreshTimer   = null;
   let isRefreshing   = false;
+  let soundEnabled   = false;
+  let notifEnabled   = false;
+  let audioCtx       = null;
+
+  // Stored data for export and filtering
+  let currentTokenTxs = [];
+  let currentNFTTxs   = [];
+  let currentDEXSwaps = [];
 
   /* ═══════════════════════ HELPERS ══════════════════════ */
   function esc(s) {
@@ -650,8 +991,11 @@
   function switchTab(name, btn) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('panel' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+    document.getElementById('panel' + name).classList.add('active');
     btn.classList.add('active');
+    if (name === 'Leaderboard' && document.getElementById('listLeaderboard').querySelector('.spinner')) {
+      loadLeaderboard();
+    }
   }
 
   /* ═══════════════════════ TICKER ═══════════════════════ */
@@ -664,7 +1008,6 @@
   function renderTicker() {
     const el = document.getElementById('ticker');
     if (whaleAlerts.length === 0) { el.innerHTML = ''; return; }
-    // duplicate for seamless loop
     const items = [...whaleAlerts, ...whaleAlerts].map(a => {
       const cls = a.type === 'token' ? '' : a.type === 'nft' ? 'nft' : 'dex';
       const label = a.type === 'token' ? '🪙 TOKEN' : a.type === 'nft' ? '🖼 NFT' : '📊 DEX';
@@ -689,6 +1032,264 @@
         refreshAll();
       }
     }, 1000);
+  }
+
+  /* ═══════════════════════ SOUND ════════════════════════ */
+  function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('soundBtn');
+    btn.textContent = soundEnabled ? '🔊 Sound' : '🔇 Sound';
+    btn.classList.toggle('active-toggle', soundEnabled);
+    showToast(soundEnabled ? 'Sound alerts ON' : 'Sound alerts OFF');
+  }
+
+  function playWhaleSound() {
+    if (!soundEnabled) return;
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+      osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.4);
+      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.6);
+    } catch(e) {}
+  }
+
+  /* ═══════════════════════ NOTIFICATIONS ════════════════ */
+  async function toggleNotifications() {
+    if (!('Notification' in window)) {
+      showToast('Browser notifications not supported');
+      return;
+    }
+    if (!notifEnabled) {
+      const perm = await Notification.requestPermission();
+      notifEnabled = perm === 'granted';
+      if (!notifEnabled) { showToast('Notification permission denied'); return; }
+    } else {
+      notifEnabled = false;
+    }
+    const btn = document.getElementById('notifBtn');
+    btn.textContent = notifEnabled ? '🔔 Alerts ON' : '🔔 Alerts';
+    btn.classList.toggle('active-toggle', notifEnabled);
+    showToast(notifEnabled ? 'Browser notifications ON' : 'Browser notifications OFF');
+  }
+
+  function sendWhaleNotif(title, body) {
+    if (!notifEnabled || Notification.permission !== 'granted') return;
+    try { new Notification(title, { body }); } catch(e) {}
+  }
+
+  /* ═══════════════════════ EXPORT CSV ═══════════════════ */
+  function exportCSV() {
+    const rows = [['Type','From','To','Amount','Symbol','Memo','Time','TxID']];
+    for (const tx of currentTokenTxs) {
+      rows.push(['token', tx.from, tx.to, tx.amount, tx.symbol, tx.memo, new Date(tx.ts).toISOString(), tx.txid]);
+    }
+    for (const tx of currentNFTTxs) {
+      rows.push(['nft', tx.sender_name, tx.recipient_name, tx.assets?.length ?? 0, 'NFT', tx.memo ?? '', new Date(parseInt(tx.created_at_time)).toISOString(), tx.txhash ?? tx.txid ?? '']);
+    }
+    for (const s of currentDEXSwaps) {
+      rows.push(['dex', s.caller, 'swap.alcor', s.amount, s.qty1.split(' ')[1] ?? '', '', new Date(s.ts).toISOString(), s.txid]);
+    }
+    const csv = rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `whale-tracker-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    showToast('CSV exported!');
+  }
+
+  /* ═══════════════════════ PRESETS ══════════════════════ */
+  function applyPreset(size) {
+    const presets = {
+      small:  { token: 100_000,   nft: 3,  dex: 10_000  },
+      medium: { token: 500_000,   nft: 5,  dex: 50_000  },
+      mega:   { token: 5_000_000, nft: 20, dex: 500_000 },
+    };
+    const p = presets[size];
+    document.getElementById('threshToken').value = p.token;
+    document.getElementById('threshNFT').value   = p.nft;
+    document.getElementById('threshDEX').value   = p.dex;
+    refreshAll();
+    showToast(`Preset: ${size.charAt(0).toUpperCase() + size.slice(1)} Whale applied`);
+  }
+
+  /* ═══════════════════════ WATCHLIST ════════════════════ */
+  let watchlist = JSON.parse(localStorage.getItem('wt_watchlist') || '[]');
+
+  function saveWatchlist() { localStorage.setItem('wt_watchlist', JSON.stringify(watchlist)); }
+
+  function isWatched(addr) { return watchlist.includes(String(addr ?? '').toLowerCase()); }
+
+  function addToWatchlist(addr) {
+    addr = String(addr).trim().toLowerCase();
+    if (!addr || watchlist.includes(addr)) return;
+    watchlist.push(addr);
+    saveWatchlist();
+    renderWatchlistChips();
+    showToast(`Watching: ${addr}`);
+  }
+
+  function removeFromWatchlist(addr) {
+    watchlist = watchlist.filter(a => a !== addr);
+    saveWatchlist();
+    renderWatchlistChips();
+  }
+
+  function addWatchlistFromInput() {
+    const val = document.getElementById('watchlistInput').value.trim();
+    if (!val) return;
+    addToWatchlist(val);
+    document.getElementById('watchlistInput').value = '';
+  }
+
+  function renderWatchlistChips() {
+    const c = document.getElementById('watchlistChips');
+    const count = document.getElementById('watchlistCount');
+    count.textContent = watchlist.length ? `(${watchlist.length} watched)` : '';
+    if (watchlist.length === 0) { c.innerHTML = '<span style="color:var(--muted);font-size:.78rem">No accounts watched yet.</span>'; return; }
+    c.innerHTML = watchlist.map(a => `
+      <span class="wchip">
+        ${esc(a)}
+        <button onclick="removeFromWatchlist('${esc(a)}')" title="Remove">✕</button>
+      </span>`).join('');
+  }
+
+  function toggleWatchlistBody() {
+    const body = document.getElementById('watchlistBody');
+    const icon = document.getElementById('watchlistToggleIcon');
+    const open = body.classList.toggle('open');
+    icon.classList.toggle('open', open);
+    if (open) renderWatchlistChips();
+  }
+
+  /* ═══════════════════════ PRICE ════════════════════════ */
+  async function fetchPrices() {
+    try {
+      // Fetch WAX/USD from CoinGecko
+      const waxRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=wax&vs_currencies=usd');
+      if (waxRes.ok) {
+        const waxData = await waxRes.json();
+        const waxUSD = waxData?.wax?.usd;
+        if (waxUSD) document.getElementById('pWAX').textContent = `$${waxUSD.toFixed(4)}`;
+      }
+    } catch(e) {}
+
+    try {
+      // Fetch PXJ market from Alcor
+      const res = await fetch(`${ALCOR}/markets`);
+      if (!res.ok) return;
+      const markets = await res.json();
+      const pxj = markets.find(m =>
+        String(m.quote_token?.symbol ?? '').toUpperCase().includes('PXJ') ||
+        String(m.base_token?.symbol ?? '').toUpperCase().includes('PXJ')
+      );
+      if (pxj) {
+        const price = pxj.last_price ?? pxj.close;
+        const vol = pxj.volume24 ?? pxj.volume;
+        const base = pxj.base_token?.symbol ?? '';
+        const quote = pxj.quote_token?.symbol ?? '';
+        if (price) document.getElementById('pPXJ').textContent = `${parseFloat(price).toFixed(6)} WAX`;
+        if (vol) document.getElementById('pVol').textContent = fmtNum(parseFloat(vol));
+        document.getElementById('pMarket').innerHTML = `<a href="https://wax.alcor.exchange/trade/${esc(String(pxj.id??''))}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">${esc(base)}/${esc(quote)} ↗</a>`;
+      }
+    } catch(e) {}
+  }
+
+  /* ═══════════════════════ VOLUME CHART ═════════════════ */
+  function drawVolumeChart(canvasId, transfers) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const W = canvas.offsetWidth || 800;
+    canvas.width = W;
+    canvas.height = 70;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, W, 70);
+
+    if (transfers.length === 0) return;
+
+    const now = Date.now();
+    const bins = new Array(24).fill(0);
+    for (const tx of transfers) {
+      const hoursAgo = (now - tx.ts) / 3_600_000;
+      if (hoursAgo >= 0 && hoursAgo < 24) {
+        const bin = Math.min(23, Math.floor(hoursAgo));
+        bins[23 - bin] += tx.amount || 1;
+      }
+    }
+
+    const max = Math.max(...bins, 1);
+    const barW = (W / 24) - 1;
+    for (let i = 0; i < 24; i++) {
+      const barH = Math.max(2, (bins[i] / max) * 56);
+      const x = i * (W / 24);
+      const grad = ctx.createLinearGradient(0, 70 - barH, 0, 70);
+      grad.addColorStop(0, '#ff6d00');
+      grad.addColorStop(1, 'rgba(255,109,0,0.15)');
+      ctx.fillStyle = bins[i] > 0 ? grad : 'rgba(255,255,255,0.04)';
+      ctx.fillRect(x, 70 - barH, barW, barH);
+    }
+  }
+
+  /* ═══════════════════════ SEARCH / FILTER ══════════════ */
+  function filterTokens() {
+    const q = document.getElementById('searchTokens').value.toLowerCase();
+    const dir = document.getElementById('filterTokenDir').value;
+    const whaleOnly = document.getElementById('filterTokenWhale').value === 'whale';
+    let visible = 0;
+    document.querySelectorAll('#listTokens .event-card').forEach((card, i) => {
+      const tx = currentTokenTxs[i];
+      if (!tx) return;
+      const matchQ = !q || tx.from.toLowerCase().includes(q) || tx.to.toLowerCase().includes(q);
+      const matchDir = !dir || (dir === 'from' ? tx.from === ACCOUNT : tx.to === ACCOUNT);
+      const matchW = !whaleOnly || tx.isWhale;
+      const show = matchQ && matchDir && matchW;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('tokenResultCount').textContent = q || dir || whaleOnly ? `${visible} shown` : '';
+  }
+
+  function filterNFTs() {
+    const q = document.getElementById('searchNFTs').value.toLowerCase();
+    const whaleOnly = document.getElementById('filterNFTWhale').value === 'whale';
+    const nthresh = getThreshNFT();
+    let visible = 0;
+    document.querySelectorAll('#listNFTs .event-card').forEach((card, i) => {
+      const tx = currentNFTTxs[i];
+      if (!tx) return;
+      const matchQ = !q || (tx.sender_name ?? '').toLowerCase().includes(q) || (tx.recipient_name ?? '').toLowerCase().includes(q);
+      const matchW = !whaleOnly || (tx.assets?.length ?? 0) >= nthresh;
+      const show = matchQ && matchW;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('nftResultCount').textContent = q || whaleOnly ? `${visible} shown` : '';
+  }
+
+  function filterDEX() {
+    const q = document.getElementById('searchDEX').value.toLowerCase();
+    const whaleOnly = document.getElementById('filterDEXWhale').value === 'whale';
+    const dthresh = getThreshDEX();
+    let visible = 0;
+    document.querySelectorAll('#listDEX .event-card').forEach((card, i) => {
+      const s = currentDEXSwaps[i];
+      if (!s) return;
+      const matchQ = !q || (s.caller ?? '').toLowerCase().includes(q);
+      const matchW = !whaleOnly || s.amount >= dthresh;
+      const show = matchQ && matchW;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('dexResultCount').textContent = q || whaleOnly ? `${visible} shown` : '';
   }
 
   /* ═══════════════════════ FETCH TOKENS ═════════════════ */
@@ -719,21 +1320,24 @@
         isWhale: amt >= tthresh,
       });
     }
-
     return transfers;
   }
 
   function renderTokenCard(tx) {
     const isDEX = DEX_ACCOUNTS.includes(tx.to) || DEX_ACCOUNTS.includes(tx.from);
     const toClass = DEX_ACCOUNTS.includes(tx.to) ? 'dex' : 'to';
-    return `<div class="event-card${tx.isWhale ? ' whale' : ''}">
+    const fromWatched = isWatched(tx.from);
+    const toWatched = isWatched(tx.to);
+    const watched = fromWatched || toWatched;
+    return `<div class="event-card${tx.isWhale ? ' whale' : ''}${watched ? ' card-watched' : ''}">
       <div class="card-head">
         ${tx.isWhale ? '<span class="whale-badge">🐋 Whale</span>' : ''}
         ${isDEX ? '<span class="whale-badge" style="background:#00acc1">📊 DEX</span>' : ''}
+        ${watched ? '<span class="watched-badge">👁 Watched</span>' : ''}
         <div class="accounts">
-          <span class="chip from">${esc(tx.from)}</span>
+          <span class="chip from${fromWatched ? ' watched' : ''}">${esc(tx.from)}</span>
           <span class="arrow">→</span>
-          <span class="chip ${toClass}">${esc(tx.to)}</span>
+          <span class="chip ${toClass}${toWatched ? ' watched' : ''}">${esc(tx.to)}</span>
         </div>
         <div class="card-meta">
           <div class="val">${esc(tx.quantity)}</div>
@@ -754,25 +1358,37 @@
     showErr('errTokens', '');
     try {
       const txs = await fetchTokenTransfers();
+      currentTokenTxs = txs;
       const whales = txs.filter(t => t.isWhale);
 
-      // stats
       const biggest = txs.reduce((m, t) => t.amount > m ? t.amount : m, 0);
       const sym = txs.find(t => t.amount === biggest)?.symbol ?? 'PXJ';
       document.getElementById('sTokenWhales').textContent = whales.length;
       document.getElementById('sBigToken').textContent = biggest > 0 ? `${fmtNum(biggest)} ${sym}` : '—';
       document.getElementById('tabCountTokens').textContent = txs.length;
 
-      // whale alerts
-      for (const w of whales) addWhaleAlert('token', `${w.from} → ${w.to}: ${w.quantity}`);
+      for (const w of whales) {
+        addWhaleAlert('token', `${w.from} → ${w.to}: ${w.quantity}`);
+        playWhaleSound();
+        sendWhaleNotif('🐋 Token Whale!', `${w.from} → ${w.to}: ${w.quantity}`);
+      }
+
+      // Volume chart
+      const chartWrap = document.getElementById('tokenChartWrap');
+      if (txs.length > 0) {
+        chartWrap.style.display = '';
+        setTimeout(() => drawVolumeChart('tokenChart', txs), 50);
+      } else {
+        chartWrap.style.display = 'none';
+      }
 
       if (txs.length === 0) {
         list.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>No PXJ/WPIXAL transfers found.</p></div>`;
         return;
       }
       list.innerHTML = txs.map(renderTokenCard).join('');
+      filterTokens();
 
-      // last activity
       const latest = txs[0]?.ts;
       if (latest) document.getElementById('sLastActivity').textContent = timeAgo(latest);
     } catch (e) {
@@ -784,7 +1400,7 @@
 
   /* ═══════════════════════ FETCH NFTS ════════════════════ */
   async function fetchNFTTransfers() {
-    const url = `${ATOMIC}/transfers?sender=${NFT_SENDER}&collection_name=${COLLECTION}&page=1&limit=100&order=desc`;
+    const url = `${ATOMIC}/transfers?collection_name=${COLLECTION}&page=1&limit=100&sort=created&order=desc`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
@@ -800,16 +1416,22 @@
   function renderNFTCard(tx, isWhale) {
     const ts = parseInt(tx.created_at_time, 10);
     const memo = tx.memo ?? '';
-    const nftCount = tx.assets.length;
+    const assets = tx.assets ?? [];
+    const nftCount = assets.length;
     const isDEXSender = DEX_ACCOUNTS.includes(tx.sender_name);
-    return `<div class="event-card${isWhale ? ' whale' : ''}">
+    const fromWatched = isWatched(tx.sender_name);
+    const toWatched = isWatched(tx.recipient_name);
+    const watched = fromWatched || toWatched;
+    const txHash = tx.txhash ?? tx.txid ?? '';
+    return `<div class="event-card${isWhale ? ' whale' : ''}${watched ? ' card-watched' : ''}">
       <div class="card-head">
         ${isWhale ? '<span class="whale-badge">🐋 Whale</span>' : ''}
         ${isDEXSender ? '<span class="whale-badge" style="background:var(--accent)">🔀 DEX Reward</span>' : ''}
+        ${watched ? '<span class="watched-badge">👁 Watched</span>' : ''}
         <div class="accounts">
-          <span class="chip from">${esc(tx.sender_name)}</span>
+          <span class="chip from${fromWatched ? ' watched' : ''}">${esc(tx.sender_name)}</span>
           <span class="arrow">→</span>
-          <span class="chip to">${esc(tx.recipient_name)}</span>
+          <span class="chip to${toWatched ? ' watched' : ''}">${esc(tx.recipient_name)}</span>
         </div>
         ${memo ? `<span class="memo-tag">💬 ${esc(memo)}</span>` : ''}
         <div class="card-meta">
@@ -819,8 +1441,8 @@
         </div>
       </div>
       <div class="nft-grid">
-        ${tx.assets.map(a => {
-          const name = a.data?.name ?? `Asset #${a.asset_id}`;
+        ${assets.map(a => {
+          const name = a.data?.name ?? a.name ?? `Asset #${a.asset_id}`;
           const schema = a.schema?.schema_name ?? '—';
           const tplId = a.template?.template_id ?? null;
           const tier = getTier(a);
@@ -835,8 +1457,8 @@
           </div>`;
         }).join('')}
       </div>
-      ${tx.txid ? `<div class="card-body">
-        <a class="txlink" href="https://waxblock.io/transaction/${tx.txid}" target="_blank" rel="noopener">Tx: ${tx.txid.slice(0,24)}…</a>
+      ${txHash ? `<div class="card-body">
+        <a class="txlink" href="https://waxblock.io/transaction/${txHash}" target="_blank" rel="noopener">Tx: ${txHash.slice(0,24)}…</a>
       </div>` : ''}
     </div>`;
   }
@@ -848,8 +1470,9 @@
     try {
       const nthresh = getThreshNFT();
       const txs = await fetchNFTTransfers();
-      const whales = txs.filter(t => t.assets.length >= nthresh);
-      const biggest = txs.reduce((m, t) => t.assets.length > m ? t.assets.length : m, 0);
+      currentNFTTxs = txs;
+      const whales = txs.filter(t => (t.assets?.length ?? 0) >= nthresh);
+      const biggest = txs.reduce((m, t) => (t.assets?.length ?? 0) > m ? (t.assets?.length ?? 0) : m, 0);
 
       document.getElementById('sNFTWhales').textContent = whales.length;
       document.getElementById('sBigNFT').textContent = biggest > 0 ? biggest : '—';
@@ -857,13 +1480,16 @@
 
       for (const w of whales) {
         addWhaleAlert('nft', `${w.sender_name} → ${w.recipient_name}: ${w.assets.length} NFTs`);
+        playWhaleSound();
+        sendWhaleNotif('🖼 NFT Whale!', `${w.sender_name} → ${w.recipient_name}: ${w.assets.length} NFTs`);
       }
 
       if (txs.length === 0) {
-        list.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>No NFT transfers found.</p></div>`;
+        list.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>No NFT transfers found for collection "${COLLECTION}".</p></div>`;
         return;
       }
-      list.innerHTML = txs.map(t => renderNFTCard(t, t.assets.length >= nthresh)).join('');
+      list.innerHTML = txs.map(t => renderNFTCard(t, (t.assets?.length ?? 0) >= nthresh)).join('');
+      filterNFTs();
     } catch (e) {
       console.error('NFT fetch error:', e);
       showErr('errNFTs', `NFT API error: ${e.message}`);
@@ -873,7 +1499,6 @@
 
   /* ═══════════════════════ FETCH DEX ═════════════════════ */
   async function fetchDEXSwaps() {
-    // Fetch swap actions from swap.alcor via Hyperion
     const url = `${HYPERION}/get_actions?account=swap.alcor&filter=swap.alcor%3Aswap&sort=desc&limit=100`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -883,11 +1508,9 @@
     const swaps = [];
     for (const a of actions) {
       const d = a.act?.data ?? {};
-      // Look for PXJ or WPIXAL in any quantity fields
       const fields = JSON.stringify(d);
       if (!fields.includes('PXJ') && !fields.includes('WPIXAL')) continue;
 
-      // Extract amounts
       const qty1 = d.quantity ?? d.quantity1 ?? d.amount_in ?? '';
       const qty2 = d.min_return ?? d.quantity2 ?? d.amount_out ?? '';
       const qty1Amt = parseAmount(qty1);
@@ -907,7 +1530,6 @@
   }
 
   async function fetchAlcorMarkets() {
-    // Try to get PXJ market info from Alcor
     try {
       const res = await fetch(`${ALCOR}/markets`);
       if (!res.ok) return null;
@@ -921,14 +1543,26 @@
     } catch { return null; }
   }
 
+  function analyzePressure(swaps) {
+    let buys = 0, sells = 0;
+    for (const s of swaps) {
+      const out = String(s.qty2).toUpperCase();
+      if (out.includes('PXJ') || out.includes('WPIXAL')) buys++;
+      else sells++;
+    }
+    return { buys, sells };
+  }
+
   function renderDEXCard(swap, isWhale) {
+    const callerWatched = isWatched(swap.caller);
     const label1 = swap.qty1 || '—';
     const label2 = swap.qty2 || '—';
-    return `<div class="event-card${isWhale ? ' whale' : ''}">
+    return `<div class="event-card${isWhale ? ' whale' : ''}${callerWatched ? ' card-watched' : ''}">
       <div class="card-head">
         ${isWhale ? '<span class="whale-badge">🐋 Whale Swap</span>' : ''}
+        ${callerWatched ? '<span class="watched-badge">👁 Watched</span>' : ''}
         <div class="accounts">
-          ${swap.caller ? `<span class="chip from">${esc(swap.caller)}</span><span class="arrow">⇄</span>` : ''}
+          ${swap.caller ? `<span class="chip from${callerWatched ? ' watched' : ''}">${esc(swap.caller)}</span><span class="arrow">⇄</span>` : ''}
           <span class="chip dex">swap.alcor</span>
         </div>
         <div class="card-meta">
@@ -950,10 +1584,8 @@
     showErr('errDEX', '');
     try {
       const dthresh = getThreshDEX();
-      const [swaps, markets] = await Promise.all([
-        fetchDEXSwaps(),
-        fetchAlcorMarkets(),
-      ]);
+      const [swaps, markets] = await Promise.all([fetchDEXSwaps(), fetchAlcorMarkets()]);
+      currentDEXSwaps = swaps;
 
       const whales = swaps.filter(s => s.amount >= dthresh);
       document.getElementById('sDEXWhales').textContent = whales.length;
@@ -961,16 +1593,29 @@
 
       for (const w of whales) {
         addWhaleAlert('dex', `Whale swap on Alcor: ${w.qty1}${w.caller ? ` by ${w.caller}` : ''}`);
+        playWhaleSound();
+        sendWhaleNotif('📊 DEX Whale!', `Whale swap: ${w.qty1}${w.caller ? ` by ${w.caller}` : ''}`);
       }
 
-      // Show market info banner if found
+      // Buy/sell pressure
+      if (swaps.length > 0) {
+        const { buys, sells } = analyzePressure(swaps);
+        const total = buys + sells || 1;
+        const buyPct = Math.round((buys / total) * 100);
+        document.getElementById('pressureBar').style.display = '';
+        document.getElementById('pressureFill').style.width = buyPct + '%';
+        document.getElementById('pressureBuyLabel').textContent = `Buys: ${buys} (${buyPct}%)`;
+        document.getElementById('pressureSellLabel').textContent = `Sells: ${sells} (${100 - buyPct}%)`;
+      }
+
+      // Market info banner
       let marketHtml = '';
       if (markets && markets.length > 0) {
         const m = markets[0];
         const price = m.last_price ?? m.close ?? '—';
         const vol = m.volume24 ?? m.volume ?? '—';
         marketHtml = `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;margin-bottom:12px;font-size:.82rem;display:flex;gap:20px;flex-wrap:wrap;">
-          <span>📈 Alcor Market: <strong style="color:var(--accent2)">${esc(m.base_token?.symbol??'')}/${esc(m.quote_token?.symbol??'')}</strong></span>
+          <span>📈 <strong style="color:var(--accent2)">${esc(m.base_token?.symbol??'')}/${esc(m.quote_token?.symbol??'')}</strong></span>
           <span>Last Price: <strong style="color:var(--gold)">${esc(String(price))}</strong></span>
           <span>24h Vol: <strong style="color:var(--green)">${esc(String(vol))}</strong></span>
           <a href="https://wax.alcor.exchange/trade/${esc(String(m.id??''))}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;margin-left:auto">Open on Alcor →</a>
@@ -982,11 +1627,73 @@
         return;
       }
       list.innerHTML = marketHtml + swaps.map(s => renderDEXCard(s, s.amount >= dthresh)).join('');
+      filterDEX();
     } catch (e) {
       console.error('DEX fetch error:', e);
       showErr('errDEX', `DEX API error: ${e.message}`);
       list.innerHTML = `<div class="state-box"><div class="icon">⚠️</div><p>${esc(e.message)}</p></div>`;
     }
+  }
+
+  /* ═══════════════════════ LEADERBOARD ══════════════════ */
+  async function loadLeaderboard() {
+    const list = document.getElementById('listLeaderboard');
+    list.innerHTML = `<div class="state-box"><div class="spinner"></div><p>Fetching top holders...</p></div>`;
+    showErr('errLeaderboard', '');
+    try {
+      const url = `${ATOMIC}/accounts?collection_name=${COLLECTION}&limit=20`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      if (!json.success) throw new Error('API returned success=false');
+      const holders = json.data ?? [];
+
+      document.getElementById('tabCountLeaderboard').textContent = holders.length;
+
+      if (holders.length === 0) {
+        list.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>No holders found for collection "${COLLECTION}".</p></div>`;
+        return;
+      }
+
+      const medals = ['🥇','🥈','🥉'];
+      const max = holders[0]?.assets ?? 1;
+      list.innerHTML = `<div class="leaders-list">${holders.map((h, i) => {
+        const account = h.account ?? '—';
+        const count = h.assets ?? 0;
+        const pct = Math.round((count / max) * 100);
+        const rankClass = i < 3 ? `top${i+1}` : '';
+        const watching = isWatched(account);
+        return `<div class="leader-row ${rankClass}">
+          <div class="leader-rank">${medals[i] ?? `#${i+1}`}</div>
+          <div class="leader-account${watching ? ' is-watched' : ''}">${esc(account)}</div>
+          <div class="leader-bar-wrap"><div class="leader-bar" style="width:${pct}%"></div></div>
+          <div class="leader-count">${count.toLocaleString()} NFTs</div>
+          <button class="leader-watch-btn${watching ? ' watching' : ''}"
+            onclick="toggleWatchFromLeader('${esc(account)}', this)">
+            ${watching ? '👁 Watching' : '+ Watch'}
+          </button>
+        </div>`;
+      }).join('')}</div>`;
+    } catch (e) {
+      console.error('Leaderboard fetch error:', e);
+      showErr('errLeaderboard', `Leaderboard API error: ${e.message}`);
+      list.innerHTML = `<div class="state-box"><div class="icon">⚠️</div><p>${esc(e.message)}</p></div>`;
+    }
+  }
+
+  function toggleWatchFromLeader(account, btn) {
+    if (isWatched(account)) {
+      removeFromWatchlist(account);
+      btn.textContent = '+ Watch';
+      btn.classList.remove('watching');
+      btn.closest('.leader-row').querySelector('.leader-account').classList.remove('is-watched');
+    } else {
+      addToWatchlist(account);
+      btn.textContent = '👁 Watching';
+      btn.classList.add('watching');
+      btn.closest('.leader-row').querySelector('.leader-account').classList.add('is-watched');
+    }
+    renderWatchlistChips();
   }
 
   /* ═══════════════════════ REFRESH ═══════════════════════ */
@@ -998,9 +1705,8 @@
     btn.disabled = true;
     btn.textContent = '…';
 
-    // Reset whale alert per session (keep history)
     try {
-      await Promise.all([loadTokens(), loadNFTs(), loadDEX()]);
+      await Promise.all([loadTokens(), loadNFTs(), loadDEX(), fetchPrices()]);
     } catch (e) {
       console.error('Refresh error:', e);
     }
@@ -1012,6 +1718,7 @@
   }
 
   /* ═══════════════════════ INIT ══════════════════════════ */
+  renderWatchlistChips();
   refreshAll();
 </script>
 </body>
