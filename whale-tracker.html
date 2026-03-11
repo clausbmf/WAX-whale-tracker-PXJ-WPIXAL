@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixel Journey — Whale Tracker</title>
+  <style>
+    :root {
+      --bg: #0a0b14;
+      --surface: #12141f;
+      --surface2: #1a1d2e;
+      --border: #252840;
+      --accent: #7c4dff;
+      --accent2: #00e5ff;
+      --gold: #ffd740;
+      --green: #00e676;
+      --red: #ff5252;
+      --orange: #ff9100;
+      --text: #e8eaf6;
+      --muted: #6c7293;
+      --radius: 12px;
+      --whale: #ff6d00;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0d0f1e 0%, #1a0830 50%, #0d0f1e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--whale), var(--gold));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    header h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--gold), var(--whale));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .live-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    .countdown {
+      font-size: 0.75rem;
+      color: var(--muted);
+      min-width: 60px;
+    }
+
+    .btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all .2s;
+    }
+    .btn:hover { border-color: var(--accent); color: var(--accent2); }
+    .btn.primary { background: var(--whale); border-color: var(--whale); color: #fff; }
+    .btn.primary:hover { background: #ff8c00; }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ── Whale Ticker ── */
+    .ticker-wrap {
+      background: linear-gradient(90deg, #1a0c00, #120820, #1a0c00);
+      border-bottom: 1px solid #3d2800;
+      padding: 8px 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .ticker-wrap::before, .ticker-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 60px;
+      z-index: 1;
+    }
+    .ticker-wrap::before { left: 0; background: linear-gradient(90deg, #1a0c00, transparent); }
+    .ticker-wrap::after { right: 0; background: linear-gradient(-90deg, #1a0c00, transparent); }
+
+    .ticker-label {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--whale);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      z-index: 2;
+      background: #1a0c00;
+      padding: 0 8px;
+    }
+
+    .ticker-inner {
+      display: flex;
+      gap: 40px;
+      padding-left: 120px;
+      white-space: nowrap;
+      animation: ticker 40s linear infinite;
+    }
+    .ticker-inner:empty::after {
+      content: 'No whale activity detected yet — monitoring live...';
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .ticker-inner.paused { animation-play-state: paused; }
+
+    .ticker-item {
+      font-size: 0.8rem;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ticker-item .badge {
+      background: var(--whale);
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 10px;
+      text-transform: uppercase;
+    }
+    .ticker-item .badge.nft { background: var(--accent); }
+    .ticker-item .badge.dex { background: var(--green); color: #000; }
+
+    /* ── Stats ── */
+    main { max-width: 1400px; margin: 0 auto; padding: 24px 24px; }
+
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      transition: border-color .2s;
+    }
+    .stat-card:hover { border-color: var(--accent); }
+    .stat-card .label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .stat-card .value { font-size: 1.4rem; font-weight: 700; margin-top: 4px; }
+    .stat-card .sub { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── Threshold Controls ── */
+    .threshold-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      font-size: 0.82rem;
+    }
+    .threshold-bar span { color: var(--muted); font-size: 0.75rem; }
+    .threshold-group { display: flex; align-items: center; gap: 8px; }
+    .threshold-group label { color: var(--muted); font-size: 0.78rem; }
+
+    input[type="number"], select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      outline: none;
+      transition: border-color .2s;
+      width: 130px;
+    }
+    input[type="number"]:focus, select:focus { border-color: var(--accent); }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+    .tab {
+      padding: 10px 20px;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid transparent;
+      border-bottom: none;
+      transition: all .2s;
+      position: relative;
+      bottom: -1px;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.active {
+      background: var(--surface);
+      border-color: var(--border);
+      color: var(--text);
+      border-bottom-color: var(--surface);
+    }
+    .tab .count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--whale);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 9px;
+      padding: 0 5px;
+      margin-left: 6px;
+    }
+    .tab .count.blue { background: var(--accent); }
+    .tab .count.green { background: var(--green); color: #000; }
+
+    /* ── Panel ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── Cards ── */
+    .card-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .event-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color .2s, transform .15s;
+      animation: fadeIn .3s ease;
+    }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .event-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .event-card.whale { border-color: var(--whale); }
+    .event-card.whale .card-head { background: linear-gradient(90deg, rgba(255,109,0,.1), transparent); }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .whale-badge {
+      background: linear-gradient(90deg, #b34000, var(--whale));
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      flex-shrink: 0;
+    }
+
+    .accounts {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+    .chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+    .chip.from { border-color: var(--red); color: #ff8a80; }
+    .chip.to { border-color: var(--green); color: #b9f6ca; }
+    .chip.dex { border-color: var(--accent2); color: #80deea; }
+    .arrow { color: var(--muted); font-size: 0.8rem; flex-shrink: 0; }
+
+    .card-meta {
+      margin-left: auto;
+      text-align: right;
+      font-size: 0.72rem;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .card-meta .val { font-size: 1rem; font-weight: 700; color: var(--accent2); }
+    .card-meta .time { color: var(--text); font-weight: 600; font-size: 0.8rem; }
+
+    .card-body {
+      padding: 10px 16px 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .memo-tag {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      color: var(--accent2);
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .txlink {
+      color: var(--accent);
+      text-decoration: none;
+      font-family: monospace;
+      font-size: 0.7rem;
+    }
+    .txlink:hover { text-decoration: underline; }
+
+    /* NFT chips */
+    .nft-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 16px 12px;
+    }
+    .nft-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      min-width: 150px;
+    }
+    .nft-chip .nname { font-weight: 700; color: var(--text); }
+    .nft-chip .nid { color: var(--muted); font-family: monospace; font-size: 0.68rem; }
+    .nft-chip .ntags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+    .ntag {
+      font-size: 0.6rem;
+      padding: 1px 6px;
+      border-radius: 10px;
+      border: 1px solid;
+    }
+    .ntag.schema { border-color: var(--accent); color: #b39ddb; }
+    .ntag.tpl { border-color: var(--accent2); color: #80deea; }
+    .ntag.tier { border-color: var(--gold); color: var(--gold); font-weight: 700; }
+
+    /* ── State ── */
+    .state-box {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--muted);
+    }
+    .state-box .icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .state-box p { font-size: 0.88rem; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--whale);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Error banner ── */
+    .api-error {
+      background: rgba(183,28,28,.15);
+      border: 1px solid #b71c1c;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      color: #ff8a80;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--whale);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      display: none;
+      z-index: 999;
+      max-width: 320px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.5);
+      animation: slideUp .3s ease;
+    }
+    @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+    @media (max-width: 600px) {
+      header { padding: 14px 16px; flex-wrap: wrap; }
+      main { padding: 14px 10px; }
+      .tabs { overflow-x: auto; }
+      .tab { padding: 8px 14px; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🐋</div>
+  <div>
+    <h1>Pixel Journey Whale Tracker</h1>
+    <p>Token Transfers · NFT Movements · DEX Activity · WAX Blockchain</p>
+  </div>
+  <div class="header-right">
+    <div class="live-dot" title="Live monitoring"></div>
+    <span class="countdown" id="countdown">Refresh in 30s</span>
+    <button class="btn primary" id="refreshBtn" onclick="refreshAll()">↻ Refresh All</button>
+  </div>
+</header>
+
+<!-- Whale Ticker -->
+<div class="ticker-wrap">
+  <span class="ticker-label">🐋 Whales</span>
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<main>
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="label">Token Whales</div>
+      <div class="value" id="sTokenWhales" style="color:var(--whale)">—</div>
+      <div class="sub">large PXJ/WPIXAL txs</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Biggest Token Tx</div>
+      <div class="value" id="sBigToken" style="color:var(--gold);font-size:1.1rem">—</div>
+      <div class="sub">single transfer</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">NFT Whales</div>
+      <div class="value" id="sNFTWhales" style="color:var(--accent)">—</div>
+      <div class="sub">big NFT batch txs</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Most NFTs in 1 Tx</div>
+      <div class="value" id="sBigNFT" style="color:var(--accent2)">—</div>
+      <div class="sub">assets in one transfer</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">DEX Whales</div>
+      <div class="value" id="sDEXWhales" style="color:var(--green)">—</div>
+      <div class="sub">large swap events</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Last Activity</div>
+      <div class="value" id="sLastActivity" style="font-size:0.95rem">—</div>
+      <div class="sub">most recent event</div>
+    </div>
+  </div>
+
+  <!-- Threshold controls -->
+  <div class="threshold-bar">
+    <span>🎚 Whale Thresholds:</span>
+    <div class="threshold-group">
+      <label>Token (PXJ)</label>
+      <input type="number" id="threshToken" value="1000000" min="1" />
+    </div>
+    <div class="threshold-group">
+      <label>NFTs per Tx</label>
+      <input type="number" id="threshNFT" value="5" min="1" max="100" style="width:70px" />
+    </div>
+    <div class="threshold-group">
+      <label>Swap qty (tokens)</label>
+      <input type="number" id="threshDEX" value="100000" min="1" />
+    </div>
+    <button class="btn primary" onclick="refreshAll()" style="margin-left:auto">Apply &amp; Refresh</button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('tokens', this)">
+      🪙 Token Transfers
+      <span class="count" id="tabCountTokens">—</span>
+    </button>
+    <button class="tab" onclick="switchTab('nfts', this)">
+      🖼 NFT Transfers
+      <span class="count blue" id="tabCountNFTs">—</span>
+    </button>
+    <button class="tab" onclick="switchTab('dex', this)">
+      📊 DEX Activity
+      <span class="count green" id="tabCountDEX">—</span>
+    </button>
+  </div>
+
+  <!-- Token Panel -->
+  <div class="panel active" id="panelTokens">
+    <div class="api-error" id="errTokens"></div>
+    <div class="card-list" id="listTokens">
+      <div class="state-box"><div class="spinner"></div><p>Loading token transfers...</p></div>
+    </div>
+  </div>
+
+  <!-- NFT Panel -->
+  <div class="panel" id="panelNFTs">
+    <div class="api-error" id="errNFTs"></div>
+    <div class="card-list" id="listNFTs">
+      <div class="state-box"><div class="spinner"></div><p>Loading NFT transfers...</p></div>
+    </div>
+  </div>
+
+  <!-- DEX Panel -->
+  <div class="panel" id="panelDEX">
+    <div class="api-error" id="errDEX"></div>
+    <div class="card-list" id="listDEX">
+      <div class="state-box"><div class="spinner"></div><p>Loading DEX activity...</p></div>
+    </div>
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script>
+  /* ═══════════════════════ CONFIG ═══════════════════════ */
+  const HYPERION      = 'https://wax.eosrio.io/v2/history';
+  const ATOMIC        = 'https://wax.api.atomicassets.io/atomicassets/v1';
+  const ALCOR         = 'https://wax.alcor.exchange/api';
+  const ACCOUNT       = 'pixeljourney';
+  const COLLECTION    = 'pixeljourney';
+  const NFT_SENDER    = 'swap.taco';
+  const DEX_ACCOUNTS  = ['swap.alcor', 'swap.taco'];
+  const REFRESH_SEC   = 30;
+
+  /* ═══════════════════════ STATE ════════════════════════ */
+  let whaleAlerts   = [];
+  let countdownVal  = REFRESH_SEC;
+  let countdownTimer = null;
+  let refreshTimer   = null;
+  let isRefreshing   = false;
+
+  /* ═══════════════════════ HELPERS ══════════════════════ */
+  function esc(s) {
+    return String(s ?? '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function timeAgo(ms) {
+    const d = Date.now() - ms;
+    const m = Math.floor(d / 60000);
+    if (m < 1) return 'just now';
+    if (m < 60) return `${m}m ago`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h}h ago`;
+    return `${Math.floor(h/24)}d ago`;
+  }
+
+  function fmtTime(ms) {
+    return new Date(ms).toLocaleString(undefined, {
+      month:'short', day:'numeric',
+      hour:'2-digit', minute:'2-digit', second:'2-digit'
+    });
+  }
+
+  function parseAmount(qty) {
+    return parseFloat(String(qty).split(' ')[0] || '0');
+  }
+
+  function fmtNum(n) {
+    if (n >= 1_000_000) return (n/1_000_000).toFixed(2) + 'M';
+    if (n >= 1_000)     return (n/1_000).toFixed(1) + 'K';
+    return n.toFixed(2);
+  }
+
+  function getThreshToken() { return parseFloat(document.getElementById('threshToken').value) || 1_000_000; }
+  function getThreshNFT()   { return parseInt(document.getElementById('threshNFT').value) || 5; }
+  function getThreshDEX()   { return parseFloat(document.getElementById('threshDEX').value) || 100_000; }
+
+  function showToast(msg, duration = 4000) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(() => { t.style.display = 'none'; }, duration);
+  }
+
+  function showErr(id, msg) {
+    const el = document.getElementById(id);
+    if (msg) { el.textContent = '⚠ ' + msg; el.style.display = 'block'; }
+    else { el.style.display = 'none'; }
+  }
+
+  /* ═══════════════════════ TABS ═════════════════════════ */
+  function switchTab(name, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel' + name.charAt(0).toUpperCase() + name.slice(1)).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ═══════════════════════ TICKER ═══════════════════════ */
+  function addWhaleAlert(type, text) {
+    whaleAlerts.unshift({ type, text, time: Date.now() });
+    if (whaleAlerts.length > 40) whaleAlerts.pop();
+    renderTicker();
+  }
+
+  function renderTicker() {
+    const el = document.getElementById('ticker');
+    if (whaleAlerts.length === 0) { el.innerHTML = ''; return; }
+    // duplicate for seamless loop
+    const items = [...whaleAlerts, ...whaleAlerts].map(a => {
+      const cls = a.type === 'token' ? '' : a.type === 'nft' ? 'nft' : 'dex';
+      const label = a.type === 'token' ? '🪙 TOKEN' : a.type === 'nft' ? '🖼 NFT' : '📊 DEX';
+      return `<span class="ticker-item">
+        <span class="badge ${cls}">${label}</span>
+        ${esc(a.text)}
+        <span style="color:var(--muted);font-size:.7rem">${timeAgo(a.time)}</span>
+      </span>`;
+    }).join('');
+    el.innerHTML = items;
+  }
+
+  /* ═══════════════════════ COUNTDOWN ════════════════════ */
+  function startCountdown() {
+    clearInterval(countdownTimer);
+    countdownVal = REFRESH_SEC;
+    countdownTimer = setInterval(() => {
+      countdownVal--;
+      document.getElementById('countdown').textContent = `Refresh in ${countdownVal}s`;
+      if (countdownVal <= 0) {
+        clearInterval(countdownTimer);
+        refreshAll();
+      }
+    }, 1000);
+  }
+
+  /* ═══════════════════════ FETCH TOKENS ═════════════════ */
+  async function fetchTokenTransfers() {
+    const url = `${HYPERION}/get_actions?account=${ACCOUNT}&filter=${ACCOUNT}%3Atransfer&sort=desc&limit=100`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    const actions = json.actions ?? [];
+    const tthresh = getThreshToken();
+
+    const transfers = [];
+    for (const a of actions) {
+      const d = a.act?.data ?? {};
+      const sym = (d.symbol ?? (d.quantity ?? '').split(' ')[1] ?? '').toUpperCase();
+      if (!['PXJ','WPIXAL'].includes(sym)) continue;
+      const amt = parseAmount(d.quantity);
+      const ts = new Date(a['@timestamp'] ?? a.timestamp).getTime();
+      transfers.push({
+        txid: a.trx_id ?? '',
+        from: d.from ?? '',
+        to: d.to ?? '',
+        quantity: d.quantity ?? '',
+        amount: amt,
+        symbol: sym,
+        memo: d.memo ?? '',
+        ts,
+        isWhale: amt >= tthresh,
+      });
+    }
+
+    return transfers;
+  }
+
+  function renderTokenCard(tx) {
+    const isDEX = DEX_ACCOUNTS.includes(tx.to) || DEX_ACCOUNTS.includes(tx.from);
+    const toClass = DEX_ACCOUNTS.includes(tx.to) ? 'dex' : 'to';
+    return `<div class="event-card${tx.isWhale ? ' whale' : ''}">
+      <div class="card-head">
+        ${tx.isWhale ? '<span class="whale-badge">🐋 Whale</span>' : ''}
+        ${isDEX ? '<span class="whale-badge" style="background:#00acc1">📊 DEX</span>' : ''}
+        <div class="accounts">
+          <span class="chip from">${esc(tx.from)}</span>
+          <span class="arrow">→</span>
+          <span class="chip ${toClass}">${esc(tx.to)}</span>
+        </div>
+        <div class="card-meta">
+          <div class="val">${esc(tx.quantity)}</div>
+          <div class="time">${timeAgo(tx.ts)}</div>
+          <div>${fmtTime(tx.ts)}</div>
+        </div>
+      </div>
+      <div class="card-body">
+        ${tx.memo ? `<span class="memo-tag">💬 ${esc(tx.memo)}</span>` : ''}
+        ${tx.txid ? `<a class="txlink" href="https://waxblock.io/transaction/${tx.txid}" target="_blank" rel="noopener">Tx: ${tx.txid.slice(0,20)}…</a>` : ''}
+      </div>
+    </div>`;
+  }
+
+  async function loadTokens() {
+    const list = document.getElementById('listTokens');
+    list.innerHTML = `<div class="state-box"><div class="spinner"></div><p>Fetching PXJ / WPIXAL transfers...</p></div>`;
+    showErr('errTokens', '');
+    try {
+      const txs = await fetchTokenTransfers();
+      const whales = txs.filter(t => t.isWhale);
+
+      // stats
+      const biggest = txs.reduce((m, t) => t.amount > m ? t.amount : m, 0);
+      const sym = txs.find(t => t.amount === biggest)?.symbol ?? 'PXJ';
+      document.getElementById('sTokenWhales').textContent = whales.length;
+      document.getElementById('sBigToken').textContent = biggest > 0 ? `${fmtNum(biggest)} ${sym}` : '—';
+      document.getElementById('tabCountTokens').textContent = txs.length;
+
+      // whale alerts
+      for (const w of whales) addWhaleAlert('token', `${w.from} → ${w.to}: ${w.quantity}`);
+
+      if (txs.length === 0) {
+        list.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>No PXJ/WPIXAL transfers found.</p></div>`;
+        return;
+      }
+      list.innerHTML = txs.map(renderTokenCard).join('');
+
+      // last activity
+      const latest = txs[0]?.ts;
+      if (latest) document.getElementById('sLastActivity').textContent = timeAgo(latest);
+    } catch (e) {
+      console.error('Token fetch error:', e);
+      showErr('errTokens', `Token API error: ${e.message}`);
+      list.innerHTML = `<div class="state-box"><div class="icon">⚠️</div><p>${esc(e.message)}</p></div>`;
+    }
+  }
+
+  /* ═══════════════════════ FETCH NFTS ════════════════════ */
+  async function fetchNFTTransfers() {
+    const url = `${ATOMIC}/transfers?sender=${NFT_SENDER}&collection_name=${COLLECTION}&page=1&limit=100&order=desc`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (!json.success) throw new Error('API returned success=false');
+    return json.data ?? [];
+  }
+
+  function getTier(asset) {
+    const d = asset.data ?? asset.immutable_data ?? {};
+    return d.tier ?? d.Tier ?? d.rarity ?? d.Rarity ?? null;
+  }
+
+  function renderNFTCard(tx, isWhale) {
+    const ts = parseInt(tx.created_at_time, 10);
+    const memo = tx.memo ?? '';
+    const nftCount = tx.assets.length;
+    const isDEXSender = DEX_ACCOUNTS.includes(tx.sender_name);
+    return `<div class="event-card${isWhale ? ' whale' : ''}">
+      <div class="card-head">
+        ${isWhale ? '<span class="whale-badge">🐋 Whale</span>' : ''}
+        ${isDEXSender ? '<span class="whale-badge" style="background:var(--accent)">🔀 DEX Reward</span>' : ''}
+        <div class="accounts">
+          <span class="chip from">${esc(tx.sender_name)}</span>
+          <span class="arrow">→</span>
+          <span class="chip to">${esc(tx.recipient_name)}</span>
+        </div>
+        ${memo ? `<span class="memo-tag">💬 ${esc(memo)}</span>` : ''}
+        <div class="card-meta">
+          <div class="val">${nftCount} NFT${nftCount !== 1 ? 's' : ''}</div>
+          <div class="time">${timeAgo(ts)}</div>
+          <div>${fmtTime(ts)}</div>
+        </div>
+      </div>
+      <div class="nft-grid">
+        ${tx.assets.map(a => {
+          const name = a.data?.name ?? `Asset #${a.asset_id}`;
+          const schema = a.schema?.schema_name ?? '—';
+          const tplId = a.template?.template_id ?? null;
+          const tier = getTier(a);
+          return `<div class="nft-chip">
+            <div class="nname">${esc(name)}</div>
+            <div class="nid">#${esc(a.asset_id)}</div>
+            <div class="ntags">
+              <span class="ntag schema">${esc(schema)}</span>
+              ${tplId ? `<span class="ntag tpl">TPL ${tplId}</span>` : ''}
+              ${tier ? `<span class="ntag tier">${esc(tier)}</span>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      ${tx.txid ? `<div class="card-body">
+        <a class="txlink" href="https://waxblock.io/transaction/${tx.txid}" target="_blank" rel="noopener">Tx: ${tx.txid.slice(0,24)}…</a>
+      </div>` : ''}
+    </div>`;
+  }
+
+  async function loadNFTs() {
+    const list = document.getElementById('listNFTs');
+    list.innerHTML = `<div class="state-box"><div class="spinner"></div><p>Fetching NFT transfers...</p></div>`;
+    showErr('errNFTs', '');
+    try {
+      const nthresh = getThreshNFT();
+      const txs = await fetchNFTTransfers();
+      const whales = txs.filter(t => t.assets.length >= nthresh);
+      const biggest = txs.reduce((m, t) => t.assets.length > m ? t.assets.length : m, 0);
+
+      document.getElementById('sNFTWhales').textContent = whales.length;
+      document.getElementById('sBigNFT').textContent = biggest > 0 ? biggest : '—';
+      document.getElementById('tabCountNFTs').textContent = txs.length;
+
+      for (const w of whales) {
+        addWhaleAlert('nft', `${w.sender_name} → ${w.recipient_name}: ${w.assets.length} NFTs`);
+      }
+
+      if (txs.length === 0) {
+        list.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>No NFT transfers found.</p></div>`;
+        return;
+      }
+      list.innerHTML = txs.map(t => renderNFTCard(t, t.assets.length >= nthresh)).join('');
+    } catch (e) {
+      console.error('NFT fetch error:', e);
+      showErr('errNFTs', `NFT API error: ${e.message}`);
+      list.innerHTML = `<div class="state-box"><div class="icon">⚠️</div><p>${esc(e.message)}</p></div>`;
+    }
+  }
+
+  /* ═══════════════════════ FETCH DEX ═════════════════════ */
+  async function fetchDEXSwaps() {
+    // Fetch swap actions from swap.alcor via Hyperion
+    const url = `${HYPERION}/get_actions?account=swap.alcor&filter=swap.alcor%3Aswap&sort=desc&limit=100`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    const actions = json.actions ?? [];
+
+    const swaps = [];
+    for (const a of actions) {
+      const d = a.act?.data ?? {};
+      // Look for PXJ or WPIXAL in any quantity fields
+      const fields = JSON.stringify(d);
+      if (!fields.includes('PXJ') && !fields.includes('WPIXAL')) continue;
+
+      // Extract amounts
+      const qty1 = d.quantity ?? d.quantity1 ?? d.amount_in ?? '';
+      const qty2 = d.min_return ?? d.quantity2 ?? d.amount_out ?? '';
+      const qty1Amt = parseAmount(qty1);
+      const ts = new Date(a['@timestamp'] ?? a.timestamp).getTime();
+
+      swaps.push({
+        txid: a.trx_id ?? '',
+        caller: d.caller ?? d.account ?? '',
+        qty1: String(qty1),
+        qty2: String(qty2),
+        amount: qty1Amt,
+        ts,
+        raw: d,
+      });
+    }
+    return swaps;
+  }
+
+  async function fetchAlcorMarkets() {
+    // Try to get PXJ market info from Alcor
+    try {
+      const res = await fetch(`${ALCOR}/markets`);
+      if (!res.ok) return null;
+      const markets = await res.json();
+      return markets.filter(m =>
+        String(m.quote_token?.symbol ?? '').toUpperCase().includes('PXJ') ||
+        String(m.base_token?.symbol ?? '').toUpperCase().includes('PXJ') ||
+        String(m.quote_token?.symbol ?? '').toUpperCase().includes('WPIXAL') ||
+        String(m.base_token?.symbol ?? '').toUpperCase().includes('WPIXAL')
+      );
+    } catch { return null; }
+  }
+
+  function renderDEXCard(swap, isWhale) {
+    const label1 = swap.qty1 || '—';
+    const label2 = swap.qty2 || '—';
+    return `<div class="event-card${isWhale ? ' whale' : ''}">
+      <div class="card-head">
+        ${isWhale ? '<span class="whale-badge">🐋 Whale Swap</span>' : ''}
+        <div class="accounts">
+          ${swap.caller ? `<span class="chip from">${esc(swap.caller)}</span><span class="arrow">⇄</span>` : ''}
+          <span class="chip dex">swap.alcor</span>
+        </div>
+        <div class="card-meta">
+          <div class="val" style="font-size:.85rem;color:var(--green)">${esc(label1)}</div>
+          ${label2 && label2 !== '—' ? `<div style="font-size:.72rem;color:var(--muted)">→ ${esc(label2)}</div>` : ''}
+          <div class="time">${timeAgo(swap.ts)}</div>
+          <div>${fmtTime(swap.ts)}</div>
+        </div>
+      </div>
+      ${swap.txid ? `<div class="card-body">
+        <a class="txlink" href="https://waxblock.io/transaction/${swap.txid}" target="_blank" rel="noopener">Tx: ${swap.txid.slice(0,24)}…</a>
+      </div>` : ''}
+    </div>`;
+  }
+
+  async function loadDEX() {
+    const list = document.getElementById('listDEX');
+    list.innerHTML = `<div class="state-box"><div class="spinner"></div><p>Fetching DEX activity...</p></div>`;
+    showErr('errDEX', '');
+    try {
+      const dthresh = getThreshDEX();
+      const [swaps, markets] = await Promise.all([
+        fetchDEXSwaps(),
+        fetchAlcorMarkets(),
+      ]);
+
+      const whales = swaps.filter(s => s.amount >= dthresh);
+      document.getElementById('sDEXWhales').textContent = whales.length;
+      document.getElementById('tabCountDEX').textContent = swaps.length;
+
+      for (const w of whales) {
+        addWhaleAlert('dex', `Whale swap on Alcor: ${w.qty1}${w.caller ? ` by ${w.caller}` : ''}`);
+      }
+
+      // Show market info banner if found
+      let marketHtml = '';
+      if (markets && markets.length > 0) {
+        const m = markets[0];
+        const price = m.last_price ?? m.close ?? '—';
+        const vol = m.volume24 ?? m.volume ?? '—';
+        marketHtml = `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;margin-bottom:12px;font-size:.82rem;display:flex;gap:20px;flex-wrap:wrap;">
+          <span>📈 Alcor Market: <strong style="color:var(--accent2)">${esc(m.base_token?.symbol??'')}/${esc(m.quote_token?.symbol??'')}</strong></span>
+          <span>Last Price: <strong style="color:var(--gold)">${esc(String(price))}</strong></span>
+          <span>24h Vol: <strong style="color:var(--green)">${esc(String(vol))}</strong></span>
+          <a href="https://wax.alcor.exchange/trade/${esc(String(m.id??''))}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;margin-left:auto">Open on Alcor →</a>
+        </div>`;
+      }
+
+      if (swaps.length === 0) {
+        list.innerHTML = marketHtml + `<div class="state-box"><div class="icon">🔍</div><p>No PXJ/WPIXAL swaps found on Alcor recently.</p></div>`;
+        return;
+      }
+      list.innerHTML = marketHtml + swaps.map(s => renderDEXCard(s, s.amount >= dthresh)).join('');
+    } catch (e) {
+      console.error('DEX fetch error:', e);
+      showErr('errDEX', `DEX API error: ${e.message}`);
+      list.innerHTML = `<div class="state-box"><div class="icon">⚠️</div><p>${esc(e.message)}</p></div>`;
+    }
+  }
+
+  /* ═══════════════════════ REFRESH ═══════════════════════ */
+  async function refreshAll() {
+    if (isRefreshing) return;
+    isRefreshing = true;
+
+    const btn = document.getElementById('refreshBtn');
+    btn.disabled = true;
+    btn.textContent = '…';
+
+    // Reset whale alert per session (keep history)
+    try {
+      await Promise.all([loadTokens(), loadNFTs(), loadDEX()]);
+    } catch (e) {
+      console.error('Refresh error:', e);
+    }
+
+    btn.disabled = false;
+    btn.textContent = '↻ Refresh All';
+    isRefreshing = false;
+    startCountdown();
+  }
+
+  /* ═══════════════════════ INIT ══════════════════════════ */
+  refreshAll();
+</script>
+</body>
+</html>
