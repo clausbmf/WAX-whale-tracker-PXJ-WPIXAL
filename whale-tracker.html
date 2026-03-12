@@ -117,9 +117,16 @@
     }
     .price-item { display: flex; align-items: center; gap: 6px; color: var(--muted); }
     .price-item strong { color: var(--text); }
-    .price-item .up { color: var(--green); }
-    .price-item .down { color: var(--red); }
     .price-sep { color: var(--border); }
+    .price-change {
+      font-size: 0.7rem; font-weight: 700; padding: 1px 5px;
+      border-radius: 6px; white-space: nowrap;
+    }
+    .price-change.up   { color: var(--green); background: rgba(0,230,118,.1); }
+    .price-change.down { color: var(--red);   background: rgba(255,82,82,.1); }
+    /* USD value in cards */
+    .val-usd { font-size: 0.7rem; color: var(--muted); margin-top: 1px; }
+    .val-usd.has-price { color: var(--green); opacity: .8; }
 
     /* ── Whale Ticker ── */
     .ticker-wrap {
@@ -493,6 +500,52 @@
       flex-shrink: 0;
     }
 
+    /* ── Transaction Classification Badges ── */
+    .tx-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.6rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      flex-shrink: 0;
+      cursor: default;
+      position: relative;
+    }
+    .tx-badge.arb   { background: linear-gradient(90deg, #6a1b9a, #ab47bc); color: #fff; }
+    .tx-badge.buy   { background: linear-gradient(90deg, #1b5e20, #43a047); color: #fff; }
+    .tx-badge.sell  { background: linear-gradient(90deg, #b71c1c, #ef5350); color: #fff; }
+    .tx-badge.hodl  { background: linear-gradient(90deg, #0d47a1, #1976d2); color: #fff; }
+    .tx-badge.xfer  { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }
+
+    /* Tooltip */
+    .tx-badge::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1d2e;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.72rem;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      padding: 5px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .15s;
+      z-index: 99;
+      box-shadow: 0 6px 20px rgba(0,0,0,.5);
+    }
+    .tx-badge:hover::after { opacity: 1; }
+
     .accounts {
       display: flex;
       align-items: center;
@@ -644,6 +697,97 @@
     .leader-watch-btn:hover { border-color: var(--accent2); color: var(--accent2); }
     .leader-watch-btn.watching { border-color: var(--accent2); color: var(--accent2); background: rgba(0,229,255,.08); }
 
+    /* ── Leaderboard type selector ── */
+    .lb-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .lb-type-select {
+      flex: 1;
+      min-width: 200px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color .2s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236c7293' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+    }
+    .lb-type-select:focus,
+    .lb-type-select:hover { border-color: var(--accent); }
+
+    /* ── Leaderboard table ── */
+    .lb-table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .lb-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .lb-table thead tr {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .lb-table th {
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .lb-table th.th-right { text-align: right; }
+    .lb-table td {
+      padding: 11px 14px;
+      font-size: 0.82rem;
+      border-bottom: 1px solid rgba(37,40,64,.6);
+      transition: background .12s;
+    }
+    .lb-table tbody tr:last-child td { border-bottom: none; }
+    .lb-table tbody tr:hover td { background: rgba(255,255,255,.025); }
+
+    /* Rank highlights */
+    .lb-table tbody tr.lb-top3 td  { background: rgba(255,215,64,.04); }
+    .lb-table tbody tr.lb-top10 td { background: rgba(124,77,255,.03); }
+    .lb-table tbody tr.lb-top3:hover td  { background: rgba(255,215,64,.08); }
+    .lb-table tbody tr.lb-top10:hover td { background: rgba(124,77,255,.07); }
+
+    /* Left border accent for top 3 */
+    .lb-table tbody tr.lb-top3 td:first-child  { border-left: 3px solid var(--gold); }
+    .lb-table tbody tr.lb-top10 td:first-child  { border-left: 3px solid var(--accent); }
+
+    .lb-rank { font-size: 1.1rem; text-align: center; width: 44px; padding-left: 10px !important; }
+    .lb-account-cell {
+      font-family: monospace;
+      color: var(--text);
+      cursor: pointer;
+      transition: color .15s;
+    }
+    .lb-account-cell:hover { color: var(--accent2); text-decoration: underline; }
+    .lb-account-cell.is-watched { color: var(--accent2); }
+    .lb-balance-cell { color: var(--accent2); font-weight: 600; font-family: monospace; }
+    .lb-bar-cell { width: 90px; }
+    .lb-bar-track { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+    .lb-bar-fill  { height: 100%; border-radius: 2px; transition: width .4s ease; }
+    .lb-value-cell { text-align: right; font-size: 0.78rem; color: var(--green); white-space: nowrap; }
+    .lb-value-cell.na { color: var(--muted); }
+    .lb-watch-cell { text-align: right; white-space: nowrap; }
+
     /* ── State ── */
     .state-box {
       text-align: center;
@@ -697,6 +841,893 @@
       .tabs { overflow-x: auto; }
       .tab { padding: 8px 14px; }
     }
+
+    /* ── Settings Modal ── */
+    .settings-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .settings-overlay.open { display: flex; }
+    .settings-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      width: 400px;
+      max-width: calc(100vw - 32px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+      animation: fadeIn .2s ease;
+    }
+    .settings-modal h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text);
+    }
+    .settings-modal h2 .close-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      transition: color .15s;
+    }
+    .settings-modal h2 .close-btn:hover { color: var(--text); }
+    .settings-section { display: flex; flex-direction: column; gap: 0; }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .settings-row:last-child { border-bottom: none; }
+    .settings-label { font-size: 0.85rem; color: var(--text); }
+    .settings-label small { display: block; font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+    .toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { display: none; }
+    .toggle-track {
+      position: absolute; inset: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      background: var(--muted);
+      border-radius: 50%;
+      top: 3px; left: 3px;
+      transition: transform .2s, background .2s;
+    }
+    .toggle-switch input:checked + .toggle-track { background: rgba(124,77,255,.25); border-color: var(--accent); }
+    .toggle-switch input:checked + .toggle-track::after { transform: translateX(20px); background: var(--accent); }
+    .settings-select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color .2s;
+      width: auto;
+      flex-shrink: 0;
+    }
+    .settings-select:focus { border-color: var(--accent); }
+    body.hide-badges .whale-badge,
+    body.hide-badges .watched-badge { display: none !important; }
+    body.hide-logos .ticker-item .badge { display: none !important; }
+
+    /* ── Token Analytics Panel ── */
+    .anl-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .anl-token-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 14px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      color: var(--muted);
+      transition: all .2s;
+    }
+    .anl-token-btn img { width: 20px; height: 20px; object-fit: contain; border-radius: 50%; }
+    .anl-token-btn.active { border-color: var(--accent); color: var(--text); background: var(--surface2); }
+    .anl-token-btn:hover { border-color: var(--accent); color: var(--text); }
+    .anl-win-group { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .anl-win-btn {
+      background: var(--surface);
+      border: none;
+      color: var(--muted);
+      padding: 7px 12px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all .15s;
+      border-right: 1px solid var(--border);
+    }
+    .anl-win-btn:last-child { border-right: none; }
+    .anl-win-btn.active { background: var(--surface2); color: var(--accent2); font-weight: 700; }
+    .anl-win-btn:hover:not(.active) { color: var(--text); }
+
+    /* Stats bar */
+    .anl-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .anl-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      transition: border-color .2s;
+    }
+    .anl-stat:hover { border-color: var(--accent); }
+    .anl-stat .anl-s-label { font-size: 0.67rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .anl-stat .anl-s-value { font-size: 1.3rem; font-weight: 700; margin-top: 4px; color: var(--text); }
+    .anl-stat .anl-s-sub   { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+    /* Price chart card */
+    .anl-chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 14px;
+      position: relative;
+    }
+    .anl-chart-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .anl-chart-title .anl-cur-price { color: var(--gold); font-size: 1rem; }
+    .anl-chart-canvas { width: 100%; display: block; border-radius: 6px; }
+    .anl-chart-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+    .anl-price-labels {
+      position: absolute;
+      top: 44px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .anl-price-label { font-size: 0.65rem; color: var(--muted); text-align: right; }
+
+    /* Volume bars below price chart */
+    .anl-vol-canvas { width: 100%; display: block; margin-top: 4px; border-radius: 0 0 6px 6px; }
+
+    /* Pairs table */
+    .anl-pairs-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .anl-section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .anl-table-wrap { overflow-x: auto; }
+    .anl-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .anl-table thead tr { background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .anl-table th {
+      padding: 9px 14px; text-align: left;
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: .05em;
+      color: var(--muted); font-weight: 600; white-space: nowrap;
+    }
+    .anl-table th.th-r { text-align: right; }
+    .anl-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .anl-table tbody tr:last-child td { border-bottom: none; }
+    .anl-table tbody tr:hover td { background: rgba(255,255,255,.025); }
+    .anl-pair-name { font-weight: 700; color: var(--text); font-size: 0.82rem; }
+    .anl-pair-sub  { font-size: 0.68rem; color: var(--muted); }
+    .anl-apr { font-weight: 700; }
+    .anl-apr.high { color: var(--green); }
+    .anl-apr.mid  { color: var(--gold); }
+    .anl-apr.low  { color: var(--muted); }
+    .anl-td-r { text-align: right; font-variant-numeric: tabular-nums; }
+    .anl-liq-bar {
+      height: 4px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      margin-top: 3px;
+      max-width: 120px;
+    }
+    .anl-fee-chip {
+      display: inline-block;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1px 7px;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    /* ── Trader Statistics Panel ── */
+    .trd-meta-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .trd-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 0;
+    }
+    @media (max-width: 900px) { .trd-grid { grid-template-columns: 1fr; } }
+
+    .trd-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .trd-section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+    .trd-section-sub { font-size: 0.72rem; color: var(--muted); }
+
+    /* Mini leaderboard rows */
+    .trd-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+    .trd-row:last-child { border-bottom: none; }
+    .trd-row:hover { background: rgba(255,255,255,.025); }
+    .trd-rank {
+      width: 22px; text-align: center;
+      font-size: 0.75rem; font-weight: 700; color: var(--muted); flex-shrink: 0;
+    }
+    .trd-rank.r1 { color: var(--gold); font-size: .95rem; }
+    .trd-rank.r2 { color: #c0c0c0; font-size: .85rem; }
+    .trd-rank.r3 { color: #cd7f32; font-size: .82rem; }
+    .trd-account {
+      flex: 1; font-family: monospace; font-size: 0.78rem;
+      color: var(--accent2); cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .trd-account:hover { color: var(--gold); text-decoration: underline; }
+    .trd-val { font-size: 0.8rem; font-weight: 700; color: var(--text); flex-shrink: 0; }
+    .trd-val.pos { color: var(--green); }
+    .trd-val.neg { color: var(--red); }
+    .trd-badges { display: flex; gap: 4px; flex-shrink: 0; }
+
+    /* Full table */
+    .trd-table-wrap { overflow-x: auto; }
+    .trd-table {
+      width: 100%; border-collapse: collapse; font-size: 0.8rem;
+    }
+    .trd-table thead tr { background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .trd-table th {
+      padding: 9px 12px; text-align: left; font-size: 0.68rem;
+      text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600;
+    }
+    .trd-table th.th-r { text-align: right; }
+    .trd-table td {
+      padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: middle;
+    }
+    .trd-table tbody tr:last-child td { border-bottom: none; }
+    .trd-table tbody tr:hover td { background: rgba(255,255,255,.025); }
+    .trd-table .td-r { text-align: right; font-variant-numeric: tabular-nums; }
+    .trd-table .td-account {
+      font-family: monospace; font-size: 0.77rem; color: var(--accent2);
+      cursor: pointer; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .trd-table .td-account:hover { color: var(--gold); }
+    .trd-table .td-pos { color: var(--green); font-weight: 600; }
+    .trd-table .td-neg { color: var(--red); font-weight: 600; }
+    .trd-table .td-zero { color: var(--muted); }
+
+    /* ── Donations Panel ── */
+    .don-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 16px;
+      align-items: start;
+    }
+    @media (max-width: 860px) { .don-layout { grid-template-columns: 1fr; } }
+
+    .don-feed-section,
+    .don-supporters-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .don-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+    .don-section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .don-live-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    /* Donations table */
+    .don-table-wrap { overflow-x: auto; }
+    .don-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .don-table thead tr {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .don-table th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .don-table th.th-right { text-align: right; }
+    .don-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .don-table tbody tr:last-child td { border-bottom: none; }
+    .don-table tbody tr:hover td { background: rgba(255,255,255,.025); }
+
+    /* Highlight rows by donation size */
+    .don-table tbody tr.don-mega td   { background: rgba(255,109,0,.08); }
+    .don-table tbody tr.don-big td    { background: rgba(255,215,64,.05); }
+    .don-table tbody tr.don-mega:hover td { background: rgba(255,109,0,.14); }
+    .don-table tbody tr.don-big:hover td  { background: rgba(255,215,64,.09); }
+    .don-table tbody tr.don-mega td:first-child { border-left: 3px solid var(--whale); }
+    .don-table tbody tr.don-big td:first-child  { border-left: 3px solid var(--gold); }
+
+    .don-amount { font-weight: 700; text-align: right; }
+    .don-amount .tok-wax   { color: var(--gold); }
+    .don-amount .tok-pxj   { color: var(--accent2); }
+    .don-amount .tok-wpixal{ color: var(--green); }
+    .don-amount .tok-other { color: var(--muted); }
+
+    .don-sender {
+      font-family: monospace;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--accent2);
+      transition: color .15s;
+    }
+    .don-sender:hover { color: var(--gold); text-decoration: underline; }
+
+    .don-time { color: var(--muted); font-size: 0.75rem; white-space: nowrap; }
+
+    /* Top Supporters list */
+    .don-sup-list { padding: 8px 0; }
+    .don-sup-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 16px;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+    .don-sup-row:last-child { border-bottom: none; }
+    .don-sup-row:hover { background: rgba(255,255,255,.025); }
+    .don-sup-rank {
+      width: 24px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .don-sup-rank.rank-1 { color: var(--gold); font-size: 1rem; }
+    .don-sup-rank.rank-2 { color: #c0c0c0; font-size: .9rem; }
+    .don-sup-rank.rank-3 { color: #cd7f32; font-size: .85rem; }
+    .don-sup-account {
+      flex: 1;
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: var(--accent2);
+      cursor: pointer;
+    }
+    .don-sup-account:hover { color: var(--gold); text-decoration: underline; }
+    .don-sup-total {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: right;
+    }
+    .don-sup-badge {
+      background: linear-gradient(135deg, #b34000, var(--whale));
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 10px;
+      text-transform: uppercase;
+    }
+    .don-empty {
+      text-align: center;
+      padding: 32px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .don-total-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 10px 16px;
+      background: rgba(255,109,0,.06);
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+    }
+    .don-total-bar span { color: var(--muted); }
+    .don-total-bar strong { color: var(--text); }
+
+    /* ── Donate button ── */
+    .btn.donate {
+      background: linear-gradient(135deg, #b34000, var(--whale));
+      border-color: transparent;
+      color: #fff;
+      font-weight: 600;
+    }
+    .btn.donate:hover { background: linear-gradient(135deg, var(--whale), #ff9a00); box-shadow: 0 0 16px rgba(255,109,0,.35); }
+
+    /* ── Donate modal ── */
+    .donate-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(5px);
+      z-index: 600;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 36px 16px 40px;
+      overflow-y: auto;
+    }
+    .donate-overlay.open { display: flex; }
+    .donate-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      width: 520px;
+      max-width: 100%;
+      box-shadow: 0 28px 80px rgba(0,0,0,.7);
+      animation: fadeIn .2s ease;
+      flex-shrink: 0;
+    }
+    .donate-header {
+      background: linear-gradient(135deg, #1a0c00, #120820);
+      border-bottom: 1px solid var(--border);
+      border-radius: 18px 18px 0 0;
+      padding: 22px 24px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .donate-header-icon {
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #b34000, var(--whale));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(255,109,0,.3);
+    }
+    .donate-header h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .donate-header p { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .donate-close {
+      margin-left: auto;
+      background: none; border: none;
+      color: var(--muted); font-size: 1.3rem;
+      cursor: pointer; padding: 4px; line-height: 1;
+      transition: color .15s; flex-shrink: 0;
+    }
+    .donate-close:hover { color: var(--text); }
+    .donate-body { padding: 22px 24px; display: flex; flex-direction: column; gap: 18px; }
+    .donate-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Wallet address box */
+    .donate-address-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .donate-address-label {
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .donate-address-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .donate-address-text {
+      font-family: monospace;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent2);
+      flex: 1;
+      word-break: break-all;
+    }
+    .donate-copy-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      transition: all .2s;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .donate-copy-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+    .donate-copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    /* Token cards grid */
+    .donate-tokens-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 480px) { .donate-tokens-grid { grid-template-columns: 1fr; } }
+    .donate-token-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 12px;
+      text-align: center;
+      transition: border-color .2s;
+    }
+    .donate-token-card:hover { border-color: var(--accent); }
+    .donate-token-logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+    .donate-token-logo {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    .donate-token-placeholder {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .donate-token-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .donate-qr-wrap {
+      background: #fff;
+      border-radius: 8px;
+      padding: 6px;
+      display: inline-block;
+      line-height: 0;
+    }
+    .donate-qr-wrap img {
+      width: 96px; height: 96px;
+      display: block;
+      border-radius: 4px;
+    }
+    .donate-token-hint {
+      font-size: 0.64rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* Footer */
+    .donate-footer {
+      border-top: 1px solid var(--border);
+      padding: 16px 24px 20px;
+      text-align: center;
+    }
+    .donate-footer p { font-size: 0.85rem; color: var(--text); font-weight: 500; }
+    .donate-footer small { font-size: 0.72rem; color: var(--muted); display: block; margin-top: 4px; }
+
+    /* ── Load more button ── */
+    .load-more-wrap {
+      text-align: center;
+      padding: 20px 0 6px;
+      display: none;
+    }
+    .load-more-btn {
+      background: transparent;
+      border: 1px dashed var(--border);
+      color: var(--muted);
+      padding: 11px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: border-color .2s, color .2s, background .2s;
+      width: 100%;
+    }
+    .load-more-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent2);
+      background: rgba(124,77,255,.04);
+      border-style: solid;
+    }
+    .load-more-btn:disabled { opacity: .45; cursor: not-allowed; }
+    .load-more-info {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* ── Clickable chips ── */
+    .chip.clickable { cursor: pointer; transition: border-color .15s, background .15s; }
+    .chip.clickable:hover { border-color: var(--accent2); background: rgba(0,229,255,.08); color: #fff; }
+
+    /* ── Wallet Inspector Modal ── */
+    .wi-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(4px);
+      z-index: 600;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 16px;
+      overflow-y: auto;
+    }
+    .wi-overlay.open { display: flex; }
+    .wi-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 580px;
+      max-width: 100%;
+      box-shadow: 0 24px 80px rgba(0,0,0,.7);
+      animation: fadeIn .2s ease;
+      flex-shrink: 0;
+    }
+    .wi-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .wi-avatar {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .wi-title { flex: 1; min-width: 0; }
+    .wi-title h3 { font-size: 1rem; font-weight: 700; color: var(--text); font-family: monospace; }
+    .wi-title p { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+    .wi-close {
+      background: none; border: none;
+      color: var(--muted); font-size: 1.2rem;
+      cursor: pointer; padding: 4px; line-height: 1;
+      transition: color .15s; flex-shrink: 0;
+    }
+    .wi-close:hover { color: var(--text); }
+    .wi-actions {
+      display: flex; gap: 8px; padding: 0 24px 16px;
+      border-bottom: 1px solid var(--border);
+      margin-top: 12px;
+    }
+    .wi-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 20px; }
+    .wi-section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* Token balances grid */
+    .wi-tokens-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+    }
+    .wi-token-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: border-color .2s;
+    }
+    .wi-token-card:hover { border-color: var(--accent); }
+    .wi-token-logo {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .wi-token-logo-placeholder {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--surface2), var(--border));
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .wi-token-info { min-width: 0; }
+    .wi-token-sym { font-size: 0.82rem; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .wi-token-bal { font-size: 0.72rem; color: var(--accent2); font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wi-token-wax { font-size: 0.68rem; color: var(--muted); font-family: monospace; }
+    .wi-token-usd { font-size: 0.72rem; color: var(--green); font-weight: 600; }
+
+    /* NFT collections */
+    .wi-coll-list { display: flex; flex-direction: column; gap: 6px; }
+    .wi-coll-row {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .wi-coll-name { font-size: 0.83rem; color: var(--text); flex: 1; font-family: monospace; }
+    .wi-coll-count {
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--accent2);
+      background: rgba(0,229,255,.08);
+      border: 1px solid rgba(0,229,255,.2);
+      border-radius: 20px;
+      padding: 2px 8px;
+    }
+
+    /* Inventory summary row */
+    .wi-inv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .wi-inv-stat {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .wi-inv-stat .v { font-size: 1.3rem; font-weight: 700; color: var(--accent2); }
+    .wi-inv-stat .l { font-size: 0.68rem; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: .05em; }
+
+    /* Recent trades */
+    .wi-trade-list { display: flex; flex-direction: column; gap: 6px; }
+    .wi-trade-row {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+    }
+    .wi-trade-dir {
+      font-size: 0.65rem; font-weight: 700;
+      padding: 2px 7px; border-radius: 10px;
+      text-transform: uppercase; flex-shrink: 0;
+    }
+    .wi-trade-dir.out { background: rgba(255,82,82,.15); color: var(--red); border: 1px solid rgba(255,82,82,.3); }
+    .wi-trade-dir.in  { background: rgba(0,230,118,.1); color: var(--green); border: 1px solid rgba(0,230,118,.25); }
+    .wi-trade-peer { color: var(--muted); font-family: monospace; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .wi-trade-amt { font-weight: 700; color: var(--text); flex-shrink: 0; text-align: right; }
+    .wi-trade-time { font-size: 0.68rem; color: var(--muted); flex-shrink: 0; }
+
+    /* Loading / error states inside modal */
+    .wi-loading { text-align: center; padding: 24px; color: var(--muted); font-size: 0.85rem; }
+    .wi-loading .spinner { margin: 0 auto 10px; }
+    .wi-empty { text-align: center; padding: 16px; color: var(--muted); font-size: 0.82rem; }
   </style>
 </head>
 <body>
@@ -718,19 +1749,23 @@
     <button class="btn" id="soundBtn" onclick="toggleSound()" title="Toggle sound alerts">🔇 Sound</button>
     <button class="btn" id="notifBtn" onclick="toggleNotifications()" title="Toggle browser notifications">🔔 Alerts</button>
     <button class="btn" onclick="exportCSV()" title="Export data as CSV">📥 Export</button>
+    <button class="btn donate" onclick="openDonate()" title="Support development">❤ Donate</button>
+    <button class="btn" onclick="openSettings()" title="Settings">⚙ Settings</button>
     <button class="btn primary" id="refreshBtn" onclick="refreshAll()">↻ Refresh All</button>
   </div>
 </header>
 
 <!-- Price Banner -->
 <div class="price-banner" id="priceBanner">
-  <span class="price-item">📈 PXJ Price: <strong id="pPXJ">—</strong></span>
+  <span class="price-item"><img src="https://wax.alcor.exchange/api/v2/tokens/pxj-pixeljourney/logo" alt="PXJ" style="width:16px;height:16px;object-fit:contain;vertical-align:middle"> PXJ <strong id="pPXJ">—</strong> <span id="pPXJChange"></span></span>
   <span class="price-sep">|</span>
-  <span class="price-item">💧 WAX/USD: <strong id="pWAX">—</strong></span>
+  <span class="price-item">💎 WPIXAL <strong id="pWPIXAL">—</strong> <span id="pWPIXALChange"></span></span>
   <span class="price-sep">|</span>
-  <span class="price-item">📊 24h Vol: <strong id="pVol">—</strong></span>
+  <span class="price-item"><img src="https://wax.alcor.exchange/api/v2/tokens/wax-eosio.token/logo" alt="WAX" style="width:16px;height:16px;object-fit:contain;vertical-align:middle"> WAX <strong id="pWAX">—</strong></span>
   <span class="price-sep">|</span>
-  <span class="price-item">🔄 Market: <strong id="pMarket">—</strong></span>
+  <span class="price-item">📊 24h Vol <strong id="pVol">—</strong></span>
+  <span class="price-sep">|</span>
+  <span class="price-item">🔄 <strong id="pMarket">—</strong></span>
 </div>
 
 <!-- Whale Ticker -->
@@ -832,6 +1867,17 @@
       🏆 Leaderboard
       <span class="count gold" id="tabCountLeaderboard">—</span>
     </button>
+    <button class="tab" onclick="switchTab('Donations', this)">
+      ❤ Donations
+      <span class="count" id="tabCountDonations" style="background:var(--whale)">—</span>
+    </button>
+    <button class="tab" onclick="switchTab('Traders', this)">
+      📊 Traders
+      <span class="count" id="tabCountTraders" style="background:var(--accent)">—</span>
+    </button>
+    <button class="tab" onclick="switchTab('Analytics', this)">
+      📈 Analytics
+    </button>
   </div>
 
   <!-- Token Panel -->
@@ -858,6 +1904,10 @@
     <div class="card-list" id="listTokens">
       <div class="state-box"><div class="spinner"></div><p>Loading token transfers...</p></div>
     </div>
+    <div class="load-more-wrap" id="loadMoreTokensWrap">
+      <button class="load-more-btn" id="loadMoreTokensBtn" onclick="loadMoreTokens()">⬇ Load Older Transactions</button>
+      <div class="load-more-info" id="loadMoreTokensInfo"></div>
+    </div>
   </div>
 
   <!-- NFT Panel -->
@@ -873,6 +1923,10 @@
     </div>
     <div class="card-list" id="listNFTs">
       <div class="state-box"><div class="spinner"></div><p>Loading NFT transfers...</p></div>
+    </div>
+    <div class="load-more-wrap" id="loadMoreNFTsWrap">
+      <button class="load-more-btn" id="loadMoreNFTsBtn" onclick="loadMoreNFTs()">⬇ Load Older Transactions</button>
+      <div class="load-more-info" id="loadMoreNFTsInfo"></div>
     </div>
   </div>
 
@@ -898,16 +1952,351 @@
     <div class="card-list" id="listDEX">
       <div class="state-box"><div class="spinner"></div><p>Loading DEX activity...</p></div>
     </div>
+    <div class="load-more-wrap" id="loadMoreDEXWrap">
+      <button class="load-more-btn" id="loadMoreDEXBtn" onclick="loadMoreDEX()">⬇ Load Older Transactions</button>
+      <div class="load-more-info" id="loadMoreDEXInfo"></div>
+    </div>
   </div>
 
   <!-- Leaderboard Panel -->
   <div class="panel" id="panelLeaderboard">
     <div class="api-error" id="errLeaderboard"></div>
-    <div class="leaders-list" id="listLeaderboard">
+    <div class="lb-controls">
+      <select class="lb-type-select" id="lbTypeSelect" onchange="switchLeaderboard()">
+        <option value="nft">🖼 Top Pixal NFT Holders</option>
+        <option value="pxj">🪙 Top PXJ Holders</option>
+        <option value="wpixal">💎 Top WPIXAL Holders</option>
+        <option value="farm">🌾 Top WaxDAO Farm Power</option>
+      </select>
+      <span id="lbCount" style="color:var(--muted);font-size:.75rem;white-space:nowrap"></span>
+      <button class="btn" onclick="reloadLeaderboard()" style="font-size:.8rem">↻ Refresh</button>
+    </div>
+    <div id="listLeaderboard">
       <div class="state-box"><div class="spinner"></div><p>Loading top holders...</p></div>
     </div>
   </div>
+
+  <!-- Token Analytics Panel -->
+  <div class="panel" id="panelAnalytics">
+    <!-- Toolbar -->
+    <div class="anl-toolbar">
+      <button class="anl-token-btn active" id="anlBtnPXJ" onclick="setAnalyticsToken('pxj-pixeljourney','PXJ',this)">
+        <img src="https://wax.alcor.exchange/api/v2/tokens/pxj-pixeljourney/logo" alt="PXJ"
+          onerror="this.style.display='none'"> PXJ
+      </button>
+      <button class="anl-token-btn" id="anlBtnWPIXAL" onclick="setAnalyticsToken('wpixal-pixeljourney','WPIXAL',this)">
+        <img src="https://wax.alcor.exchange/api/v2/tokens/wpixal-pixeljourney/logo" alt="WPIXAL"
+          onerror="this.style.display='none'"> WPIXAL
+      </button>
+      <div class="anl-win-group">
+        <button class="anl-win-btn" onclick="setAnalyticsWindow('7d',this)">7d</button>
+        <button class="anl-win-btn active" onclick="setAnalyticsWindow('30d',this)">30d</button>
+        <button class="anl-win-btn" onclick="setAnalyticsWindow('90d',this)">90d</button>
+      </div>
+      <button class="btn" onclick="reloadAnalytics()" style="font-size:.78rem;padding:5px 10px;margin-left:auto">↻ Refresh</button>
+    </div>
+
+    <div class="api-error" id="errAnalytics"></div>
+
+    <!-- Stats -->
+    <div class="anl-stats-grid" id="anlStats">
+      <div class="anl-stat"><div class="anl-s-label">Price</div><div class="anl-s-value" id="anlSPrice">—</div><div class="anl-s-sub" id="anlSPriceUSD">—</div></div>
+      <div class="anl-stat"><div class="anl-s-label">24h Change</div><div class="anl-s-value" id="anlSChange">—</div><div class="anl-s-sub">vs yesterday</div></div>
+      <div class="anl-stat"><div class="anl-s-label">24h Volume</div><div class="anl-s-value" id="anlSVol24">—</div><div class="anl-s-sub" id="anlSVol24USD">—</div></div>
+      <div class="anl-stat"><div class="anl-s-label">7d Volume</div><div class="anl-s-value" id="anlSVol7">—</div><div class="anl-s-sub" id="anlSVol7USD">—</div></div>
+      <div class="anl-stat"><div class="anl-s-label">Total Liquidity</div><div class="anl-s-value" id="anlSTVL">—</div><div class="anl-s-sub" id="anlSTVLUSD">—</div></div>
+      <div class="anl-stat"><div class="anl-s-label">Best APR</div><div class="anl-s-value" id="anlSAPR" style="color:var(--green)">—</div><div class="anl-s-sub" id="anlSAPRPool">—</div></div>
+    </div>
+
+    <!-- Price Chart -->
+    <div class="anl-chart-card" id="anlChartCard">
+      <div class="anl-chart-title">
+        <span>Price History</span>
+        <span class="anl-cur-price" id="anlChartPrice"></span>
+        <span id="anlChartChange" style="font-size:.78rem"></span>
+        <span style="color:var(--muted);font-size:.72rem;margin-left:auto" id="anlChartRange"></span>
+      </div>
+      <canvas class="anl-chart-canvas" id="anlPriceChart"></canvas>
+      <canvas class="anl-vol-canvas" id="anlVolChart" style="height:32px"></canvas>
+      <div class="anl-chart-labels">
+        <span id="anlDateStart">—</span>
+        <span id="anlDateMid">—</span>
+        <span id="anlDateEnd">Now</span>
+      </div>
+    </div>
+
+    <!-- Trading Pairs -->
+    <div class="anl-pairs-section">
+      <div class="anl-section-head">🔀 Trading Pairs &amp; Liquidity Pools</div>
+      <div class="anl-table-wrap">
+        <table class="anl-table">
+          <thead><tr>
+            <th>Pair</th>
+            <th class="th-r">Liquidity (TVL)</th>
+            <th class="th-r">24h Volume</th>
+            <th class="th-r">APR</th>
+            <th class="th-r">Fee</th>
+            <th class="th-r">Price</th>
+          </tr></thead>
+          <tbody id="anlPairsBody">
+            <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">
+              <div class="spinner" style="margin:0 auto 8px"></div>Loading pairs…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trader Statistics Panel -->
+  <div class="panel" id="panelTraders">
+    <div class="trd-meta-bar">
+      <span id="trdMetaWallets">—</span> wallets tracked &nbsp;·&nbsp;
+      <span id="trdMetaTxs">—</span> transactions analyzed &nbsp;·&nbsp;
+      Prices: <span id="trdMetaPxjPrice" style="color:var(--accent2)">—</span>
+              <span style="color:var(--muted)"> · </span>
+              <span id="trdMetaWpixalPrice" style="color:var(--green)">—</span>
+      <button class="btn" onclick="rebuildTraderDB()" style="margin-left:auto;font-size:.78rem;padding:5px 10px">↻ Rebuild</button>
+    </div>
+    <div class="trd-grid">
+      <!-- Top Arbitrage -->
+      <div class="trd-section">
+        <div class="trd-section-head">
+          <span class="tx-badge arb" style="font-size:.72rem;cursor:default">⚡ Arbitrage</span>
+          <span class="trd-section-sub">Top arbitrage traders</span>
+        </div>
+        <div id="trdListArb">
+          <div class="state-box" style="padding:24px"><div class="spinner"></div></div>
+        </div>
+      </div>
+      <!-- Most Active -->
+      <div class="trd-section">
+        <div class="trd-section-head">
+          <span class="tx-badge buy" style="font-size:.72rem;cursor:default">🔥 Activity</span>
+          <span class="trd-section-sub">Most active wallets</span>
+        </div>
+        <div id="trdListActive">
+          <div class="state-box" style="padding:24px"><div class="spinner"></div></div>
+        </div>
+      </div>
+      <!-- Top P&L -->
+      <div class="trd-section">
+        <div class="trd-section-head">
+          <span class="tx-badge hodl" style="font-size:.72rem;cursor:default">💰 P&amp;L</span>
+          <span class="trd-section-sub">Estimated profit / loss (WAX)</span>
+        </div>
+        <div id="trdListPnl">
+          <div class="state-box" style="padding:24px"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Full stats table -->
+    <div class="trd-section" style="margin-top:14px">
+      <div class="trd-section-head">
+        <span style="font-size:.82rem;font-weight:700;color:var(--text)">📋 All Tracked Wallets</span>
+        <input type="text" id="trdSearch" placeholder="Filter wallet…" oninput="filterTraderTable()"
+          style="margin-left:auto;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:8px;font-size:.78rem;outline:none;width:180px" />
+      </div>
+      <div class="trd-table-wrap">
+        <table class="trd-table" id="trdFullTable">
+          <thead><tr>
+            <th>Wallet</th>
+            <th class="th-r">Txs</th>
+            <th class="th-r">Transfers</th>
+            <th class="th-r">⚡ Arb</th>
+            <th class="th-r">📈 Buys</th>
+            <th class="th-r">📉 Sells</th>
+            <th class="th-r">P&amp;L (WAX)</th>
+          </tr></thead>
+          <tbody id="trdFullBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donations Panel -->
+  <div class="panel" id="panelDonations">
+    <div class="api-error" id="errDonations"></div>
+    <div class="don-layout">
+      <!-- Recent Donations Feed -->
+      <div class="don-feed-section">
+        <div class="don-section-header">
+          <span class="don-section-title">❤ Recent Donations</span>
+          <span class="don-live-badge"><span class="live-dot" style="width:6px;height:6px;display:inline-block"></span> Live</span>
+          <button class="btn" onclick="reloadDonations()" style="font-size:.78rem;padding:5px 10px;margin-left:auto">↻ Refresh</button>
+        </div>
+        <div id="donFeed">
+          <div class="state-box"><div class="spinner"></div><p>Loading donations…</p></div>
+        </div>
+      </div>
+      <!-- Top Supporters -->
+      <div class="don-supporters-section">
+        <div class="don-section-header">
+          <span class="don-section-title">🏅 Top Supporters</span>
+        </div>
+        <div id="donSupporters">
+          <div class="state-box"><div class="spinner"></div><p>Loading…</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
+
+<!-- Donate Modal -->
+<div class="donate-overlay" id="donateOverlay" onclick="handleDonateOverlayClick(event)">
+  <div class="donate-modal">
+    <div class="donate-header">
+      <div class="donate-header-icon">❤</div>
+      <div>
+        <h2>Support Development ❤️</h2>
+        <p>Pixel Journey Whale Tracker</p>
+      </div>
+      <button class="donate-close" onclick="closeDonate()">✕</button>
+    </div>
+
+    <div class="donate-body">
+      <p class="donate-desc">
+        If you enjoy using this WAX whale tracker and want to support development,
+        you can donate tokens below. Your support helps maintain and improve this tool.
+      </p>
+
+      <!-- Wallet address -->
+      <div class="donate-address-box">
+        <div class="donate-address-label">💼 Donation Wallet Address</div>
+        <div class="donate-address-row">
+          <span class="donate-address-text" id="donateAddr">5qyis.wam</span>
+          <button class="donate-copy-btn" id="donateCopyBtn" onclick="copyDonateAddress()">📋 Copy</button>
+        </div>
+      </div>
+
+      <!-- Token cards -->
+      <div>
+        <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;font-weight:600">🪙 Supported Tokens</div>
+        <div class="donate-tokens-grid">
+
+          <!-- WAX -->
+          <div class="donate-token-card">
+            <div class="donate-token-logo-wrap">
+              <img class="donate-token-logo" src="https://wax.alcor.exchange/api/v2/tokens/wax-eosio.token/logo"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="WAX">
+              <div class="donate-token-placeholder" style="display:none;background:linear-gradient(135deg,#f7931a,#ff6d00);color:#fff">WAX</div>
+            </div>
+            <div class="donate-token-name">WAX</div>
+            <div class="donate-qr-wrap">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=5qyis.wam&bgcolor=ffffff&color=000000&margin=4" alt="WAX QR" loading="lazy">
+            </div>
+            <div class="donate-token-hint">Scan with WAX wallet</div>
+          </div>
+
+          <!-- PXJ -->
+          <div class="donate-token-card">
+            <div class="donate-token-logo-wrap">
+              <img class="donate-token-logo" src="https://wax.alcor.exchange/api/v2/tokens/pxj-pixeljourney/logo" alt="PXJ">
+              <div class="donate-token-placeholder" style="display:none;background:linear-gradient(135deg,#7c4dff,#aa80ff);color:#fff">PXJ</div>
+            </div>
+            <div class="donate-token-name">PXJ</div>
+            <div class="donate-qr-wrap">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=5qyis.wam&bgcolor=ffffff&color=000000&margin=4" alt="PXJ QR" loading="lazy">
+            </div>
+            <div class="donate-token-hint">Pixel Journey token</div>
+          </div>
+
+          <!-- WPIXAL -->
+          <div class="donate-token-card">
+            <div class="donate-token-logo-wrap">
+              <img class="donate-token-logo" src="https://wax.alcor.exchange/api/v2/tokens/wpixal-pixeljourney/logo"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="WPIXAL">
+              <div class="donate-token-placeholder" style="display:none;background:linear-gradient(135deg,#00b8d4,#00e5ff);color:#000">WPX</div>
+            </div>
+            <div class="donate-token-name">WPIXAL</div>
+            <div class="donate-qr-wrap">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=5qyis.wam&bgcolor=ffffff&color=000000&margin=4" alt="WPIXAL QR" loading="lazy">
+            </div>
+            <div class="donate-token-hint">Wrapped Pixal token</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="donate-footer">
+      <p>Thank you for supporting open tools for the WAX ecosystem. ❤️</p>
+      <small>If this whale tracker helps you, consider supporting development.</small>
+    </div>
+  </div>
+</div>
+
+<!-- Wallet Inspector Modal -->
+<div class="wi-overlay" id="wiOverlay" onclick="handleWIOverlayClick(event)">
+  <div class="wi-modal" id="wiModal">
+    <div class="wi-header">
+      <div class="wi-avatar">👤</div>
+      <div class="wi-title">
+        <h3 id="wiAccountName">—</h3>
+        <p>WAX Blockchain Account</p>
+      </div>
+      <button class="wi-close" onclick="closeWalletInspector()">✕</button>
+    </div>
+    <div class="wi-actions">
+      <a id="wiWaxblockLink" href="#" target="_blank" rel="noopener" class="btn" style="font-size:.78rem;text-decoration:none">🔗 WaxBlock</a>
+      <button class="btn" id="wiWatchBtn" onclick="wiToggleWatch()" style="font-size:.78rem">+ Watch</button>
+    </div>
+    <div class="wi-body" id="wiBody">
+      <div class="wi-loading"><div class="spinner"></div>Loading wallet data…</div>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="settings-overlay" id="settingsOverlay" onclick="handleOverlayClick(event)">
+  <div class="settings-modal">
+    <h2>⚙ Settings <button class="close-btn" onclick="closeSettings()">✕</button></h2>
+    <div class="settings-section">
+      <div class="settings-row">
+        <div class="settings-label">
+          Pause Auto Refresh
+          <small>Stop the feed from auto-refreshing</small>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="setPauseRefresh" onchange="applySettings()">
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          Enable Transaction Badges
+          <small>Show Whale / DEX / Watched labels on cards</small>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="setBadges" checked onchange="applySettings()">
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          Show Token Logos
+          <small>Show type icons in the whale ticker</small>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="setLogos" checked onchange="applySettings()">
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          Auto Refresh Interval
+          <small>How often the feed refreshes</small>
+        </div>
+        <select class="settings-select" id="setInterval" onchange="applySettings()">
+          <option value="5">5 seconds</option>
+          <option value="10">10 seconds</option>
+          <option value="30" selected>30 seconds</option>
+          <option value="60">60 seconds</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
@@ -920,6 +2309,43 @@
   const COLLECTION    = 'pixeljourney';
   const DEX_ACCOUNTS  = ['swap.alcor', 'swap.taco'];
   const REFRESH_SEC   = 30;
+
+  /* ═══════════════════════ PRICE CACHE ══════════════════ */
+  // Single authoritative price source — populated by fetchPrices() each refresh
+  const priceCache = {
+    WAX:    { priceWAX: 1, priceUSD: 0, change24: 0 },
+    PXJ:    { priceWAX: 0, priceUSD: 0, change24: 0 },
+    WPIXAL: { priceWAX: 0, priceUSD: 0, change24: 0 },
+  };
+
+  // Returns estimated USD value, or null if price unknown
+  function estimateUSD(amount, symbol) {
+    const p = priceCache[symbol];
+    if (!p?.priceUSD || !amount) return null;
+    return amount * p.priceUSD;
+  }
+
+  // Returns estimated WAX value, or null if price unknown
+  function estimateWAX(amount, symbol) {
+    const p = priceCache[symbol];
+    if (!p?.priceWAX || !amount) return null;
+    return amount * p.priceWAX;
+  }
+
+  function fmtUSD(usd) {
+    if (usd == null || isNaN(usd)) return null;
+    if (usd >= 1e6)  return `$${(usd / 1e6).toFixed(2)}M`;
+    if (usd >= 1000) return `$${(usd / 1000).toFixed(2)}K`;
+    if (usd >= 1)    return `$${usd.toFixed(2)}`;
+    if (usd >= 0.01) return `$${usd.toFixed(4)}`;
+    return `$${usd.toFixed(6)}`;
+  }
+
+  function changeChip(pct) {
+    if (pct == null || isNaN(pct) || pct === 0) return '';
+    const pos = pct >= 0;
+    return `<span class="price-change ${pos ? 'up' : 'down'}">${pos ? '▲' : '▼'} ${Math.abs(pct).toFixed(2)}%</span>`;
+  }
 
   /* ═══════════════════════ STATE ════════════════════════ */
   let whaleAlerts    = [];
@@ -934,6 +2360,14 @@
   let currentTokenTxs = [];
   let currentNFTTxs   = [];
   let currentDEXSwaps = [];
+
+  // Pagination state
+  let tokenSkip = 0;
+  let nftPage   = 1;
+  let dexSkip   = 0;
+  let seenTokenIds = new Set();
+  let seenNFTIds   = new Set();
+  let seenDEXIds   = new Set();
 
   /* ═══════════════════════ HELPERS ══════════════════════ */
   function esc(s) {
@@ -996,6 +2430,15 @@
     if (name === 'Leaderboard' && document.getElementById('listLeaderboard').querySelector('.spinner')) {
       loadLeaderboard();
     }
+    if (name === 'Donations' && document.getElementById('donFeed').querySelector('.spinner')) {
+      loadDonations();
+    }
+    if (name === 'Traders') {
+      if (traderDB.size > 0) renderTraderStats();
+    }
+    if (name === 'Analytics' && !anlData) {
+      loadAnalytics();
+    }
   }
 
   /* ═══════════════════════ TICKER ═══════════════════════ */
@@ -1023,7 +2466,8 @@
   /* ═══════════════════════ COUNTDOWN ════════════════════ */
   function startCountdown() {
     clearInterval(countdownTimer);
-    countdownVal = REFRESH_SEC;
+    const intervalSec = parseInt(document.getElementById('setInterval')?.value || '') || REFRESH_SEC;
+    countdownVal = intervalSec;
     countdownTimer = setInterval(() => {
       countdownVal--;
       document.getElementById('countdown').textContent = `Refresh in ${countdownVal}s`;
@@ -1173,35 +2617,86 @@
 
   /* ═══════════════════════ PRICE ════════════════════════ */
   async function fetchPrices() {
-    try {
-      // Fetch WAX/USD from CoinGecko
-      const waxRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=wax&vs_currencies=usd');
-      if (waxRes.ok) {
-        const waxData = await waxRes.json();
-        const waxUSD = waxData?.wax?.usd;
-        if (waxUSD) document.getElementById('pWAX').textContent = `$${waxUSD.toFixed(4)}`;
-      }
-    } catch(e) {}
+    // Fetch all token data from Alcor v2 tokens API in parallel
+    // Fields: system_price = WAX price, usd_price = USD price
+    const fetchToken = async (slug) => {
+      try {
+        const r = await fetch(`${ALCOR}/v2/tokens/${slug}`);
+        if (!r.ok) return null;
+        return await r.json();
+      } catch { return null; }
+    };
 
-    try {
-      // Fetch PXJ market from Alcor
-      const res = await fetch(`${ALCOR}/markets`);
-      if (!res.ok) return;
-      const markets = await res.json();
-      const pxj = markets.find(m =>
-        String(m.quote_token?.symbol ?? '').toUpperCase().includes('PXJ') ||
-        String(m.base_token?.symbol ?? '').toUpperCase().includes('PXJ')
-      );
-      if (pxj) {
-        const price = pxj.last_price ?? pxj.close;
-        const vol = pxj.volume24 ?? pxj.volume;
-        const base = pxj.base_token?.symbol ?? '';
-        const quote = pxj.quote_token?.symbol ?? '';
-        if (price) document.getElementById('pPXJ').textContent = `${parseFloat(price).toFixed(6)} WAX`;
-        if (vol) document.getElementById('pVol').textContent = fmtNum(parseFloat(vol));
-        document.getElementById('pMarket').innerHTML = `<a href="https://wax.alcor.exchange/trade/${esc(String(pxj.id??''))}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">${esc(base)}/${esc(quote)} ↗</a>`;
+    const [waxData, pxjData, wpixalData, marketsRes] = await Promise.allSettled([
+      fetchToken('wax-eosio.token'),
+      fetchToken('pxj-pixeljourney'),
+      fetchToken('wpixal-pixeljourney'),
+      fetch(`${ALCOR}/markets`),
+    ]);
+
+    // WAX/USD from Alcor v2 tokens
+    const wax = waxData.status === 'fulfilled' ? waxData.value : null;
+    const waxUSD = parseFloat(wax?.usd_price ?? 0) || 0;
+    if (waxUSD) {
+      priceCache.WAX.priceUSD = waxUSD;
+      document.getElementById('pWAX').textContent = `$${waxUSD.toFixed(4)}`;
+    }
+
+    // PXJ
+    const pxj = pxjData.status === 'fulfilled' ? pxjData.value : null;
+    if (pxj) {
+      const priceWAX = parseFloat(pxj.system_price ?? 0) || 0;
+      const priceUSD = parseFloat(pxj.usd_price    ?? 0) || 0;
+      if (priceWAX) {
+        Object.assign(priceCache.PXJ, { priceWAX, priceUSD });
+        traderPrices.PXJ = priceWAX;
+        document.getElementById('pPXJ').textContent = `${priceWAX.toFixed(6)} WAX`;
       }
-    } catch(e) {}
+    }
+
+    // WPIXAL
+    const wpixal = wpixalData.status === 'fulfilled' ? wpixalData.value : null;
+    if (wpixal) {
+      const priceWAX = parseFloat(wpixal.system_price ?? 0) || 0;
+      const priceUSD = parseFloat(wpixal.usd_price    ?? 0) || 0;
+      if (priceWAX) {
+        Object.assign(priceCache.WPIXAL, { priceWAX, priceUSD });
+        traderPrices.WPIXAL = priceWAX;
+        document.getElementById('pWPIXAL').textContent = `${priceWAX.toFixed(6)} WAX`;
+      }
+    }
+
+    // 24h change + volume + market link from markets API
+    if (marketsRes.status === 'fulfilled' && marketsRes.value.ok) {
+      try {
+        const markets = await marketsRes.value.json();
+        const findMarket = (sym) => markets.find(mk =>
+          String(mk.quote_token?.symbol ?? '').toUpperCase() === sym ||
+          String(mk.base_token?.symbol  ?? '').toUpperCase() === sym
+        );
+
+        const mPXJ = findMarket('PXJ');
+        if (mPXJ) {
+          const change24 = parseFloat(mPXJ.change24h ?? mPXJ.price_change_percent_24h ?? 0) || 0;
+          const volume24 = parseFloat(mPXJ.volume24  ?? mPXJ.volume ?? 0) || 0;
+          priceCache.PXJ.change24 = change24;
+          document.getElementById('pPXJChange').innerHTML = changeChip(change24);
+          if (volume24) document.getElementById('pVol').textContent = fmtNum(volume24);
+          document.getElementById('pMarket').innerHTML =
+            `<a href="https://wax.alcor.exchange/trade/${esc(String(mPXJ.id ?? ''))}" target="_blank" rel="noopener"
+               style="color:var(--accent);text-decoration:none">${esc(mPXJ.base_token?.symbol ?? '')}/${esc(mPXJ.quote_token?.symbol ?? '')} ↗</a>`;
+        }
+
+        const mWPIXAL = findMarket('WPIXAL');
+        if (mWPIXAL) {
+          const change24 = parseFloat(mWPIXAL.change24h ?? mWPIXAL.price_change_percent_24h ?? 0) || 0;
+          priceCache.WPIXAL.change24 = change24;
+          document.getElementById('pWPIXALChange').innerHTML = changeChip(change24);
+        }
+      } catch(e) { console.error('Markets fetch error:', e); }
+    }
+
+    updateMetaPrices();
   }
 
   /* ═══════════════════════ VOLUME CHART ═════════════════ */
@@ -1293,8 +2788,8 @@
   }
 
   /* ═══════════════════════ FETCH TOKENS ═════════════════ */
-  async function fetchTokenTransfers() {
-    const url = `${HYPERION}/get_actions?account=${ACCOUNT}&filter=${ACCOUNT}%3Atransfer&sort=desc&limit=100`;
+  async function fetchTokenTransfers(skip = 0) {
+    const url = `${HYPERION}/get_actions?account=${ACCOUNT}&filter=${ACCOUNT}%3Atransfer&sort=desc&limit=100&skip=${skip}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
@@ -1329,18 +2824,24 @@
     const fromWatched = isWatched(tx.from);
     const toWatched = isWatched(tx.to);
     const watched = fromWatched || toWatched;
+    const cls = classifyTx(tx);
+    const usd = estimateUSD(tx.amount, tx.symbol);
+    const usdStr = usd != null ? fmtUSD(usd) : null;
+    const p = priceCache[tx.symbol];
+    const changeTip = p?.change24 ? ` title="24h: ${p.change24 >= 0 ? '+' : ''}${p.change24.toFixed(2)}%"` : '';
     return `<div class="event-card${tx.isWhale ? ' whale' : ''}${watched ? ' card-watched' : ''}">
       <div class="card-head">
         ${tx.isWhale ? '<span class="whale-badge">🐋 Whale</span>' : ''}
-        ${isDEX ? '<span class="whale-badge" style="background:#00acc1">📊 DEX</span>' : ''}
+        ${txBadgeHTML(cls)}
         ${watched ? '<span class="watched-badge">👁 Watched</span>' : ''}
         <div class="accounts">
-          <span class="chip from${fromWatched ? ' watched' : ''}">${esc(tx.from)}</span>
+          <span class="chip from${fromWatched ? ' watched' : ''} clickable" onclick="openWalletInspector('${esc(tx.from)}')">${esc(tx.from)}</span>
           <span class="arrow">→</span>
-          <span class="chip ${toClass}${toWatched ? ' watched' : ''}">${esc(tx.to)}</span>
+          <span class="chip ${toClass}${toWatched ? ' watched' : ''} clickable" onclick="openWalletInspector('${esc(tx.to)}')">${esc(tx.to)}</span>
         </div>
         <div class="card-meta">
-          <div class="val">${esc(tx.quantity)}</div>
+          <div class="val"${changeTip}>${esc(tx.quantity)}</div>
+          ${usdStr ? `<div class="val-usd has-price">${usdStr}</div>` : ''}
           <div class="time">${timeAgo(tx.ts)}</div>
           <div>${fmtTime(tx.ts)}</div>
         </div>
@@ -1352,15 +2853,30 @@
     </div>`;
   }
 
+  function tokenTxKey(tx) { return tx.txid || `${tx.ts}-${tx.from}-${tx.to}-${tx.amount}`; }
+
+  function showLoadMore(id, infoId, shown, total) {
+    const wrap = document.getElementById(id);
+    const info = document.getElementById(infoId);
+    wrap.style.display = 'block';
+    info.textContent = `Showing ${shown} transactions`;
+  }
+
+  function hideLoadMore(id) { document.getElementById(id).style.display = 'none'; }
+
   async function loadTokens() {
     const list = document.getElementById('listTokens');
     list.innerHTML = `<div class="state-box"><div class="spinner"></div><p>Fetching PXJ / WPIXAL transfers...</p></div>`;
+    hideLoadMore('loadMoreTokensWrap');
     showErr('errTokens', '');
+    tokenSkip = 0;
+    seenTokenIds = new Set();
     try {
-      const txs = await fetchTokenTransfers();
+      const txs = await fetchTokenTransfers(0);
       currentTokenTxs = txs;
-      const whales = txs.filter(t => t.isWhale);
+      txs.forEach(tx => seenTokenIds.add(tokenTxKey(tx)));
 
+      const whales = txs.filter(t => t.isWhale);
       const biggest = txs.reduce((m, t) => t.amount > m ? t.amount : m, 0);
       const sym = txs.find(t => t.amount === biggest)?.symbol ?? 'PXJ';
       document.getElementById('sTokenWhales').textContent = whales.length;
@@ -1373,14 +2889,11 @@
         sendWhaleNotif('🐋 Token Whale!', `${w.from} → ${w.to}: ${w.quantity}`);
       }
 
-      // Volume chart
       const chartWrap = document.getElementById('tokenChartWrap');
       if (txs.length > 0) {
         chartWrap.style.display = '';
         setTimeout(() => drawVolumeChart('tokenChart', txs), 50);
-      } else {
-        chartWrap.style.display = 'none';
-      }
+      } else { chartWrap.style.display = 'none'; }
 
       if (txs.length === 0) {
         list.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>No PXJ/WPIXAL transfers found.</p></div>`;
@@ -1388,7 +2901,7 @@
       }
       list.innerHTML = txs.map(renderTokenCard).join('');
       filterTokens();
-
+      if (txs.length >= 100) showLoadMore('loadMoreTokensWrap', 'loadMoreTokensInfo', txs.length);
       const latest = txs[0]?.ts;
       if (latest) document.getElementById('sLastActivity').textContent = timeAgo(latest);
     } catch (e) {
@@ -1398,9 +2911,42 @@
     }
   }
 
+  async function loadMoreTokens() {
+    const btn = document.getElementById('loadMoreTokensBtn');
+    btn.disabled = true;
+    btn.textContent = '…';
+    try {
+      tokenSkip += 100;
+      const fetched = await fetchTokenTransfers(tokenSkip);
+      const unique = fetched.filter(tx => {
+        const k = tokenTxKey(tx);
+        if (seenTokenIds.has(k)) return false;
+        seenTokenIds.add(k);
+        return true;
+      });
+      if (unique.length === 0) {
+        hideLoadMore('loadMoreTokensWrap');
+        showToast('No more token transfers to load');
+        return;
+      }
+      currentTokenTxs.push(...unique);
+      document.getElementById('listTokens').insertAdjacentHTML('beforeend', unique.map(renderTokenCard).join(''));
+      filterTokens();
+      document.getElementById('loadMoreTokensInfo').textContent = `Showing ${currentTokenTxs.length} transactions`;
+      if (unique.length < 100) hideLoadMore('loadMoreTokensWrap');
+      buildTraderDB();
+    } catch (e) {
+      tokenSkip -= 100;
+      showToast(`Load error: ${e.message}`);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '⬇ Load Older Transactions';
+    }
+  }
+
   /* ═══════════════════════ FETCH NFTS ════════════════════ */
-  async function fetchNFTTransfers() {
-    const url = `${ATOMIC}/transfers?collection_name=${COLLECTION}&page=1&limit=100&sort=created&order=desc`;
+  async function fetchNFTTransfers(page = 1) {
+    const url = `${ATOMIC}/transfers?collection_name=${COLLECTION}&page=${page}&limit=100&sort=created&order=desc`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
@@ -1429,9 +2975,9 @@
         ${isDEXSender ? '<span class="whale-badge" style="background:var(--accent)">🔀 DEX Reward</span>' : ''}
         ${watched ? '<span class="watched-badge">👁 Watched</span>' : ''}
         <div class="accounts">
-          <span class="chip from${fromWatched ? ' watched' : ''}">${esc(tx.sender_name)}</span>
+          <span class="chip from${fromWatched ? ' watched' : ''} clickable" onclick="openWalletInspector('${esc(tx.sender_name)}')">${esc(tx.sender_name)}</span>
           <span class="arrow">→</span>
-          <span class="chip to${toWatched ? ' watched' : ''}">${esc(tx.recipient_name)}</span>
+          <span class="chip to${toWatched ? ' watched' : ''} clickable" onclick="openWalletInspector('${esc(tx.recipient_name)}')">${esc(tx.recipient_name)}</span>
         </div>
         ${memo ? `<span class="memo-tag">💬 ${esc(memo)}</span>` : ''}
         <div class="card-meta">
@@ -1463,17 +3009,23 @@
     </div>`;
   }
 
+  function nftTxKey(tx) { return tx.transfer_id ?? tx.txhash ?? tx.txid ?? `${tx.created_at_time}-${tx.sender_name}-${tx.recipient_name}`; }
+
   async function loadNFTs() {
     const list = document.getElementById('listNFTs');
     list.innerHTML = `<div class="state-box"><div class="spinner"></div><p>Fetching NFT transfers...</p></div>`;
+    hideLoadMore('loadMoreNFTsWrap');
     showErr('errNFTs', '');
+    nftPage = 1;
+    seenNFTIds = new Set();
     try {
       const nthresh = getThreshNFT();
-      const txs = await fetchNFTTransfers();
+      const txs = await fetchNFTTransfers(1);
       currentNFTTxs = txs;
+      txs.forEach(tx => seenNFTIds.add(nftTxKey(tx)));
+
       const whales = txs.filter(t => (t.assets?.length ?? 0) >= nthresh);
       const biggest = txs.reduce((m, t) => (t.assets?.length ?? 0) > m ? (t.assets?.length ?? 0) : m, 0);
-
       document.getElementById('sNFTWhales').textContent = whales.length;
       document.getElementById('sBigNFT').textContent = biggest > 0 ? biggest : '—';
       document.getElementById('tabCountNFTs').textContent = txs.length;
@@ -1490,6 +3042,7 @@
       }
       list.innerHTML = txs.map(t => renderNFTCard(t, (t.assets?.length ?? 0) >= nthresh)).join('');
       filterNFTs();
+      if (txs.length >= 100) showLoadMore('loadMoreNFTsWrap', 'loadMoreNFTsInfo', txs.length);
     } catch (e) {
       console.error('NFT fetch error:', e);
       showErr('errNFTs', `NFT API error: ${e.message}`);
@@ -1497,9 +3050,42 @@
     }
   }
 
+  async function loadMoreNFTs() {
+    const btn = document.getElementById('loadMoreNFTsBtn');
+    btn.disabled = true;
+    btn.textContent = '…';
+    const nthresh = getThreshNFT();
+    try {
+      nftPage += 1;
+      const fetched = await fetchNFTTransfers(nftPage);
+      const unique = fetched.filter(tx => {
+        const k = nftTxKey(tx);
+        if (seenNFTIds.has(k)) return false;
+        seenNFTIds.add(k);
+        return true;
+      });
+      if (unique.length === 0) {
+        hideLoadMore('loadMoreNFTsWrap');
+        showToast('No more NFT transfers to load');
+        return;
+      }
+      currentNFTTxs.push(...unique);
+      document.getElementById('listNFTs').insertAdjacentHTML('beforeend', unique.map(t => renderNFTCard(t, (t.assets?.length ?? 0) >= nthresh)).join(''));
+      filterNFTs();
+      document.getElementById('loadMoreNFTsInfo').textContent = `Showing ${currentNFTTxs.length} transactions`;
+      if (unique.length < 100) hideLoadMore('loadMoreNFTsWrap');
+    } catch (e) {
+      nftPage -= 1;
+      showToast(`Load error: ${e.message}`);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '⬇ Load Older Transactions';
+    }
+  }
+
   /* ═══════════════════════ FETCH DEX ═════════════════════ */
-  async function fetchDEXSwaps() {
-    const url = `${HYPERION}/get_actions?account=swap.alcor&filter=swap.alcor%3Aswap&sort=desc&limit=100`;
+  async function fetchDEXSwaps(skip = 0) {
+    const url = `${HYPERION}/get_actions?account=swap.alcor&filter=swap.alcor%3Aswap&sort=desc&limit=100&skip=${skip}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
@@ -1557,17 +3143,25 @@
     const callerWatched = isWatched(swap.caller);
     const label1 = swap.qty1 || '—';
     const label2 = swap.qty2 || '—';
+    const cls = classifySwap(swap);
+    // estimate USD from the project-token leg of the swap
+    const q1 = parseQtyStr(swap.qty1), q2 = parseQtyStr(swap.qty2);
+    const projQty  = (['PXJ','WPIXAL'].includes(q1.sym)) ? q1 : (['PXJ','WPIXAL'].includes(q2.sym)) ? q2 : null;
+    const swapUSD  = projQty ? estimateUSD(projQty.amount, projQty.sym) : null;
+    const swapUSDStr = swapUSD != null ? fmtUSD(swapUSD) : null;
     return `<div class="event-card${isWhale ? ' whale' : ''}${callerWatched ? ' card-watched' : ''}">
       <div class="card-head">
         ${isWhale ? '<span class="whale-badge">🐋 Whale Swap</span>' : ''}
+        ${txBadgeHTML(cls)}
         ${callerWatched ? '<span class="watched-badge">👁 Watched</span>' : ''}
         <div class="accounts">
-          ${swap.caller ? `<span class="chip from${callerWatched ? ' watched' : ''}">${esc(swap.caller)}</span><span class="arrow">⇄</span>` : ''}
-          <span class="chip dex">swap.alcor</span>
+          ${swap.caller ? `<span class="chip from${callerWatched ? ' watched' : ''} clickable" onclick="openWalletInspector('${esc(swap.caller)}')">${esc(swap.caller)}</span><span class="arrow">⇄</span>` : ''}
+          <span class="chip dex clickable" onclick="openWalletInspector('swap.alcor')">swap.alcor</span>
         </div>
         <div class="card-meta">
           <div class="val" style="font-size:.85rem;color:var(--green)">${esc(label1)}</div>
           ${label2 && label2 !== '—' ? `<div style="font-size:.72rem;color:var(--muted)">→ ${esc(label2)}</div>` : ''}
+          ${swapUSDStr ? `<div class="val-usd has-price">${swapUSDStr}</div>` : ''}
           <div class="time">${timeAgo(swap.ts)}</div>
           <div>${fmtTime(swap.ts)}</div>
         </div>
@@ -1578,14 +3172,94 @@
     </div>`;
   }
 
+  function dexSwapKey(s) { return s.txid || `${s.ts}-${s.caller}-${s.qty1}`; }
+
+  /* ═══════════════════════ TX CLASSIFICATION ═════════════ */
+  const ARBI_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+
+  // Returns {cls, icon, label, tip} for a token transfer
+  function classifyTx(tx) {
+    // SPOT SELL: sending tokens TO a DEX
+    if (DEX_ACCOUNTS.includes(tx.to)) {
+      return { cls: 'sell', icon: '📉', label: 'Spot Sell',
+        tip: 'Tokens sent to a DEX — likely a spot sell order' };
+    }
+    // SPOT BUY: receiving tokens FROM a DEX
+    if (DEX_ACCOUNTS.includes(tx.from)) {
+      return { cls: 'buy', icon: '📈', label: 'Spot Buy',
+        tip: 'Tokens received from a DEX — likely a spot buy order' };
+    }
+    // ARBITRAGE: this sender also has a DEX interaction (token or swap) within 5 min
+    const sender = tx.from;
+    const nearDEXTok = currentTokenTxs.some(other =>
+      other !== tx &&
+      Math.abs(other.ts - tx.ts) <= ARBI_WINDOW_MS &&
+      (other.from === sender || other.to === sender) &&
+      (DEX_ACCOUNTS.includes(other.to) || DEX_ACCOUNTS.includes(other.from))
+    );
+    const nearDEXSwap = currentDEXSwaps.some(s =>
+      s.caller === sender && Math.abs(s.ts - tx.ts) <= ARBI_WINDOW_MS
+    );
+    if (nearDEXTok || nearDEXSwap) {
+      return { cls: 'arb', icon: '⚡', label: 'Arbitrage',
+        tip: `${sender} has DEX activity within 5 min of this transfer — possible arbitrage` };
+    }
+    // HODL: receiver never appears as a sender anywhere in the loaded dataset
+    const receiverSends = currentTokenTxs.some(other => other !== tx && other.from === tx.to);
+    if (!receiverSends) {
+      return { cls: 'hodl', icon: '💎', label: 'HODL',
+        tip: `${tx.to} has not sent tokens in the current dataset — likely holding` };
+    }
+    // Default: wallet-to-wallet transfer
+    return { cls: 'xfer', icon: '↔', label: 'Transfer',
+      tip: 'Standard wallet-to-wallet transfer' };
+  }
+
+  // Returns {cls, icon, label, tip} for a DEX swap
+  function classifySwap(swap) {
+    const qty2Up = String(swap.qty2).toUpperCase();
+    const qty1Up = String(swap.qty1).toUpperCase();
+    const isProjToken = s => s.includes('PXJ') || s.includes('WPIXAL');
+
+    // ARBITRAGE: caller has multiple swaps within 5 min
+    const multiSwap = currentDEXSwaps.filter(s =>
+      s !== swap && s.caller === swap.caller && Math.abs(s.ts - swap.ts) <= ARBI_WINDOW_MS
+    ).length >= 1;
+    if (multiSwap) {
+      return { cls: 'arb', icon: '⚡', label: 'Arbitrage',
+        tip: `${swap.caller} made multiple swaps within 5 min — possible arbitrage` };
+    }
+    // SPOT BUY: output (qty2) is the project token → user acquired PXJ/WPIXAL
+    if (isProjToken(qty2Up)) {
+      return { cls: 'buy', icon: '📈', label: 'Spot Buy',
+        tip: `Swapped for ${swap.qty2} — buying project token on DEX` };
+    }
+    // SPOT SELL: input (qty1) is the project token → user sold PXJ/WPIXAL
+    if (isProjToken(qty1Up)) {
+      return { cls: 'sell', icon: '📉', label: 'Spot Sell',
+        tip: `Swapped ${swap.qty1} — selling project token on DEX` };
+    }
+    // Fallback: treat as buy (all DEX cards pass the PXJ/WPIXAL filter)
+    return { cls: 'buy', icon: '📈', label: 'Spot Buy',
+      tip: 'DEX swap involving project token' };
+  }
+
+  function txBadgeHTML(c) {
+    return `<span class="tx-badge ${c.cls}" data-tip="${esc(c.tip)}">${c.icon} ${c.label}</span>`;
+  }
+
   async function loadDEX() {
     const list = document.getElementById('listDEX');
     list.innerHTML = `<div class="state-box"><div class="spinner"></div><p>Fetching DEX activity...</p></div>`;
+    hideLoadMore('loadMoreDEXWrap');
     showErr('errDEX', '');
+    dexSkip = 0;
+    seenDEXIds = new Set();
     try {
       const dthresh = getThreshDEX();
-      const [swaps, markets] = await Promise.all([fetchDEXSwaps(), fetchAlcorMarkets()]);
+      const [swaps, markets] = await Promise.all([fetchDEXSwaps(0), fetchAlcorMarkets()]);
       currentDEXSwaps = swaps;
+      swaps.forEach(s => seenDEXIds.add(dexSwapKey(s)));
 
       const whales = swaps.filter(s => s.amount >= dthresh);
       document.getElementById('sDEXWhales').textContent = whales.length;
@@ -1597,7 +3271,6 @@
         sendWhaleNotif('📊 DEX Whale!', `Whale swap: ${w.qty1}${w.caller ? ` by ${w.caller}` : ''}`);
       }
 
-      // Buy/sell pressure
       if (swaps.length > 0) {
         const { buys, sells } = analyzePressure(swaps);
         const total = buys + sells || 1;
@@ -1608,7 +3281,6 @@
         document.getElementById('pressureSellLabel').textContent = `Sells: ${sells} (${100 - buyPct}%)`;
       }
 
-      // Market info banner
       let marketHtml = '';
       if (markets && markets.length > 0) {
         const m = markets[0];
@@ -1628,6 +3300,7 @@
       }
       list.innerHTML = marketHtml + swaps.map(s => renderDEXCard(s, s.amount >= dthresh)).join('');
       filterDEX();
+      if (swaps.length >= 100) showLoadMore('loadMoreDEXWrap', 'loadMoreDEXInfo', swaps.length);
     } catch (e) {
       console.error('DEX fetch error:', e);
       showErr('errDEX', `DEX API error: ${e.message}`);
@@ -1635,50 +3308,285 @@
     }
   }
 
+  async function loadMoreDEX() {
+    const btn = document.getElementById('loadMoreDEXBtn');
+    btn.disabled = true;
+    btn.textContent = '…';
+    const dthresh = getThreshDEX();
+    try {
+      dexSkip += 100;
+      const fetched = await fetchDEXSwaps(dexSkip);
+      const unique = fetched.filter(s => {
+        const k = dexSwapKey(s);
+        if (seenDEXIds.has(k)) return false;
+        seenDEXIds.add(k);
+        return true;
+      });
+      if (unique.length === 0) {
+        hideLoadMore('loadMoreDEXWrap');
+        showToast('No more DEX swaps to load');
+        return;
+      }
+      currentDEXSwaps.push(...unique);
+      // Append after the last event-card (skip the market info div at top)
+      const list = document.getElementById('listDEX');
+      list.insertAdjacentHTML('beforeend', unique.map(s => renderDEXCard(s, s.amount >= dthresh)).join(''));
+      filterDEX();
+      document.getElementById('loadMoreDEXInfo').textContent = `Showing ${currentDEXSwaps.length} transactions`;
+      if (unique.length < 100) hideLoadMore('loadMoreDEXWrap');
+      buildTraderDB();
+    } catch (e) {
+      dexSkip -= 100;
+      showToast(`Load error: ${e.message}`);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '⬇ Load Older Transactions';
+    }
+  }
+
   /* ═══════════════════════ LEADERBOARD ══════════════════ */
+  const LB_TYPES = {
+    nft:    { label: 'Top Pixal NFT Holders',  unit: 'NFTs',   barColor: 'var(--accent)' },
+    pxj:    { label: 'Top PXJ Holders',        unit: 'PXJ',    barColor: 'var(--gold)' },
+    wpixal: { label: 'Top WPIXAL Holders',     unit: 'WPIXAL', barColor: 'var(--accent2)' },
+    farm:   { label: 'Top WaxDAO Farm Power',  unit: 'Power',  barColor: 'var(--green)' },
+  };
+
+  let currentLbType = 'nft';
+
+  function switchLeaderboard() {
+    currentLbType = document.getElementById('lbTypeSelect').value;
+    loadLeaderboard();
+  }
+
+  function reloadLeaderboard() {
+    loadLeaderboard();
+  }
+
   async function loadLeaderboard() {
     const list = document.getElementById('listLeaderboard');
-    list.innerHTML = `<div class="state-box"><div class="spinner"></div><p>Fetching top holders...</p></div>`;
+    const type = LB_TYPES[currentLbType];
+    list.innerHTML = `<div class="state-box"><div class="spinner"></div><p>Fetching ${esc(type.label)}…</p></div>`;
     showErr('errLeaderboard', '');
+    document.getElementById('lbCount').textContent = '';
+
     try {
-      const url = `${ATOMIC}/accounts?collection_name=${COLLECTION}&limit=20`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      if (!json.success) throw new Error('API returned success=false');
-      const holders = json.data ?? [];
+      let rows = [];
+      if (currentLbType === 'nft') {
+        rows = await fetchLbNFT();
+      } else if (currentLbType === 'pxj') {
+        rows = await fetchLbToken('pixeljourney', 'PXJ');
+      } else if (currentLbType === 'wpixal') {
+        rows = await fetchLbToken('pixeljourney', 'WPIXAL');
+      } else if (currentLbType === 'farm') {
+        rows = await fetchLbFarm();
+      }
 
-      document.getElementById('tabCountLeaderboard').textContent = holders.length;
+      document.getElementById('tabCountLeaderboard').textContent = rows.length;
+      document.getElementById('lbCount').textContent = `${rows.length} accounts`;
 
-      if (holders.length === 0) {
-        list.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>No holders found for collection "${COLLECTION}".</p></div>`;
+      if (rows.length === 0) {
+        list.innerHTML = `<div class="state-box"><div class="icon">🔍</div><p>No data found for ${esc(type.label)}.</p></div>`;
         return;
       }
 
-      const medals = ['🥇','🥈','🥉'];
-      const max = holders[0]?.assets ?? 1;
-      list.innerHTML = `<div class="leaders-list">${holders.map((h, i) => {
-        const account = h.account ?? '—';
-        const count = h.assets ?? 0;
-        const pct = Math.round((count / max) * 100);
-        const rankClass = i < 3 ? `top${i+1}` : '';
-        const watching = isWatched(account);
-        return `<div class="leader-row ${rankClass}">
-          <div class="leader-rank">${medals[i] ?? `#${i+1}`}</div>
-          <div class="leader-account${watching ? ' is-watched' : ''}">${esc(account)}</div>
-          <div class="leader-bar-wrap"><div class="leader-bar" style="width:${pct}%"></div></div>
-          <div class="leader-count">${count.toLocaleString()} NFTs</div>
+      renderLeaderboardTable(rows, type);
+    } catch (e) {
+      console.error('Leaderboard fetch error:', e);
+      showErr('errLeaderboard', `Leaderboard error: ${e.message}`);
+      list.innerHTML = `<div class="state-box"><div class="icon">⚠️</div><p>${esc(e.message)}</p></div>`;
+    }
+  }
+
+  async function fetchLbNFT() {
+    const res = await fetch(`${ATOMIC}/accounts?collection_name=${COLLECTION}&limit=100`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (!json.success) throw new Error('AtomicAssets error');
+    return (json.data ?? []).map(h => ({
+      account: h.account ?? '—',
+      balance: h.assets ?? 0,
+      rawBalance: h.assets ?? 0,
+    }));
+  }
+
+  async function fetchLbToken(contract, symbol) {
+    // Primary: light-api richlist
+    try {
+      const r = await fetch(`https://wax.light-api.net/api/richlist/wax/${encodeURIComponent(contract)}/${encodeURIComponent(symbol)}`);
+      if (r.ok) {
+        const j = await r.json();
+        const list = j.richlist ?? j.data ?? (Array.isArray(j) ? j : null);
+        if (Array.isArray(list) && list.length > 0) {
+          return list.slice(0, 100).map(h => ({
+            account:    h.account_name ?? h.account ?? '—',
+            balance:    parseFloat(h.amount ?? h.balance ?? 0) || 0,
+            rawBalance: parseFloat(h.amount ?? h.balance ?? 0) || 0,
+          })).sort((a, b) => b.rawBalance - a.rawBalance);
+        }
+      }
+    } catch(e) {}
+
+    // Fallback: scan on-chain table scopes then batch-fetch balances
+    return fetchLbTokenFromChain(contract, symbol);
+  }
+
+  async function fetchLbTokenFromChain(contract, symbol) {
+    const scopeRes = await fetch('https://wax.greymass.com/v1/chain/get_table_by_scope', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ json: true, code: contract, table: 'accounts', limit: 50 }),
+    });
+    if (!scopeRes.ok) throw new Error(`Cannot load ${symbol} holders (HTTP ${scopeRes.status})`);
+    const scopeJson = await scopeRes.json();
+    const scopes = (scopeJson.rows ?? []).map(r => r.scope).filter(Boolean);
+    if (scopes.length === 0) throw new Error(`No ${symbol} holders found on-chain`);
+
+    const results = await Promise.allSettled(
+      scopes.map(acc =>
+        fetch('https://wax.greymass.com/v1/chain/get_currency_balance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: contract, account: acc, symbol }),
+        }).then(r => r.json()).then(arr => ({
+          account:    acc,
+          balance:    parseFloat(String(arr[0] ?? '0').split(' ')[0]) || 0,
+          rawBalance: parseFloat(String(arr[0] ?? '0').split(' ')[0]) || 0,
+        }))
+      )
+    );
+    const rows = results
+      .filter(r => r.status === 'fulfilled' && r.value.balance > 0)
+      .map(r => r.value)
+      .sort((a, b) => b.rawBalance - a.rawBalance);
+    if (rows.length === 0) throw new Error(`No ${symbol} balances found`);
+    return rows;
+  }
+
+  async function fetchLbFarm() {
+    const waxPost = (body) => fetch('https://wax.greymass.com/v1/chain/get_table_rows', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ json: true, ...body }),
+    }).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); });
+
+    const toBalance = r =>
+      parseFloat(r.power ?? r.weight ?? r.amount ?? r.staked ?? r.balance ?? 0) || 0;
+    const toAccount = r =>
+      r.account ?? r.staker ?? r.owner ?? r.wallet ?? '—';
+
+    // Step 1: find the Pixel Journey farm in the farms.waxdao farms table
+    const farmsJson = await waxPost({
+      code: 'farms.waxdao', scope: 'farms.waxdao', table: 'farms', limit: 1000,
+    });
+    const allFarms = farmsJson.rows ?? [];
+    const pjFarm = allFarms.find(f => {
+      const raw = JSON.stringify(f).toLowerCase();
+      return raw.includes('pixeljourney') || raw.includes('pxj') || raw.includes('wpixal');
+    });
+
+    // Step 2a: found a matching farm — query its stakers scope
+    if (pjFarm) {
+      const farmScope = String(pjFarm.farmname ?? pjFarm.id ?? pjFarm.farm_name ?? ACCOUNT);
+      for (const table of ['stakers', 'stakes', 'stakeinfo']) {
+        try {
+          const j = await waxPost({ code: 'farms.waxdao', scope: farmScope, table, limit: 100 });
+          if ((j.rows ?? []).length > 0) {
+            return j.rows.map(r => ({
+              account: toAccount(r), balance: toBalance(r), rawBalance: toBalance(r),
+            })).sort((a, b) => b.rawBalance - a.rawBalance);
+          }
+        } catch(e) {}
+      }
+    }
+
+    // Step 2b: direct scope fallback — try ACCOUNT name and common farm name variants
+    const scopesToTry = [ACCOUNT, 'pxjfarm', 'pixeljfarm', 'pxjwpixal'];
+    for (const scope of scopesToTry) {
+      for (const table of ['stakers', 'stakes', 'stakeinfo']) {
+        try {
+          const j = await waxPost({ code: 'farms.waxdao', scope, table, limit: 100 });
+          if ((j.rows ?? []).length > 0) {
+            return j.rows.map(r => ({
+              account: toAccount(r), balance: toBalance(r), rawBalance: toBalance(r),
+            })).sort((a, b) => b.rawBalance - a.rawBalance);
+          }
+        } catch(e) {}
+      }
+    }
+
+    throw new Error('No WaxDAO Pixel Journey farm found. Verify the farm exists and is active on farms.waxdao.');
+  }
+
+  function renderLeaderboardTable(rows, type) {
+    // Use priceCache — maps leaderboard type → token symbol
+    const lbSymbol = { pxj: 'PXJ', wpixal: 'WPIXAL' }[currentLbType] ?? null;
+    const pc = lbSymbol ? priceCache[lbSymbol] : null;
+    const hasPrice = !!(pc?.priceUSD);
+    const change24Html = pc?.change24 ? ` ${changeChip(pc.change24)}` : '';
+
+    const medals = ['🥇', '🥈', '🥉'];
+    const max = rows[0]?.rawBalance || 1;
+
+    const tbody = rows.map((row, i) => {
+      const account = row.account;
+      const bal     = row.rawBalance;
+      const pct     = Math.max(2, Math.round((bal / max) * 100));
+      const watching = isWatched(account);
+
+      const rankClass = i < 3 ? 'lb-top3' : i < 10 ? 'lb-top10' : '';
+      const rankCell  = medals[i] ?? `#${i + 1}`;
+
+      let balDisplay = '';
+      if (currentLbType === 'nft') {
+        balDisplay = `${bal.toLocaleString()} ${type.unit}`;
+      } else {
+        balDisplay = `${fmtNum(bal)} ${type.unit}`;
+      }
+
+      let valueCell = '';
+      if (hasPrice && lbSymbol) {
+        const usd = estimateUSD(bal, lbSymbol);
+        valueCell = `<td class="lb-value-cell">${usd != null ? fmtUSD(usd) : '—'}</td>`;
+      } else {
+        valueCell = `<td class="lb-value-cell na">—</td>`;
+      }
+
+      return `<tr class="${rankClass}">
+        <td class="lb-rank">${rankCell}</td>
+        <td class="lb-account-cell${watching ? ' is-watched' : ''}" onclick="openWalletInspector('${esc(account)}')">${esc(account)}</td>
+        <td class="lb-balance-cell">${esc(balDisplay)}</td>
+        <td class="lb-bar-cell">
+          <div class="lb-bar-track">
+            <div class="lb-bar-fill" style="width:${pct}%;background:${type.barColor}"></div>
+          </div>
+        </td>
+        ${valueCell}
+        <td class="lb-watch-cell">
           <button class="leader-watch-btn${watching ? ' watching' : ''}"
             onclick="toggleWatchFromLeader('${esc(account)}', this)">
             ${watching ? '👁 Watching' : '+ Watch'}
           </button>
-        </div>`;
-      }).join('')}</div>`;
-    } catch (e) {
-      console.error('Leaderboard fetch error:', e);
-      showErr('errLeaderboard', `Leaderboard API error: ${e.message}`);
-      list.innerHTML = `<div class="state-box"><div class="icon">⚠️</div><p>${esc(e.message)}</p></div>`;
-    }
+        </td>
+      </tr>`;
+    }).join('');
+
+    document.getElementById('listLeaderboard').innerHTML = `
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Account</th>
+              <th>Balance</th>
+              <th class="lb-bar-col"></th>
+              <th class="th-right">Est. Value ${change24Html}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>${tbody}</tbody>
+        </table>
+      </div>`;
   }
 
   function toggleWatchFromLeader(account, btn) {
@@ -1686,13 +3594,13 @@
       removeFromWatchlist(account);
       btn.textContent = '+ Watch';
       btn.classList.remove('watching');
-      btn.closest('.leader-row').querySelector('.leader-account').classList.remove('is-watched');
     } else {
       addToWatchlist(account);
       btn.textContent = '👁 Watching';
       btn.classList.add('watching');
-      btn.closest('.leader-row').querySelector('.leader-account').classList.add('is-watched');
     }
+    const cell = btn.closest('tr')?.querySelector('.lb-account-cell');
+    if (cell) cell.classList.toggle('is-watched', isWatched(account));
     renderWatchlistChips();
   }
 
@@ -1706,7 +3614,8 @@
     btn.textContent = '…';
 
     try {
-      await Promise.all([loadTokens(), loadNFTs(), loadDEX(), fetchPrices()]);
+      await Promise.all([loadTokens(), loadNFTs(), loadDEX(), fetchPrices(), loadDonations()]);
+      buildTraderDB();
     } catch (e) {
       console.error('Refresh error:', e);
     }
@@ -1714,10 +3623,962 @@
     btn.disabled = false;
     btn.textContent = '↻ Refresh All';
     isRefreshing = false;
-    startCountdown();
+    if (!document.getElementById('setPauseRefresh')?.checked) {
+      startCountdown();
+    } else {
+      document.getElementById('countdown').textContent = 'Paused';
+    }
   }
 
+  /* ═══════════════════════ TOKEN ANALYTICS ═══════════════ */
+  let anlToken  = 'pxj-pixeljourney';
+  let anlSymbol = 'PXJ';
+  let anlWindow = '30d';
+  let anlData   = null;
+  let anlLoading = false;
+
+  function setAnalyticsToken(slug, sym, btn) {
+    anlToken  = slug;
+    anlSymbol = sym;
+    document.querySelectorAll('.anl-token-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadAnalytics();
+  }
+
+  function setAnalyticsWindow(w, btn) {
+    anlWindow = w;
+    document.querySelectorAll('.anl-win-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadAnalytics();
+  }
+
+  function reloadAnalytics() { loadAnalytics(); }
+
+  async function fetchAnalytics(slug, win) {
+    const url = `${ALCOR}/v3/analytics/tokens/${slug}?window=${win}&hide_scam=true`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  async function loadAnalytics() {
+    if (anlLoading) return;
+    anlLoading = true;
+    showErr('errAnalytics', '');
+    document.getElementById('anlPairsBody').innerHTML =
+      `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px"><div class="spinner" style="margin:0 auto 8px"></div>Loading…</td></tr>`;
+
+    try {
+      const raw = await fetchAnalytics(anlToken, anlWindow);
+      anlData = normalizeAnalytics(raw);
+      renderAnalytics(anlData);
+    } catch(e) {
+      console.error('Analytics error:', e);
+      showErr('errAnalytics', `Analytics error: ${e.message}`);
+      document.getElementById('anlPairsBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center;color:var(--red);padding:24px">Failed to load: ${esc(e.message)}</td></tr>`;
+    } finally {
+      anlLoading = false;
+    }
+  }
+
+  // Normalise various Alcor API response shapes into a consistent object
+  function normalizeAnalytics(raw) {
+    // raw may be an object or array of pool objects
+    const pools = Array.isArray(raw) ? raw
+      : (raw.pools ?? raw.pairs ?? raw.data ?? (raw.id ? [raw] : []));
+
+    const priceHistory = raw.priceHistory ?? raw.price_history ?? raw.history ?? [];
+
+    // Aggregate stats across pools
+    let totalTVL = 0, totalVol24 = 0, totalVol7 = 0, bestAPR = 0, bestAPRPool = '';
+    const normPools = pools.map(p => {
+      const tvl     = parseFloat(p.tvl ?? p.liquidityUSD ?? p.liquidity ?? 0) || 0;
+      const vol24   = parseFloat(p.volume24 ?? p.volumeUSD24h ?? p.volume_24h ?? 0) || 0;
+      const vol7    = parseFloat(p.volume7d  ?? p.volumeUSD7d  ?? 0) || 0;
+      const apr     = parseFloat(p.apr ?? p.APR ?? p.totalApr ?? 0) || 0;
+      const fee     = parseFloat(p.fee ?? p.fee_tier ?? p.swapFee ?? 0) || 0;
+      const price   = parseFloat(p.price ?? p.last_price ?? p.tokenPrice ?? 0) || 0;
+
+      // Build pair label from tokenA/tokenB or from symbol fields
+      const tA = p.tokenA?.symbol ?? p.token0?.symbol ?? p.base  ?? anlSymbol;
+      const tB = p.tokenB?.symbol ?? p.token1?.symbol ?? p.quote ?? 'WAX';
+      const poolId = p.id ?? p.pool_id ?? '';
+
+      totalTVL   += tvl;
+      totalVol24 += vol24;
+      totalVol7  += vol7;
+      if (apr > bestAPR) { bestAPR = apr; bestAPRPool = `${tA}/${tB}`; }
+
+      return { poolId, pair: `${tA}/${tB}`, tvl, vol24, vol7, apr, fee, price };
+    });
+
+    // Price from cache as fallback
+    const currentPrice = priceCache[anlSymbol]?.priceWAX ?? 0;
+    const change24     = priceCache[anlSymbol]?.change24  ?? 0;
+
+    return { pools: normPools, priceHistory, totalTVL, totalVol24, totalVol7, bestAPR, bestAPRPool, currentPrice, change24 };
+  }
+
+  function renderAnalytics(d) {
+    const waxUSD = priceCache.WAX.priceUSD;
+
+    // Stats bar
+    const fmt = (wax) => wax ? `${fmtNum(wax)} WAX` : '—';
+    const fmtU = (wax) => (wax && waxUSD) ? fmtUSD(wax * waxUSD) : '';
+
+    setText('anlSPrice',    d.currentPrice ? `${d.currentPrice.toFixed(6)} WAX` : '—');
+    setText('anlSPriceUSD', d.currentPrice && waxUSD ? fmtUSD(d.currentPrice * waxUSD) : '');
+    const chEl = document.getElementById('anlSChange');
+    if (chEl) {
+      chEl.innerHTML = d.change24 !== 0 ? changeChip(d.change24) : '—';
+      chEl.className = 'anl-s-value';
+    }
+    setText('anlSVol24',    fmt(d.totalVol24));
+    setText('anlSVol24USD', fmtU(d.totalVol24));
+    setText('anlSVol7',     fmt(d.totalVol7));
+    setText('anlSVol7USD',  fmtU(d.totalVol7));
+    setText('anlSTVL',      fmt(d.totalTVL));
+    setText('anlSTVLUSD',   fmtU(d.totalTVL));
+    setText('anlSAPR',      d.bestAPR ? `${d.bestAPR.toFixed(2)}%` : '—');
+    setText('anlSAPRPool',  d.bestAPRPool || '');
+
+    // Chart title
+    setText('anlChartPrice', d.currentPrice ? `${d.currentPrice.toFixed(6)} WAX` : '');
+    document.getElementById('anlChartChange').innerHTML = d.change24 ? changeChip(d.change24) : '';
+    setText('anlChartRange', anlWindow === '7d' ? 'Last 7 days' : anlWindow === '30d' ? 'Last 30 days' : 'Last 90 days');
+
+    // Draw charts
+    if (d.priceHistory.length > 1) {
+      drawAnalyticsPriceChart(d.priceHistory);
+      drawAnalyticsVolChart(d.priceHistory);
+    }
+
+    // Pairs table
+    if (!d.pools.length) {
+      document.getElementById('anlPairsBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">No pool data available for this token.</td></tr>`;
+      return;
+    }
+
+    const maxTVL = Math.max(...d.pools.map(p => p.tvl), 1);
+    document.getElementById('anlPairsBody').innerHTML = d.pools.map(p => {
+      const aprCls = p.apr >= 20 ? 'high' : p.apr >= 5 ? 'mid' : 'low';
+      const liqPct = Math.max(4, Math.round((p.tvl / maxTVL) * 100));
+      const feeDisp = p.fee ? `${(p.fee * 100).toFixed(2)}%` : '—';
+      const priceDisp = p.price ? p.price.toFixed(6) : (d.currentPrice ? d.currentPrice.toFixed(6) : '—');
+      const alcorLink = p.poolId
+        ? `<a href="https://wax.alcor.exchange/swap?pool_id=${esc(String(p.poolId))}" target="_blank" rel="noopener"
+             style="color:var(--accent);font-size:.7rem;text-decoration:none;margin-left:4px">↗</a>` : '';
+      return `<tr>
+        <td>
+          <div class="anl-pair-name">${esc(p.pair)} ${alcorLink}</div>
+        </td>
+        <td class="anl-td-r">
+          <div>${fmt(p.tvl)}</div>
+          ${p.tvl ? `<div class="anl-liq-bar" style="width:${liqPct}%;margin-left:auto"></div>` : ''}
+          <div class="anl-pair-sub">${fmtU(p.tvl)}</div>
+        </td>
+        <td class="anl-td-r">
+          <div>${fmt(p.vol24)}</div>
+          <div class="anl-pair-sub">${fmtU(p.vol24)}</div>
+        </td>
+        <td class="anl-td-r"><span class="anl-apr ${aprCls}">${p.apr ? p.apr.toFixed(2) + '%' : '—'}</span></td>
+        <td class="anl-td-r"><span class="anl-fee-chip">${feeDisp}</span></td>
+        <td class="anl-td-r" style="color:var(--gold);font-family:monospace;font-size:.78rem">${priceDisp}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  function setText(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  }
+
+  /* ── Price chart (filled area line) ─────────────────────── */
+  function drawAnalyticsPriceChart(history) {
+    const canvas = document.getElementById('anlPriceChart');
+    if (!canvas) return;
+    const W = canvas.offsetWidth || 900;
+    const H = 160;
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, W, H);
+
+    // Normalise data: expect [{time, close}] or [{t, c}] or [{timestamp, price}]
+    const pts = history.map(d => ({
+      t: d.time ?? d.t ?? d.timestamp ?? 0,
+      v: parseFloat(d.close ?? d.c ?? d.price ?? d.last_price ?? 0) || 0,
+    })).filter(d => d.v > 0).sort((a, b) => a.t - b.t);
+
+    if (pts.length < 2) return;
+
+    const minV = Math.min(...pts.map(p => p.v));
+    const maxV = Math.max(...pts.map(p => p.v));
+    const pad  = 6;
+    const toX  = (i) => pad + (i / (pts.length - 1)) * (W - pad * 2);
+    const toY  = (v) => H - pad - ((v - minV) / (maxV - minV || 1)) * (H - pad * 2);
+
+    // Filled gradient
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, 'rgba(124,77,255,0.35)');
+    grad.addColorStop(1, 'rgba(124,77,255,0.02)');
+
+    ctx.beginPath();
+    ctx.moveTo(toX(0), toY(pts[0].v));
+    for (let i = 1; i < pts.length; i++) {
+      const cx = (toX(i - 1) + toX(i)) / 2;
+      ctx.bezierCurveTo(cx, toY(pts[i-1].v), cx, toY(pts[i].v), toX(i), toY(pts[i].v));
+    }
+    ctx.lineTo(toX(pts.length - 1), H);
+    ctx.lineTo(toX(0), H);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Line
+    ctx.beginPath();
+    ctx.moveTo(toX(0), toY(pts[0].v));
+    for (let i = 1; i < pts.length; i++) {
+      const cx = (toX(i - 1) + toX(i)) / 2;
+      ctx.bezierCurveTo(cx, toY(pts[i-1].v), cx, toY(pts[i].v), toX(i), toY(pts[i].v));
+    }
+    ctx.strokeStyle = '#7c4dff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Current price dot
+    const lastX = toX(pts.length - 1);
+    const lastY = toY(pts[pts.length - 1].v);
+    ctx.beginPath();
+    ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffd740';
+    ctx.fill();
+
+    // Y-axis price labels (3 levels)
+    ctx.fillStyle = 'rgba(108,114,147,0.8)';
+    ctx.font = '10px monospace';
+    ctx.textAlign = 'right';
+    for (let i = 0; i <= 2; i++) {
+      const v = minV + (i / 2) * (maxV - minV);
+      const y = toY(v);
+      ctx.fillText(v.toFixed(6), W - 4, y + 3);
+      ctx.strokeStyle = 'rgba(37,40,64,0.5)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.setLineDash([4, 4]);
+      ctx.moveTo(0, y);
+      ctx.lineTo(W - 60, y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Date labels
+    const fmtDate = (ts) => {
+      const d = new Date(typeof ts === 'number' && ts < 1e12 ? ts * 1000 : ts);
+      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    };
+    const mid = Math.floor(pts.length / 2);
+    setText('anlDateStart', fmtDate(pts[0].t));
+    setText('anlDateMid',   fmtDate(pts[mid].t));
+    setText('anlDateEnd',   'Now');
+  }
+
+  /* ── Volume bars chart ───────────────────────────────────── */
+  function drawAnalyticsVolChart(history) {
+    const canvas = document.getElementById('anlVolChart');
+    if (!canvas) return;
+    const W = canvas.offsetWidth || 900;
+    const H = 32;
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, W, H);
+
+    const vols = history.map(d => parseFloat(d.volume ?? d.vol ?? d.v ?? 0) || 0);
+    if (!vols.some(v => v > 0)) return;
+
+    const maxV  = Math.max(...vols, 1);
+    const barW  = Math.max(1, (W / vols.length) - 1);
+    vols.forEach((v, i) => {
+      const barH = Math.max(2, (v / maxV) * (H - 2));
+      const x    = i * (W / vols.length);
+      ctx.fillStyle = v > 0 ? 'rgba(0,229,255,0.35)' : 'rgba(255,255,255,0.04)';
+      ctx.fillRect(x, H - barH, barW, barH);
+    });
+  }
+
+  /* ═══════════════════════ TRADER STATISTICS DB ══════════ */
+  const traderDB = new Map();   // account → TraderEntry
+  const traderPrices = { PXJ: 0, WPIXAL: 0 };  // WAX per token
+
+  // fetchTraderPrices merged into fetchPrices — kept as alias for backward compat
+  async function fetchTraderPrices() { /* no-op: fetchPrices() handles this */ }
+
+  function updateMetaPrices() {
+    const pxjEl    = document.getElementById('trdMetaPxjPrice');
+    const wpixalEl = document.getElementById('trdMetaWpixalPrice');
+    if (pxjEl)    pxjEl.textContent    = traderPrices.PXJ    ? `PXJ ${traderPrices.PXJ.toFixed(6)} WAX`    : 'PXJ —';
+    if (wpixalEl) wpixalEl.textContent = traderPrices.WPIXAL ? `WPIXAL ${traderPrices.WPIXAL.toFixed(6)} WAX` : 'WPIXAL —';
+  }
+
+  function getTrader(account) {
+    if (!account || account === '?') return null;
+    if (!traderDB.has(account)) {
+      traderDB.set(account, {
+        account,
+        totalTx:   0,
+        transfers: 0,
+        arbEvents: 0,
+        spotBuys:  0,
+        spotSells: 0,
+        waxIn:     0,   // WAX received from actual swap data
+        waxOut:    0,   // WAX spent on actual swap data
+        tokBought: { PXJ: 0, WPIXAL: 0 },
+        tokSold:   { PXJ: 0, WPIXAL: 0 },
+        pnlWAX:    0,   // computed at the end of buildTraderDB
+      });
+    }
+    return traderDB.get(account);
+  }
+
+  function parseQtyStr(qty) {
+    const parts = String(qty ?? '').trim().split(/\s+/);
+    return { amount: parseFloat(parts[0]) || 0, sym: (parts[1] ?? '').toUpperCase() };
+  }
+
+  function buildTraderDB() {
+    traderDB.clear();
+
+    // ── Token transfers ────────────────────────────────────
+    for (const tx of currentTokenTxs) {
+      const cls = classifyTx(tx);
+
+      // Attribute activity to the *sender* for all classes
+      const sender = getTrader(tx.from);
+      if (sender) {
+        sender.totalTx++;
+        if (cls.cls === 'arb')  sender.arbEvents++;
+        if (cls.cls === 'sell') sender.spotSells++;
+        if (cls.cls === 'xfer' || cls.cls === 'hodl') sender.transfers++;
+        // For SPOT BUY the sender is a DEX — don't attribute to DEX
+      }
+
+      // Attribute SPOT BUY to the *receiver* (they are the one who bought)
+      if (cls.cls === 'buy') {
+        const receiver = getTrader(tx.to);
+        if (receiver) {
+          receiver.totalTx++;
+          receiver.spotBuys++;
+        }
+      }
+    }
+
+    // ── DEX swaps — activity + P&L ─────────────────────────
+    for (const swap of currentDEXSwaps) {
+      if (!swap.caller) continue;
+      const cls  = classifySwap(swap);
+      const trd  = getTrader(swap.caller);
+      if (!trd) continue;
+
+      trd.totalTx++;
+      if (cls.cls === 'arb')  trd.arbEvents++;
+      if (cls.cls === 'buy')  trd.spotBuys++;
+      if (cls.cls === 'sell') trd.spotSells++;
+
+      // Extract actual WAX flows from swap quantities
+      const q1 = parseQtyStr(swap.qty1);
+      const q2 = parseQtyStr(swap.qty2);
+
+      if (cls.cls === 'buy') {
+        // Paid WAX (qty1), received project token (qty2)
+        if (q1.sym === 'WAX') trd.waxOut += q1.amount;
+        if (q2.sym === 'PXJ' || q2.sym === 'WPIXAL')
+          trd.tokBought[q2.sym] = (trd.tokBought[q2.sym] ?? 0) + q2.amount;
+      } else if (cls.cls === 'sell') {
+        // Sold project token (qty1), received WAX (qty2)
+        if (q2.sym === 'WAX') trd.waxIn += q2.amount;
+        if (q1.sym === 'PXJ' || q1.sym === 'WPIXAL')
+          trd.tokSold[q1.sym] = (trd.tokSold[q1.sym] ?? 0) + q1.amount;
+      }
+    }
+
+    // ── Compute P&L for every trader ──────────────────────
+    // Realised: WAX received from sells minus WAX spent on buys.
+    // Unrealised: net token position valued at current price.
+    for (const [, t] of traderDB) {
+      let pnl = t.waxIn - t.waxOut;
+      for (const sym of ['PXJ', 'WPIXAL']) {
+        const netTokens = (t.tokBought[sym] ?? 0) - (t.tokSold[sym] ?? 0);
+        pnl += netTokens * (traderPrices[sym] ?? 0);
+      }
+      t.pnlWAX = pnl;
+    }
+
+    // ── Update UI ─────────────────────────────────────────
+    const count = traderDB.size;
+    const totalTxCount = [...traderDB.values()].reduce((s, t) => s + t.totalTx, 0);
+    const metaWallets = document.getElementById('trdMetaWallets');
+    const metaTxs     = document.getElementById('trdMetaTxs');
+    if (metaWallets) metaWallets.textContent = count;
+    if (metaTxs)     metaTxs.textContent     = totalTxCount;
+
+    document.getElementById('tabCountTraders').textContent = count || '—';
+
+    const panel = document.getElementById('panelTraders');
+    if (panel?.classList.contains('active')) renderTraderStats();
+  }
+
+  function rebuildTraderDB() { buildTraderDB(); }
+
+  /* ── Render ─────────────────────────────────────────────── */
+  let traderFullData = [];   // sorted for full table + filter
+
+  function renderTraderStats() {
+    const entries = [...traderDB.values()];
+    if (!entries.length) {
+      const empty = '<div class="state-box" style="padding:24px"><div class="icon">📊</div><p>No data yet — refresh to load trades.</p></div>';
+      document.getElementById('trdListArb').innerHTML    = empty;
+      document.getElementById('trdListActive').innerHTML = empty;
+      document.getElementById('trdListPnl').innerHTML    = empty;
+      document.getElementById('trdFullBody').innerHTML   = '';
+      return;
+    }
+
+    const byArb    = [...entries].sort((a, b) => b.arbEvents - a.arbEvents || b.totalTx - a.totalTx);
+    const byActive = [...entries].sort((a, b) => b.totalTx - a.arbEvents  || b.spotBuys + b.spotSells - a.spotBuys - a.spotSells);
+    const byPnl    = [...entries].sort((a, b) => b.pnlWAX - a.pnlWAX);
+
+    renderTrdList('trdListArb',    byArb.slice(0, 10),    'arb');
+    renderTrdList('trdListActive', byActive.slice(0, 10), 'active');
+    renderTrdList('trdListPnl',    byPnl.slice(0, 10),    'pnl');
+
+    traderFullData = [...entries].sort((a, b) => b.totalTx - a.totalTx);
+    renderTraderTable(traderFullData);
+  }
+
+  function renderTrdList(elId, rows, mode) {
+    const el = document.getElementById(elId);
+    if (!rows.length) { el.innerHTML = '<div class="don-empty">No data</div>'; return; }
+    const rankSyms = ['🥇', '🥈', '🥉'];
+    el.innerHTML = rows.map((t, i) => {
+      const rankCls  = i < 3 ? `r${i+1}` : '';
+      const rankDisp = i < 3 ? rankSyms[i] : `${i+1}`;
+
+      let valHtml = '';
+      if (mode === 'arb') {
+        valHtml = `<span class="trd-val">${t.arbEvents} arb &nbsp;<span style="color:var(--muted);font-size:.72rem">${t.totalTx} tx</span></span>`;
+      } else if (mode === 'active') {
+        const badges = [];
+        if (t.arbEvents  > 0) badges.push(`<span class="tx-badge arb"  style="font-size:.55rem;padding:1px 5px">⚡${t.arbEvents}</span>`);
+        if (t.spotBuys   > 0) badges.push(`<span class="tx-badge buy"  style="font-size:.55rem;padding:1px 5px">📈${t.spotBuys}</span>`);
+        if (t.spotSells  > 0) badges.push(`<span class="tx-badge sell" style="font-size:.55rem;padding:1px 5px">📉${t.spotSells}</span>`);
+        valHtml = `<span class="trd-val">${t.totalTx} tx</span><span class="trd-badges">${badges.join('')}</span>`;
+      } else {
+        const sign = t.pnlWAX >= 0 ? '+' : '';
+        const cls  = t.pnlWAX > 0 ? 'pos' : t.pnlWAX < 0 ? 'neg' : '';
+        valHtml = `<span class="trd-val ${cls}">${sign}${t.pnlWAX.toFixed(2)} WAX</span>`;
+      }
+
+      return `<div class="trd-row">
+        <div class="trd-rank ${rankCls}">${rankDisp}</div>
+        <div class="trd-account" onclick="openWalletInspector('${esc(t.account)}')">${esc(t.account)}</div>
+        ${valHtml}
+      </div>`;
+    }).join('');
+  }
+
+  function renderTraderTable(rows) {
+    document.getElementById('trdFullBody').innerHTML = rows.map(t => {
+      const pnlSign = t.pnlWAX >= 0 ? '+' : '';
+      const pnlCls  = t.pnlWAX > 0.01 ? 'td-pos' : t.pnlWAX < -0.01 ? 'td-neg' : 'td-zero';
+      return `<tr>
+        <td><span class="td-account trd-account" onclick="openWalletInspector('${esc(t.account)}')">${esc(t.account)}</span></td>
+        <td class="td-r">${t.totalTx}</td>
+        <td class="td-r">${t.transfers}</td>
+        <td class="td-r">${t.arbEvents > 0 ? `<span class="tx-badge arb" style="font-size:.58rem;padding:1px 6px">⚡${t.arbEvents}</span>` : '—'}</td>
+        <td class="td-r">${t.spotBuys  > 0 ? `<span class="tx-badge buy"  style="font-size:.58rem;padding:1px 6px">📈${t.spotBuys}</span>`  : '—'}</td>
+        <td class="td-r">${t.spotSells > 0 ? `<span class="tx-badge sell" style="font-size:.58rem;padding:1px 6px">📉${t.spotSells}</span>` : '—'}</td>
+        <td class="td-r ${pnlCls}">${t.waxIn || t.waxOut ? pnlSign + t.pnlWAX.toFixed(2) + ' WAX' : '<span style="color:var(--muted);font-size:.72rem">est.</span>'}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  function filterTraderTable() {
+    const q = (document.getElementById('trdSearch')?.value ?? '').toLowerCase();
+    const filtered = q ? traderFullData.filter(t => t.account.toLowerCase().includes(q)) : traderFullData;
+    renderTraderTable(filtered);
+  }
+
+  /* ═══════════════════════ LIVE DONATIONS ════════════════ */
+  const DONATE_ACCOUNT = '5qyis.wam';
+  const DONATE_TOKENS  = new Set(['WAX', 'PXJ', 'WPIXAL']);
+
+  // ── Donation filter config (edit here to customise) ──────────────────────
+  const DON_CONFIG = {
+    // Hard blacklist: exact account names that are always excluded
+    blacklist: new Set([
+      'eosio', 'eosio.token', 'eosio.voters', 'eosio.ram',
+      'eosio.stake', 'eosio.names', 'eosio.saving',
+      'swap.alcor', 'swap.taco',
+      'atomicmarket', 'atomicdropsx',
+      'wallet.taco', 'taco.token',
+      'neftyblocksd', 'neftyblocksp',
+      'simplemarket',
+      'waxdaobacker', 'waxdaofarmer',
+      'alcordexmain', 'alcorammswap',
+      'res.pink', 'market.pink',
+      'wax.gg',
+    ]),
+
+    // Substring patterns: any sender whose name contains one of these is excluded
+    blockPatterns: [
+      'market', 'swap', 'token', 'dex',
+      'contract', 'farm', 'stake', 'pool',
+    ],
+
+    // Minimum amounts — transactions below these are ignored
+    minAmount: { WAX: 0.1, PXJ: 10 },
+  };
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // WAX-equivalent thresholds for highlight tiers
+  const DON_MEGA_WAX = { WAX: 50,   PXJ: 500000, WPIXAL: 5000 };
+  const DON_BIG_WAX  = { WAX: 10,   PXJ: 100000, WPIXAL: 1000 };
+
+  let donationsData = [];      // [{sender, symbol, amount, time, txid}]
+  let donRefreshing = false;
+
+  function donIsFiltered(sender, symbol, amount) {
+    // 1. Hard blacklist
+    if (DON_CONFIG.blacklist.has(sender)) return true;
+    // 2. Pattern match (case-insensitive, substring)
+    const lower = sender.toLowerCase();
+    if (DON_CONFIG.blockPatterns.some(p => lower.includes(p))) return true;
+    // 3. Minimum amount
+    const min = DON_CONFIG.minAmount[symbol] ?? 0;
+    if (amount < min) return true;
+    return false;
+  }
+
+  function donTierClass(symbol, amount) {
+    if (amount >= (DON_MEGA_WAX[symbol] ?? Infinity)) return 'don-mega';
+    if (amount >= (DON_BIG_WAX[symbol]  ?? Infinity)) return 'don-big';
+    return '';
+  }
+
+  function donFormatAmount(amount, symbol) {
+    let cls = 'tok-other';
+    if (symbol === 'WAX')    cls = 'tok-wax';
+    if (symbol === 'PXJ')    cls = 'tok-pxj';
+    if (symbol === 'WPIXAL') cls = 'tok-wpixal';
+    const fmtAmt = amount >= 1000000 ? (amount/1e6).toFixed(2)+'M'
+                 : amount >= 1000    ? (amount/1e3).toFixed(1)+'K'
+                 : amount % 1 === 0  ? amount.toLocaleString()
+                 : amount.toLocaleString(undefined, {maximumFractionDigits: 4});
+    return `<span class="${cls}">${fmtAmt} ${symbol}</span>`;
+  }
+
+  async function fetchDonations() {
+    // Fetch recent transfers TO DONATE_ACCOUNT via Hyperion
+    const url = `${HYPERION}/get_actions?account=${DONATE_ACCOUNT}&filter=eosio.token:transfer,pixeljourney:transfer&sort=desc&limit=200&skip=0`;
+    const res  = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    const actions = json.actions ?? [];
+
+    const donations = [];
+    for (const act of actions) {
+      const d = act.act?.data ?? {};
+      if (d.to !== DONATE_ACCOUNT) continue;
+      // parse quantity: "1234.5000 PXJ"
+      const parts  = (d.quantity ?? '').split(' ');
+      const amount = parseFloat(parts[0]);
+      const symbol = parts[1] ?? '';
+      const sender = d.from ?? '?';
+      if (!DONATE_TOKENS.has(symbol) || isNaN(amount) || amount <= 0) continue;
+      if (donIsFiltered(sender, symbol, amount)) continue;
+      donations.push({
+        sender,
+        symbol,
+        amount,
+        time:   act.timestamp ?? act['@timestamp'] ?? '',
+        txid:   act.trx_id ?? ''
+      });
+      if (donations.length >= 20) break;
+    }
+    return donations;
+  }
+
+  function renderDonations(donations) {
+    const feed = document.getElementById('donFeed');
+    if (!donations.length) {
+      feed.innerHTML = '<div class="don-empty">No donations found yet.<br>Be the first to support! ❤</div>';
+      document.getElementById('donSupporters').innerHTML = '<div class="don-empty">No supporters yet.</div>';
+      document.getElementById('tabCountDonations').textContent = '0';
+      return;
+    }
+
+    document.getElementById('tabCountDonations').textContent = donations.length;
+
+    // Build table
+    const rows = donations.map(d => {
+      const tier   = donTierClass(d.symbol, d.amount);
+      const timeAgo = d.time ? relTime(d.time) : '—';
+      const txLink  = d.txid
+        ? `<a href="https://waxblock.io/transaction/${d.txid}" target="_blank" rel="noopener" style="color:var(--muted);font-size:.7rem;text-decoration:none" title="View tx">🔗</a>`
+        : '';
+      return `<tr class="${tier}">
+        <td><span class="don-sender" onclick="openWalletInspector('${esc(d.sender)}')">${esc(d.sender)}</span></td>
+        <td class="don-amount">${donFormatAmount(d.amount, d.symbol)}</td>
+        <td class="don-time">${timeAgo} ${txLink}</td>
+      </tr>`;
+    }).join('');
+
+    // Compute totals
+    const totals = {};
+    for (const d of donations) {
+      totals[d.symbol] = (totals[d.symbol] ?? 0) + d.amount;
+    }
+    const totalStr = Object.entries(totals)
+      .map(([sym, amt]) => `<strong>${donFormatAmount(amt, sym)}</strong>`)
+      .join(' &nbsp;·&nbsp; ');
+
+    feed.innerHTML = `
+      <div class="don-table-wrap">
+        <table class="don-table">
+          <thead><tr>
+            <th>Sender</th>
+            <th class="th-right">Amount</th>
+            <th>Time</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="don-total-bar">
+        <span>Total received:</span> ${totalStr}
+      </div>`;
+
+    // Top supporters
+    const byAccount = {};
+    for (const d of donations) {
+      if (!byAccount[d.sender]) byAccount[d.sender] = {};
+      byAccount[d.sender][d.symbol] = (byAccount[d.sender][d.symbol] ?? 0) + d.amount;
+    }
+    // Sort by WAX equivalent (rough: 1 WAX = 1, treat PXJ/WPIXAL as small)
+    const supList = Object.entries(byAccount).sort((a, b) => {
+      const score = (tok) => (tok.WAX ?? 0) * 100 + (tok.WPIXAL ?? 0) * 10 + (tok.PXJ ?? 0) * 0.001;
+      return score(b[1]) - score(a[1]);
+    });
+
+    const rankSymbols = ['🥇', '🥈', '🥉'];
+    const supRows = supList.slice(0, 10).map(([account, tok], i) => {
+      const rankCls = i < 3 ? `rank-${i+1}` : '';
+      const rankDisp = i < 3 ? rankSymbols[i] : `${i+1}`;
+      const totLine = Object.entries(tok)
+        .map(([sym, amt]) => donFormatAmount(amt, sym))
+        .join(' <span style="color:var(--border)">·</span> ');
+      const isMega = Object.entries(tok).some(([sym, amt]) => donTierClass(sym, amt) === 'don-mega');
+      const badge  = isMega ? '<span class="don-sup-badge">Whale</span>' : '';
+      return `<div class="don-sup-row">
+        <div class="don-sup-rank ${rankCls}">${rankDisp}</div>
+        <div class="don-sup-account" onclick="openWalletInspector('${esc(account)}')">${esc(account)}</div>
+        ${badge}
+        <div class="don-sup-total">${totLine}</div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('donSupporters').innerHTML = `<div class="don-sup-list">${supRows}</div>`;
+  }
+
+  async function loadDonations() {
+    if (donRefreshing) return;
+    donRefreshing = true;
+    showErr('errDonations', '');
+    try {
+      donationsData = await fetchDonations();
+      renderDonations(donationsData);
+    } catch(e) {
+      console.error('Donations fetch error:', e);
+      showErr('errDonations', `Donations error: ${e.message}`);
+    } finally {
+      donRefreshing = false;
+    }
+  }
+
+  function reloadDonations() { loadDonations(); }
+
+  function relTime(iso) {
+    const diff = Date.now() - new Date(iso).getTime();
+    if (diff < 60000)   return `${Math.round(diff/1000)}s ago`;
+    if (diff < 3600000) return `${Math.round(diff/60000)}m ago`;
+    if (diff < 86400000)return `${Math.round(diff/3600000)}h ago`;
+    return `${Math.round(diff/86400000)}d ago`;
+  }
+
+  /* ═══════════════════════ DONATE ════════════════════════ */
+  function openDonate()  { document.getElementById('donateOverlay').classList.add('open'); }
+  function closeDonate() { document.getElementById('donateOverlay').classList.remove('open'); }
+  function handleDonateOverlayClick(e) {
+    if (e.target === document.getElementById('donateOverlay')) closeDonate();
+  }
+
+  async function copyDonateAddress() {
+    const addr = document.getElementById('donateAddr').textContent.trim();
+    const btn  = document.getElementById('donateCopyBtn');
+    try {
+      await navigator.clipboard.writeText(addr);
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+    } catch(e) {
+      // Fallback for browsers without clipboard API
+      const ta = document.createElement('textarea');
+      ta.value = addr;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+    }
+  }
+
+  /* ═══════════════════════ WALLET INSPECTOR ══════════════ */
+  let wiCurrentAccount = '';
+
+  function openWalletInspector(account) {
+    if (!account) return;
+    wiCurrentAccount = account;
+    document.getElementById('wiAccountName').textContent = account;
+    document.getElementById('wiWaxblockLink').href = `https://waxblock.io/account/${encodeURIComponent(account)}`;
+    const watchBtn = document.getElementById('wiWatchBtn');
+    watchBtn.textContent = isWatched(account) ? '👁 Watching' : '+ Watch';
+    watchBtn.classList.toggle('active-toggle', isWatched(account));
+    document.getElementById('wiBody').innerHTML = '<div class="wi-loading"><div class="spinner"></div>Loading wallet data…</div>';
+    document.getElementById('wiOverlay').classList.add('open');
+    loadWalletInspector(account);
+  }
+
+  function closeWalletInspector() {
+    document.getElementById('wiOverlay').classList.remove('open');
+    wiCurrentAccount = '';
+  }
+
+  function handleWIOverlayClick(e) {
+    if (e.target === document.getElementById('wiOverlay')) closeWalletInspector();
+  }
+
+  function wiToggleWatch() {
+    if (!wiCurrentAccount) return;
+    const btn = document.getElementById('wiWatchBtn');
+    if (isWatched(wiCurrentAccount)) {
+      removeFromWatchlist(wiCurrentAccount);
+      btn.textContent = '+ Watch';
+      btn.classList.remove('active-toggle');
+    } else {
+      addToWatchlist(wiCurrentAccount);
+      btn.textContent = '👁 Watching';
+      btn.classList.add('active-toggle');
+    }
+  }
+
+  async function loadWalletInspector(account) {
+    const [balances, nftData, trades] = await Promise.allSettled([
+      fetchWIBalances(account),
+      fetchWINFTs(account),
+      fetchWITrades(account),
+    ]);
+
+    const bal  = balances.status  === 'fulfilled' ? balances.value  : null;
+    const nft  = nftData.status   === 'fulfilled' ? nftData.value   : null;
+    const trds = trades.status    === 'fulfilled' ? trades.value    : [];
+
+    let html = '';
+
+    // ── Token Balances ──
+    html += `<div>
+      <div class="wi-section-title">💰 Token Balances</div>`;
+    if (bal && bal.length > 0) {
+      html += `<div class="wi-tokens-grid">`;
+      for (const b of bal) {
+        const sym     = b.currency ?? '';
+        const symEsc  = esc(sym);
+        const amt     = parseFloat(b.amount ?? 0);
+        const contract = b.contract ?? '';
+        const logoUrl = sym === 'PXJ' ? 'https://wax.alcor.exchange/api/v2/tokens/pxj-pixeljourney/logo' : `https://wax.alcor.exchange/api/v2/tokens/${sym.toLowerCase()}-${contract}/logo`;
+        const usd     = estimateUSD(amt, sym);
+        const waxVal  = sym !== 'WAX' ? estimateWAX(amt, sym) : null;
+        const pc      = priceCache[sym];
+        const change  = pc?.change24 ?? null;
+        const usdLine  = usd  != null ? `<div class="wi-token-usd">${fmtUSD(usd)}</div>` : '';
+        const waxLine  = waxVal != null ? `<div class="wi-token-wax">${waxVal.toFixed(4)} WAX</div>` : '';
+        const changeEl = change ? changeChip(change) : '';
+        html += `<div class="wi-token-card">
+          <img class="wi-token-logo" src="${logoUrl}"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="${symEsc}">
+          <div class="wi-token-logo-placeholder" style="display:none">${symEsc.slice(0,2)}</div>
+          <div class="wi-token-info">
+            <div class="wi-token-sym">${symEsc} ${changeEl}</div>
+            <div class="wi-token-bal">${fmtNum(amt)}</div>
+            ${waxLine}${usdLine}
+          </div>
+        </div>`;
+      }
+      html += `</div>`;
+    } else {
+      html += `<div class="wi-empty">No token balances found.</div>`;
+    }
+    html += `</div>`;
+
+    // ── Inventory Summary ──
+    const totalAssets = nft?.assets ?? 0;
+    const totalCollections = nft?.collections?.length ?? 0;
+    const totalTemplates = nft?.templates ?? 0;
+    html += `<div>
+      <div class="wi-section-title">📦 Inventory Summary</div>
+      <div class="wi-inv-grid">
+        <div class="wi-inv-stat"><div class="v">${totalAssets.toLocaleString()}</div><div class="l">Total NFTs</div></div>
+        <div class="wi-inv-stat"><div class="v">${totalCollections}</div><div class="l">Collections</div></div>
+        <div class="wi-inv-stat"><div class="v">${totalTemplates}</div><div class="l">Templates</div></div>
+      </div>
+    </div>`;
+
+    // ── Top NFT Collections ──
+    html += `<div>
+      <div class="wi-section-title">🖼 Top NFT Collections</div>`;
+    if (nft?.collections?.length > 0) {
+      html += `<div class="wi-coll-list">`;
+      for (const c of nft.collections.slice(0, 10)) {
+        const name = esc(c.collection?.name ?? c.collection?.collection_name ?? '—');
+        const colName = esc(c.collection?.collection_name ?? '');
+        const count = c.assets ?? 0;
+        html += `<div class="wi-coll-row">
+          <span class="wi-coll-name">${name}${name !== colName && colName ? ` <span style="color:var(--muted);font-size:.72rem">(${colName})</span>` : ''}</span>
+          <span class="wi-coll-count">${count.toLocaleString()} NFTs</span>
+        </div>`;
+      }
+      html += `</div>`;
+    } else {
+      html += `<div class="wi-empty">No NFT collections found.</div>`;
+    }
+    html += `</div>`;
+
+    // ── Recent Trades ──
+    html += `<div>
+      <div class="wi-section-title">🔄 Recent Trades</div>`;
+    if (trds.length > 0) {
+      html += `<div class="wi-trade-list">`;
+      for (const t of trds) {
+        const isOut = t.from === account;
+        const peer = isOut ? t.to : t.from;
+        html += `<div class="wi-trade-row">
+          <span class="wi-trade-dir ${isOut ? 'out' : 'in'}">${isOut ? 'OUT' : 'IN'}</span>
+          <span class="wi-trade-peer">${esc(peer)}</span>
+          <span class="wi-trade-amt">${esc(t.quantity)}</span>
+          <span class="wi-trade-time">${timeAgo(t.ts)}</span>
+        </div>`;
+      }
+      html += `</div>`;
+    } else {
+      html += `<div class="wi-empty">No recent trades found.</div>`;
+    }
+    html += `</div>`;
+
+    document.getElementById('wiBody').innerHTML = html;
+  }
+
+  async function fetchWIBalances(account) {
+    const res = await fetch(`https://wax.light-api.net/api/balances/wax/${encodeURIComponent(account)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    return json.balances ?? [];
+  }
+
+  async function fetchWINFTs(account) {
+    const res = await fetch(`${ATOMIC}/accounts/${encodeURIComponent(account)}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (!json.success) throw new Error('API error');
+    const data = json.data ?? {};
+    return {
+      assets:      data.assets ?? 0,
+      templates:   data.templates ?? 0,
+      collections: data.collections ?? [],
+    };
+  }
+
+  async function fetchWITrades(account) {
+    const url = `${HYPERION}/get_actions?account=${encodeURIComponent(account)}&filter=eosio.token:transfer&sort=desc&limit=15`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    return (json.actions ?? []).map(a => {
+      const d = a.act?.data ?? {};
+      return {
+        from:     d.from ?? '',
+        to:       d.to ?? '',
+        quantity: d.quantity ?? '',
+        memo:     d.memo ?? '',
+        ts:       new Date(a['@timestamp'] ?? a.timestamp).getTime(),
+      };
+    });
+  }
+
+  /* ═══════════════════════ SETTINGS ══════════════════════ */
+  const SETTINGS_KEY = 'wt_settings';
+
+  function loadSettings() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+      document.getElementById('setPauseRefresh').checked = saved.pauseRefresh ?? false;
+      document.getElementById('setBadges').checked      = saved.badges ?? true;
+      document.getElementById('setLogos').checked       = saved.logos ?? true;
+      document.getElementById('setInterval').value      = saved.interval ?? 30;
+    } catch(e) {}
+  }
+
+  function saveSettings() {
+    const s = {
+      pauseRefresh: document.getElementById('setPauseRefresh').checked,
+      badges:       document.getElementById('setBadges').checked,
+      logos:        document.getElementById('setLogos').checked,
+      interval:     parseInt(document.getElementById('setInterval').value),
+    };
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+    return s;
+  }
+
+  function applySettings() {
+    const s = saveSettings();
+    document.body.classList.toggle('hide-badges', !s.badges);
+    document.body.classList.toggle('hide-logos',  !s.logos);
+    const liveDot = document.querySelector('.live-dot');
+    if (s.pauseRefresh) {
+      clearInterval(countdownTimer);
+      document.getElementById('countdown').textContent = 'Paused';
+      liveDot.style.animationPlayState = 'paused';
+      liveDot.style.opacity = '0.3';
+    } else {
+      liveDot.style.animationPlayState = '';
+      liveDot.style.opacity = '';
+      startCountdown();
+    }
+  }
+
+  function openSettings()  { document.getElementById('settingsOverlay').classList.add('open'); }
+  function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); }
+  function handleOverlayClick(e) { if (e.target === document.getElementById('settingsOverlay')) closeSettings(); }
+
   /* ═══════════════════════ INIT ══════════════════════════ */
+  loadSettings();
+  const _s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+  document.body.classList.toggle('hide-badges', !(_s.badges ?? true));
+  document.body.classList.toggle('hide-logos',  !(_s.logos  ?? true));
   renderWatchlistChips();
   refreshAll();
 </script>
