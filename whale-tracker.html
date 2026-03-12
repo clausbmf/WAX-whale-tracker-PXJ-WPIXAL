@@ -1560,6 +1560,232 @@
     .chip.clickable { cursor: pointer; transition: border-color .15s, background .15s; }
     .chip.clickable:hover { border-color: var(--accent2); background: rgba(0,229,255,.08); color: #fff; }
 
+    /* ── New Wallet Badge ── */
+    .new-wallet-badge {
+      background: linear-gradient(90deg, #e65100, #ff9100);
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      flex-shrink: 0;
+    }
+
+    /* ── Copy Trade Signals ── */
+    .copy-trade-card {
+      background: linear-gradient(135deg, rgba(0,230,118,.06), rgba(124,77,255,.06));
+      border: 1px solid rgba(0,230,118,.3);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      animation: fadeIn .3s ease;
+    }
+    .copy-trade-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .copy-signal-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(37,40,64,.6);
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+    }
+    .copy-signal-row:last-child { border-bottom: none; }
+    .copy-signal-wallet {
+      font-family: monospace;
+      color: var(--accent2);
+      cursor: pointer;
+      flex: 1;
+    }
+    .copy-signal-wallet:hover { color: var(--gold); text-decoration: underline; }
+    .copy-signal-amt { color: var(--green); font-weight: 700; }
+    .copy-signal-time { color: var(--muted); font-size: 0.72rem; }
+
+    /* ── Portfolio Tab ── */
+    .portfolio-input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .portfolio-input-row input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color .2s;
+      width: auto;
+    }
+    .portfolio-input-row input:focus { border-color: var(--accent); }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .portfolio-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      transition: border-color .2s;
+    }
+    .portfolio-card:hover { border-color: var(--accent); }
+    .portfolio-card .p-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .portfolio-card .p-value { font-size: 1.4rem; font-weight: 700; margin-top: 6px; color: var(--accent2); }
+    .portfolio-card .p-usd { font-size: 0.75rem; color: var(--green); margin-top: 2px; }
+    .portfolio-total {
+      background: linear-gradient(135deg, rgba(124,77,255,.1), rgba(0,229,255,.1));
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+    .portfolio-total .pt-label { color: var(--muted); margin-bottom: 6px; }
+    .portfolio-total .pt-val { font-size: 1.8rem; font-weight: 700; color: var(--gold); }
+
+    /* ── Price Alerts Bar ── */
+    .price-alert-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 14px;
+    }
+    .price-alert-header {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+    .price-alert-form {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .price-alert-form select,
+    .price-alert-form input[type="number"] {
+      width: auto;
+      min-width: 80px;
+      padding: 6px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      outline: none;
+    }
+    .price-alert-list { display: flex; flex-direction: column; gap: 6px; }
+    .price-alert-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+    }
+    .price-alert-item .pai-text { flex: 1; color: var(--text); }
+    .price-alert-item .pai-status { font-size: 0.65rem; padding: 2px 7px; border-radius: 10px; background: rgba(0,230,118,.1); color: var(--green); border: 1px solid rgba(0,230,118,.25); }
+    .price-alert-item .pai-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.9rem; }
+    .price-alert-item .pai-del:hover { color: var(--red); }
+
+    /* ── Heatmap ── */
+    .heatmap-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    .heatmap-title {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+    }
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(24, 1fr);
+      gap: 3px;
+    }
+    .heatmap-cell {
+      border-radius: 4px;
+      height: 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.55rem;
+      color: rgba(255,255,255,.7);
+      cursor: default;
+      transition: opacity .15s;
+      position: relative;
+    }
+    .heatmap-cell:hover { opacity: .8; }
+    .heatmap-cell .hm-hour { font-weight: 700; font-size: 0.58rem; margin-top: 2px; color: rgba(255,255,255,.5); }
+    .heatmap-cell .hm-count { font-weight: 700; }
+    .heatmap-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+    .heatmap-legend .hm-swatch {
+      width: 12px; height: 12px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    /* ── Flow / Wallet Relationship Graph ── */
+    .flow-table-wrap { overflow-x: auto; }
+    .flow-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .flow-table thead tr { background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .flow-table th {
+      padding: 9px 14px; text-align: left;
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: .05em;
+      color: var(--muted); font-weight: 600; white-space: nowrap;
+    }
+    .flow-table th.th-r { text-align: right; }
+    .flow-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .flow-table tbody tr:last-child td { border-bottom: none; }
+    .flow-table tbody tr:hover td { background: rgba(255,255,255,.025); }
+    .flow-arrow { color: var(--accent2); font-size: 1rem; text-align: center; }
+    .flow-amount { color: var(--gold); font-weight: 700; font-family: monospace; }
+    .flow-count { color: var(--accent2); font-weight: 600; }
+    .flow-sender { font-family: monospace; color: var(--red); cursor: pointer; }
+    .flow-sender:hover { color: var(--text); text-decoration: underline; }
+    .flow-receiver { font-family: monospace; color: var(--green); cursor: pointer; }
+    .flow-receiver:hover { color: var(--text); text-decoration: underline; }
+
     /* ── Wallet Inspector Modal ── */
     .wi-overlay {
       position: fixed; inset: 0;
@@ -1878,6 +2104,12 @@
     <button class="tab" onclick="switchTab('Analytics', this)">
       📈 Analytics
     </button>
+    <button class="tab" onclick="switchTab('Portfolio', this)">
+      💼 Portfolio
+    </button>
+    <button class="tab" onclick="switchTab('Flow', this)">
+      🕸 Flow
+    </button>
   </div>
 
   <!-- Token Panel -->
@@ -1899,6 +2131,9 @@
         <option value="">All sizes</option>
         <option value="whale">Whales only</option>
       </select>
+      <label style="display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--muted);white-space:nowrap;cursor:pointer">
+        <input type="checkbox" id="filterTokenNew" onchange="filterTokens()" style="width:auto;padding:0;accent-color:var(--orange)"> 🆕 New only
+      </label>
       <span class="result-count" id="tokenResultCount"></span>
     </div>
     <div class="card-list" id="listTokens">
@@ -1971,6 +2206,14 @@
       <span id="lbCount" style="color:var(--muted);font-size:.75rem;white-space:nowrap"></span>
       <button class="btn" onclick="reloadLeaderboard()" style="font-size:.8rem">↻ Refresh</button>
     </div>
+    <div id="farmScopeRow" style="display:none;margin-bottom:10px;display:none;align-items:center;gap:8px;font-size:.8rem">
+      <span style="color:var(--muted)">Farm scope:</span>
+      <input id="farmScopeInput" type="text" placeholder="e.g. pxjfarm or pixeljourney"
+        style="width:200px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:.8rem;outline:none"
+        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" />
+      <button class="btn" onclick="saveFarmScope()" style="font-size:.78rem">Save &amp; Reload</button>
+      <span style="color:var(--muted);font-size:.72rem">Leave blank for auto-detect</span>
+    </div>
     <div id="listLeaderboard">
       <div class="state-box"><div class="spinner"></div><p>Loading top holders...</p></div>
     </div>
@@ -2022,6 +2265,17 @@
         <span id="anlDateStart">—</span>
         <span id="anlDateMid">—</span>
         <span id="anlDateEnd">Now</span>
+      </div>
+    </div>
+
+    <!-- Activity Heatmap -->
+    <div class="heatmap-wrap" id="anlHeatmapWrap">
+      <div class="heatmap-title">🔥 Whale Activity Heatmap — Transactions per Hour (last 24h)</div>
+      <div class="heatmap-grid" id="anlHeatmapGrid"></div>
+      <div class="heatmap-legend">
+        <span class="hm-swatch" style="background:rgba(255,109,0,.15)"></span> Low
+        <span class="hm-swatch" style="background:rgba(255,109,0,.5)"></span> Medium
+        <span class="hm-swatch" style="background:rgba(255,109,0,.9)"></span> High
       </div>
     </div>
 
@@ -2106,11 +2360,53 @@
             <th class="th-r">⚡ Arb</th>
             <th class="th-r">📈 Buys</th>
             <th class="th-r">📉 Sells</th>
+            <th class="th-r">Realized P&amp;L</th>
             <th class="th-r">P&amp;L (WAX)</th>
           </tr></thead>
           <tbody id="trdFullBody"></tbody>
         </table>
       </div>
+    </div>
+  </div>
+
+  <!-- Portfolio Panel -->
+  <div class="panel" id="panelPortfolio">
+    <div class="portfolio-input-row">
+      <input type="text" id="portfolioWallet" placeholder="Enter your WAX wallet name (e.g. myaccount.wam)" />
+      <button class="btn primary" onclick="loadPortfolio()">💼 Load Portfolio</button>
+    </div>
+    <div id="portfolioContent">
+      <div class="state-box">
+        <div class="icon">💼</div>
+        <p>Enter your WAX wallet above and click "Load Portfolio" to see your balances.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow Panel -->
+  <div class="panel" id="panelFlow">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+      <span style="font-size:.85rem;font-weight:700;color:var(--text)">🕸 Top Wallet Flows</span>
+      <label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);cursor:pointer;margin-left:auto">
+        <input type="checkbox" id="flowWatchedOnly" onchange="renderFlowGraph()" style="width:auto;padding:0;accent-color:var(--accent2)">
+        Focus on watched wallets
+      </label>
+      <button class="btn" onclick="renderFlowGraph()" style="font-size:.78rem;padding:5px 10px">↻ Refresh</button>
+    </div>
+    <div class="flow-table-wrap">
+      <table class="flow-table">
+        <thead><tr>
+          <th>#</th>
+          <th>Sender</th>
+          <th class="flow-arrow" style="text-align:center">→</th>
+          <th>Receiver</th>
+          <th class="th-r">Total Amount</th>
+          <th class="th-r">Count</th>
+        </tr></thead>
+        <tbody id="flowTableBody">
+          <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">Load token transfers first, then open this tab.</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -2294,6 +2590,34 @@
           <option value="60">60 seconds</option>
         </select>
       </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          Watchlist-only Alerts
+          <small>Only alert when a watched wallet is involved</small>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="setWatchlistOnlyAlerts" onchange="applySettings()">
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+    </div>
+    <!-- Price Alerts Section -->
+    <div style="margin-top:20px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:12px">🔔 Price Alerts</div>
+      <div class="price-alert-form">
+        <select id="paToken" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:.8rem;outline:none;width:auto">
+          <option value="PXJ">PXJ</option>
+          <option value="WPIXAL">WPIXAL</option>
+          <option value="WAX">WAX/USD</option>
+        </select>
+        <select id="paCond" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:.8rem;outline:none;width:auto">
+          <option value="above">Above</option>
+          <option value="below">Below</option>
+        </select>
+        <input type="number" id="paPrice" placeholder="Price in WAX" step="any" style="width:110px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:.8rem;outline:none" />
+        <button class="btn primary" onclick="addPriceAlert()" style="padding:6px 12px;font-size:.8rem">+ Add</button>
+      </div>
+      <div class="price-alert-list" id="priceAlertList"></div>
     </div>
   </div>
 </div>
@@ -2438,6 +2762,21 @@
     }
     if (name === 'Analytics' && !anlData) {
       loadAnalytics();
+    }
+    if (name === 'Analytics') {
+      setTimeout(renderActivityHeatmap, 50);
+    }
+    if (name === 'Flow') {
+      renderFlowGraph();
+    }
+    if (name === 'Portfolio') {
+      const saved = localStorage.getItem('pj_portfolio_wallet');
+      if (saved) {
+        document.getElementById('portfolioWallet').value = saved;
+        if (!document.getElementById('portfolioContent').querySelector('.portfolio-grid')) {
+          loadPortfolio();
+        }
+      }
     }
   }
 
@@ -2697,6 +3036,7 @@
     }
 
     updateMetaPrices();
+    checkPriceAlerts();
   }
 
   /* ═══════════════════════ VOLUME CHART ═════════════════ */
@@ -2739,6 +3079,7 @@
     const q = document.getElementById('searchTokens').value.toLowerCase();
     const dir = document.getElementById('filterTokenDir').value;
     const whaleOnly = document.getElementById('filterTokenWhale').value === 'whale';
+    const newOnly = document.getElementById('filterTokenNew')?.checked ?? false;
     let visible = 0;
     document.querySelectorAll('#listTokens .event-card').forEach((card, i) => {
       const tx = currentTokenTxs[i];
@@ -2746,11 +3087,12 @@
       const matchQ = !q || tx.from.toLowerCase().includes(q) || tx.to.toLowerCase().includes(q);
       const matchDir = !dir || (dir === 'from' ? tx.from === ACCOUNT : tx.to === ACCOUNT);
       const matchW = !whaleOnly || tx.isWhale;
-      const show = matchQ && matchDir && matchW;
+      const matchNew = !newOnly || tx.isNewWallet;
+      const show = matchQ && matchDir && matchW && matchNew;
       card.style.display = show ? '' : 'none';
       if (show) visible++;
     });
-    document.getElementById('tokenResultCount').textContent = q || dir || whaleOnly ? `${visible} shown` : '';
+    document.getElementById('tokenResultCount').textContent = q || dir || whaleOnly || newOnly ? `${visible} shown` : '';
   }
 
   function filterNFTs() {
@@ -2797,22 +3139,39 @@
     const tthresh = getThreshToken();
 
     const transfers = [];
+    // track which wallets appear more than once to detect "first" appearance
+    const walletCounts = {};
+    for (const a of actions) {
+      const d = a.act?.data ?? {};
+      const sym = (d.symbol ?? (d.quantity ?? '').split(' ')[1] ?? '').toUpperCase();
+      if (!['PXJ','WPIXAL'].includes(sym)) continue;
+      const from = d.from ?? '';
+      const to   = d.to ?? '';
+      walletCounts[from] = (walletCounts[from] ?? 0) + 1;
+      walletCounts[to]   = (walletCounts[to]   ?? 0) + 1;
+    }
+    // A wallet is "new" if it appears exactly once in the dataset
     for (const a of actions) {
       const d = a.act?.data ?? {};
       const sym = (d.symbol ?? (d.quantity ?? '').split(' ')[1] ?? '').toUpperCase();
       if (!['PXJ','WPIXAL'].includes(sym)) continue;
       const amt = parseAmount(d.quantity);
       const ts = new Date(a['@timestamp'] ?? a.timestamp).getTime();
+      const from = d.from ?? '';
+      const to   = d.to ?? '';
+      const isNew = (walletCounts[from] === 1 && !DEX_ACCOUNTS.includes(from)) ||
+                    (walletCounts[to]   === 1 && !DEX_ACCOUNTS.includes(to));
       transfers.push({
         txid: a.trx_id ?? '',
-        from: d.from ?? '',
-        to: d.to ?? '',
+        from,
+        to,
         quantity: d.quantity ?? '',
         amount: amt,
         symbol: sym,
         memo: d.memo ?? '',
         ts,
         isWhale: amt >= tthresh,
+        isNewWallet: isNew,
       });
     }
     return transfers;
@@ -2834,6 +3193,7 @@
         ${tx.isWhale ? '<span class="whale-badge">🐋 Whale</span>' : ''}
         ${txBadgeHTML(cls)}
         ${watched ? '<span class="watched-badge">👁 Watched</span>' : ''}
+        ${tx.isNewWallet ? '<span class="new-wallet-badge">🆕 NEW</span>' : ''}
         <div class="accounts">
           <span class="chip from${fromWatched ? ' watched' : ''} clickable" onclick="openWalletInspector('${esc(tx.from)}')">${esc(tx.from)}</span>
           <span class="arrow">→</span>
@@ -2885,9 +3245,12 @@
 
       for (const w of whales) {
         addWhaleAlert('token', `${w.from} → ${w.to}: ${w.quantity}`);
-        playWhaleSound();
-        sendWhaleNotif('🐋 Token Whale!', `${w.from} → ${w.to}: ${w.quantity}`);
+        if (shouldFireWhaleAlert(w.from, w.to)) {
+          playWhaleSound();
+          sendWhaleNotif('🐋 Token Whale!', `${w.from} → ${w.to}: ${w.quantity}`);
+        }
       }
+      updateCopyTradeSignals();
 
       const chartWrap = document.getElementById('tokenChartWrap');
       if (txs.length > 0) {
@@ -3032,8 +3395,10 @@
 
       for (const w of whales) {
         addWhaleAlert('nft', `${w.sender_name} → ${w.recipient_name}: ${w.assets.length} NFTs`);
-        playWhaleSound();
-        sendWhaleNotif('🖼 NFT Whale!', `${w.sender_name} → ${w.recipient_name}: ${w.assets.length} NFTs`);
+        if (shouldFireWhaleAlert(w.sender_name, w.recipient_name)) {
+          playWhaleSound();
+          sendWhaleNotif('🖼 NFT Whale!', `${w.sender_name} → ${w.recipient_name}: ${w.assets.length} NFTs`);
+        }
       }
 
       if (txs.length === 0) {
@@ -3267,8 +3632,10 @@
 
       for (const w of whales) {
         addWhaleAlert('dex', `Whale swap on Alcor: ${w.qty1}${w.caller ? ` by ${w.caller}` : ''}`);
-        playWhaleSound();
-        sendWhaleNotif('📊 DEX Whale!', `Whale swap: ${w.qty1}${w.caller ? ` by ${w.caller}` : ''}`);
+        if (shouldFireWhaleAlert(w.caller, '')) {
+          playWhaleSound();
+          sendWhaleNotif('📊 DEX Whale!', `Whale swap: ${w.qty1}${w.caller ? ` by ${w.caller}` : ''}`);
+        }
       }
 
       if (swaps.length > 0) {
@@ -3298,7 +3665,7 @@
         list.innerHTML = marketHtml + `<div class="state-box"><div class="icon">🔍</div><p>No PXJ/WPIXAL swaps found on Alcor recently.</p></div>`;
         return;
       }
-      list.innerHTML = marketHtml + swaps.map(s => renderDEXCard(s, s.amount >= dthresh)).join('');
+      list.innerHTML = marketHtml + swaps.map(s => renderDEXCardWithNew(s, s.amount >= dthresh)).join('');
       filterDEX();
       if (swaps.length >= 100) showLoadMore('loadMoreDEXWrap', 'loadMoreDEXInfo', swaps.length);
     } catch (e) {
@@ -3330,7 +3697,7 @@
       currentDEXSwaps.push(...unique);
       // Append after the last event-card (skip the market info div at top)
       const list = document.getElementById('listDEX');
-      list.insertAdjacentHTML('beforeend', unique.map(s => renderDEXCard(s, s.amount >= dthresh)).join(''));
+      list.insertAdjacentHTML('beforeend', unique.map(s => renderDEXCardWithNew(s, s.amount >= dthresh)).join(''));
       filterDEX();
       document.getElementById('loadMoreDEXInfo').textContent = `Showing ${currentDEXSwaps.length} transactions`;
       if (unique.length < 100) hideLoadMore('loadMoreDEXWrap');
@@ -3356,6 +3723,21 @@
 
   function switchLeaderboard() {
     currentLbType = document.getElementById('lbTypeSelect').value;
+    const farmRow = document.getElementById('farmScopeRow');
+    if (currentLbType === 'farm') {
+      farmRow.style.display = 'flex';
+      const saved = localStorage.getItem('pj_farm_scope') || '';
+      document.getElementById('farmScopeInput').value = saved;
+    } else {
+      farmRow.style.display = 'none';
+    }
+    loadLeaderboard();
+  }
+
+  function saveFarmScope() {
+    const val = document.getElementById('farmScopeInput').value.trim();
+    if (val) localStorage.setItem('pj_farm_scope', val);
+    else localStorage.removeItem('pj_farm_scope');
     loadLeaderboard();
   }
 
@@ -3475,35 +3857,8 @@
     const toAccount = r =>
       r.account ?? r.staker ?? r.owner ?? r.wallet ?? '—';
 
-    // Step 1: find the Pixel Journey farm in the farms.waxdao farms table
-    const farmsJson = await waxPost({
-      code: 'farms.waxdao', scope: 'farms.waxdao', table: 'farms', limit: 1000,
-    });
-    const allFarms = farmsJson.rows ?? [];
-    const pjFarm = allFarms.find(f => {
-      const raw = JSON.stringify(f).toLowerCase();
-      return raw.includes('pixeljourney') || raw.includes('pxj') || raw.includes('wpixal');
-    });
-
-    // Step 2a: found a matching farm — query its stakers scope
-    if (pjFarm) {
-      const farmScope = String(pjFarm.farmname ?? pjFarm.id ?? pjFarm.farm_name ?? ACCOUNT);
-      for (const table of ['stakers', 'stakes', 'stakeinfo']) {
-        try {
-          const j = await waxPost({ code: 'farms.waxdao', scope: farmScope, table, limit: 100 });
-          if ((j.rows ?? []).length > 0) {
-            return j.rows.map(r => ({
-              account: toAccount(r), balance: toBalance(r), rawBalance: toBalance(r),
-            })).sort((a, b) => b.rawBalance - a.rawBalance);
-          }
-        } catch(e) {}
-      }
-    }
-
-    // Step 2b: direct scope fallback — try ACCOUNT name and common farm name variants
-    const scopesToTry = [ACCOUNT, 'pxjfarm', 'pixeljfarm', 'pxjwpixal'];
-    for (const scope of scopesToTry) {
-      for (const table of ['stakers', 'stakes', 'stakeinfo']) {
+    const tryStakers = async (scope) => {
+      for (const table of ['stakers', 'stakes', 'stakeinfo', 'config']) {
         try {
           const j = await waxPost({ code: 'farms.waxdao', scope, table, limit: 100 });
           if ((j.rows ?? []).length > 0) {
@@ -3513,9 +3868,55 @@
           }
         } catch(e) {}
       }
+      return null;
+    };
+
+    // Step 0: use manually saved farm scope if set
+    const manualScope = (localStorage.getItem('pj_farm_scope') || '').trim();
+    if (manualScope) {
+      const rows = await tryStakers(manualScope);
+      if (rows) return rows;
+      throw new Error(`Farm scope "${manualScope}" returned no stakers. Check the scope name and try again.`);
     }
 
-    throw new Error('No WaxDAO Pixel Journey farm found. Verify the farm exists and is active on farms.waxdao.');
+    // Step 1: scan farms table with pagination (WaxDAO can have thousands of farms)
+    let lower_bound = '';
+    let pjFarm = null;
+    for (let page = 0; page < 20 && !pjFarm; page++) {
+      try {
+        const farmsJson = await waxPost({
+          code: 'farms.waxdao', scope: 'farms.waxdao', table: 'farms',
+          limit: 200, lower_bound: lower_bound || undefined,
+        });
+        const rows = farmsJson.rows ?? [];
+        pjFarm = rows.find(f => {
+          const raw = JSON.stringify(f).toLowerCase();
+          return raw.includes('pixeljourney') || raw.includes('pxj') || raw.includes('wpixal');
+        });
+        if (!farmsJson.more || rows.length === 0) break;
+        lower_bound = farmsJson.next_key ?? rows[rows.length - 1]?.farmname ?? '';
+        if (!lower_bound) break;
+      } catch(e) { break; }
+    }
+
+    // Step 2a: found a matching farm — query its stakers scope
+    if (pjFarm) {
+      const farmScope = String(pjFarm.farmname ?? pjFarm.id ?? pjFarm.farm_name ?? ACCOUNT);
+      const rows = await tryStakers(farmScope);
+      if (rows) return rows;
+    }
+
+    // Step 2b: try common scope name variants
+    const scopesToTry = [ACCOUNT, 'pxjfarm', 'pixeljfarm', 'pxjwpixal', 'pixeljourney'];
+    for (const scope of scopesToTry) {
+      const rows = await tryStakers(scope);
+      if (rows) return rows;
+    }
+
+    throw new Error(
+      'No WaxDAO Pixel Journey farm found automatically. ' +
+      'Enter the farm scope name manually in the field above and click Save & Reload.'
+    );
   }
 
   function renderLeaderboardTable(rows, type) {
@@ -3616,6 +4017,19 @@
     try {
       await Promise.all([loadTokens(), loadNFTs(), loadDEX(), fetchPrices(), loadDonations()]);
       buildTraderDB();
+      // Auto-refresh portfolio if wallet is saved
+      const savedWallet = localStorage.getItem('pj_portfolio_wallet');
+      if (savedWallet && document.getElementById('panelPortfolio')?.classList.contains('active')) {
+        loadPortfolio();
+      }
+      // Refresh heatmap if Analytics tab is active
+      if (document.getElementById('panelAnalytics')?.classList.contains('active')) {
+        renderActivityHeatmap();
+      }
+      // Refresh flow if Flow tab is active
+      if (document.getElementById('panelFlow')?.classList.contains('active')) {
+        renderFlowGraph();
+      }
     } catch (e) {
       console.error('Refresh error:', e);
     }
@@ -4093,6 +4507,11 @@
     document.getElementById('trdFullBody').innerHTML = rows.map(t => {
       const pnlSign = t.pnlWAX >= 0 ? '+' : '';
       const pnlCls  = t.pnlWAX > 0.01 ? 'td-pos' : t.pnlWAX < -0.01 ? 'td-neg' : 'td-zero';
+      // Realized P&L = only from actual WAX flows (sells - buys), no unrealized
+      const realized = t.waxIn - t.waxOut;
+      const realCls  = realized > 0.01 ? 'td-pos' : realized < -0.01 ? 'td-neg' : 'td-zero';
+      const realSign = realized >= 0 ? '+' : '';
+      const hasRealData = t.waxIn > 0 || t.waxOut > 0;
       return `<tr>
         <td><span class="td-account trd-account" onclick="openWalletInspector('${esc(t.account)}')">${esc(t.account)}</span></td>
         <td class="td-r">${t.totalTx}</td>
@@ -4100,6 +4519,7 @@
         <td class="td-r">${t.arbEvents > 0 ? `<span class="tx-badge arb" style="font-size:.58rem;padding:1px 6px">⚡${t.arbEvents}</span>` : '—'}</td>
         <td class="td-r">${t.spotBuys  > 0 ? `<span class="tx-badge buy"  style="font-size:.58rem;padding:1px 6px">📈${t.spotBuys}</span>`  : '—'}</td>
         <td class="td-r">${t.spotSells > 0 ? `<span class="tx-badge sell" style="font-size:.58rem;padding:1px 6px">📉${t.spotSells}</span>` : '—'}</td>
+        <td class="td-r ${realCls}" title="WAX received from sells minus WAX spent on buys">${hasRealData ? realSign + realized.toFixed(2) + ' WAX' : '<span style="color:var(--muted);font-size:.72rem">—</span>'}</td>
         <td class="td-r ${pnlCls}">${t.waxIn || t.waxOut ? pnlSign + t.pnlWAX.toFixed(2) + ' WAX' : '<span style="color:var(--muted);font-size:.72rem">est.</span>'}</td>
       </tr>`;
     }).join('');
@@ -4468,6 +4888,29 @@
     }
     html += `</div>`;
 
+    // ── Realized P&L ──
+    const trdEntry = traderDB.get(account);
+    if (trdEntry && (trdEntry.waxIn > 0 || trdEntry.waxOut > 0)) {
+      const realized = trdEntry.waxIn - trdEntry.waxOut;
+      const realSign = realized >= 0 ? '+' : '';
+      const realCol  = realized > 0.01 ? 'var(--green)' : realized < -0.01 ? 'var(--red)' : 'var(--muted)';
+      const pnlSign  = trdEntry.pnlWAX >= 0 ? '+' : '';
+      const pnlCol   = trdEntry.pnlWAX > 0.01 ? 'var(--green)' : trdEntry.pnlWAX < -0.01 ? 'var(--red)' : 'var(--muted)';
+      html += `<div>
+        <div class="wi-section-title">💹 Trading Performance</div>
+        <div class="wi-inv-grid" style="grid-template-columns:repeat(2,1fr)">
+          <div class="wi-inv-stat">
+            <div class="v" style="color:${realCol};font-size:1.1rem">${realSign}${realized.toFixed(2)} WAX</div>
+            <div class="l">Realized P&amp;L</div>
+          </div>
+          <div class="wi-inv-stat">
+            <div class="v" style="color:${pnlCol};font-size:1.1rem">${pnlSign}${trdEntry.pnlWAX.toFixed(2)} WAX</div>
+            <div class="l">Total P&amp;L (incl. unrealized)</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
     // ── Recent Trades ──
     html += `<div>
       <div class="wi-section-title">🔄 Recent Trades</div>`;
@@ -4535,19 +4978,21 @@
   function loadSettings() {
     try {
       const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
-      document.getElementById('setPauseRefresh').checked = saved.pauseRefresh ?? false;
-      document.getElementById('setBadges').checked      = saved.badges ?? true;
-      document.getElementById('setLogos').checked       = saved.logos ?? true;
-      document.getElementById('setInterval').value      = saved.interval ?? 30;
+      document.getElementById('setPauseRefresh').checked         = saved.pauseRefresh ?? false;
+      document.getElementById('setBadges').checked               = saved.badges ?? true;
+      document.getElementById('setLogos').checked                = saved.logos ?? true;
+      document.getElementById('setInterval').value               = saved.interval ?? 30;
+      document.getElementById('setWatchlistOnlyAlerts').checked  = saved.watchlistOnlyAlerts ?? false;
     } catch(e) {}
   }
 
   function saveSettings() {
     const s = {
-      pauseRefresh: document.getElementById('setPauseRefresh').checked,
-      badges:       document.getElementById('setBadges').checked,
-      logos:        document.getElementById('setLogos').checked,
-      interval:     parseInt(document.getElementById('setInterval').value),
+      pauseRefresh:         document.getElementById('setPauseRefresh').checked,
+      badges:               document.getElementById('setBadges').checked,
+      logos:                document.getElementById('setLogos').checked,
+      interval:             parseInt(document.getElementById('setInterval').value),
+      watchlistOnlyAlerts:  document.getElementById('setWatchlistOnlyAlerts').checked,
     };
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
     return s;
@@ -4574,12 +5019,340 @@
   function closeSettings() { document.getElementById('settingsOverlay').classList.remove('open'); }
   function handleOverlayClick(e) { if (e.target === document.getElementById('settingsOverlay')) closeSettings(); }
 
+  /* ═══════════════════════ WATCHLIST-ONLY ALERTS ════════ */
+  function shouldFireWhaleAlert(addr1, addr2) {
+    const watchlistOnly = document.getElementById('setWatchlistOnlyAlerts')?.checked ?? false;
+    if (!watchlistOnly) return true;
+    return isWatched(addr1) || isWatched(addr2);
+  }
+
+  /* ═══════════════════════ PRICE ALERTS ══════════════════ */
+  let priceAlerts = JSON.parse(localStorage.getItem('pj_price_alerts') || '[]');
+
+  function savePriceAlerts() {
+    localStorage.setItem('pj_price_alerts', JSON.stringify(priceAlerts));
+  }
+
+  function addPriceAlert() {
+    const token = document.getElementById('paToken').value;
+    const cond  = document.getElementById('paCond').value;
+    const price = parseFloat(document.getElementById('paPrice').value);
+    if (!token || !cond || isNaN(price) || price <= 0) {
+      showToast('Please fill in all price alert fields');
+      return;
+    }
+    priceAlerts.push({ id: Date.now(), token, cond, price, fired: false });
+    savePriceAlerts();
+    renderPriceAlerts();
+    document.getElementById('paPrice').value = '';
+    showToast(`Price alert added: ${token} ${cond} ${price} WAX`);
+  }
+
+  function removePriceAlert(id) {
+    priceAlerts = priceAlerts.filter(a => a.id !== id);
+    savePriceAlerts();
+    renderPriceAlerts();
+  }
+
+  function renderPriceAlerts() {
+    const list = document.getElementById('priceAlertList');
+    if (!list) return;
+    if (priceAlerts.length === 0) {
+      list.innerHTML = '<div style="font-size:.75rem;color:var(--muted);padding:6px 0">No price alerts set.</div>';
+      return;
+    }
+    list.innerHTML = priceAlerts.map(a => `
+      <div class="price-alert-item">
+        <span class="pai-text">${esc(a.token)} ${esc(a.cond)} <strong>${a.price}</strong> WAX</span>
+        ${a.fired ? '<span class="pai-status">✓ Fired</span>' : ''}
+        <button class="pai-del" onclick="removePriceAlert(${a.id})" title="Remove">✕</button>
+      </div>`).join('');
+  }
+
+  function checkPriceAlerts() {
+    let changed = false;
+    for (const a of priceAlerts) {
+      if (a.fired) continue;
+      let currentVal = 0;
+      if (a.token === 'PXJ')    currentVal = priceCache.PXJ.priceWAX;
+      else if (a.token === 'WPIXAL') currentVal = priceCache.WPIXAL.priceWAX;
+      else if (a.token === 'WAX')    currentVal = priceCache.WAX.priceUSD;
+      if (!currentVal) continue;
+      const triggered = (a.cond === 'above' && currentVal >= a.price) ||
+                        (a.cond === 'below'  && currentVal <= a.price);
+      if (triggered) {
+        a.fired = true;
+        changed = true;
+        const unit = a.token === 'WAX' ? 'USD' : 'WAX';
+        const msg = `🔔 Price Alert: ${a.token} is now ${a.cond} ${a.price} ${unit}! (Current: ${currentVal.toFixed(6)})`;
+        showToast(msg, 7000);
+        sendWhaleNotif('🔔 Price Alert', `${a.token} ${a.cond} ${a.price} ${unit}`);
+        playWhaleSound();
+      }
+    }
+    if (changed) { savePriceAlerts(); renderPriceAlerts(); }
+  }
+
+  /* ═══════════════════════ ACTIVITY HEATMAP ══════════════ */
+  function renderActivityHeatmap() {
+    const grid = document.getElementById('anlHeatmapGrid');
+    if (!grid) return;
+    const now = Date.now();
+    const bins = new Array(24).fill(0);
+
+    // Combine all data sources
+    const allTs = [
+      ...currentTokenTxs.map(t => t.ts),
+      ...currentNFTTxs.map(t => parseInt(t.created_at_time, 10)).filter(Boolean),
+      ...currentDEXSwaps.map(t => t.ts),
+    ];
+
+    for (const ts of allTs) {
+      const hoursAgo = (now - ts) / 3_600_000;
+      if (hoursAgo >= 0 && hoursAgo < 24) {
+        const hour = 23 - Math.min(23, Math.floor(hoursAgo));
+        bins[hour]++;
+      }
+    }
+
+    const maxVal = Math.max(...bins, 1);
+    const nowHour = new Date().getHours();
+
+    grid.innerHTML = bins.map((count, i) => {
+      // i=0 is 23h ago, i=23 is current hour
+      const displayHour = (nowHour - (23 - i) + 24) % 24;
+      const intensity = count / maxVal;
+      const alpha = 0.1 + intensity * 0.85;
+      const bg = `rgba(255,109,0,${alpha.toFixed(2)})`;
+      return `<div class="heatmap-cell" style="background:${bg}" title="${count} events at ${displayHour}:00">
+        <span class="hm-count">${count > 0 ? count : ''}</span>
+        <span class="hm-hour">${displayHour}h</span>
+      </div>`;
+    }).join('');
+  }
+
+  /* ═══════════════════════ FIRST BUYER / NEW WALLET DETECTION ═══ */
+  function renderDEXCardWithNew(swap, isWhale) {
+    const callerWatched = isWatched(swap.caller);
+    const label1 = swap.qty1 || '—';
+    const label2 = swap.qty2 || '—';
+    const cls = classifySwap(swap);
+    const q1 = parseQtyStr(swap.qty1), q2 = parseQtyStr(swap.qty2);
+    const projQty  = (['PXJ','WPIXAL'].includes(q1.sym)) ? q1 : (['PXJ','WPIXAL'].includes(q2.sym)) ? q2 : null;
+    const swapUSD  = projQty ? estimateUSD(projQty.amount, projQty.sym) : null;
+    const swapUSDStr = swapUSD != null ? fmtUSD(swapUSD) : null;
+    // Detect new wallet: caller appears only once in currentDEXSwaps
+    const callerCount = currentDEXSwaps.filter(s => s.caller === swap.caller).length;
+    const isNew = callerCount === 1;
+    return `<div class="event-card${isWhale ? ' whale' : ''}${callerWatched ? ' card-watched' : ''}">
+      <div class="card-head">
+        ${isWhale ? '<span class="whale-badge">🐋 Whale Swap</span>' : ''}
+        ${txBadgeHTML(cls)}
+        ${callerWatched ? '<span class="watched-badge">👁 Watched</span>' : ''}
+        ${isNew ? '<span class="new-wallet-badge">🆕 NEW</span>' : ''}
+        <div class="accounts">
+          ${swap.caller ? `<span class="chip from${callerWatched ? ' watched' : ''} clickable" onclick="openWalletInspector('${esc(swap.caller)}')">${esc(swap.caller)}</span><span class="arrow">⇄</span>` : ''}
+          <span class="chip dex clickable" onclick="openWalletInspector('swap.alcor')">swap.alcor</span>
+        </div>
+        <div class="card-meta">
+          <div class="val" style="font-size:.85rem;color:var(--green)">${esc(label1)}</div>
+          ${label2 && label2 !== '—' ? `<div style="font-size:.72rem;color:var(--muted)">→ ${esc(label2)}</div>` : ''}
+          ${swapUSDStr ? `<div class="val-usd has-price">${swapUSDStr}</div>` : ''}
+          <div class="time">${timeAgo(swap.ts)}</div>
+          <div>${fmtTime(swap.ts)}</div>
+        </div>
+      </div>
+      ${swap.txid ? `<div class="card-body">
+        <a class="txlink" href="https://waxblock.io/transaction/${swap.txid}" target="_blank" rel="noopener">Tx: ${swap.txid.slice(0,24)}…</a>
+      </div>` : ''}
+    </div>`;
+  }
+
+  /* ═══════════════════════ FLOW GRAPH ════════════════════ */
+  function renderFlowGraph() {
+    const tbody = document.getElementById('flowTableBody');
+    if (!tbody) return;
+    const watchedOnly = document.getElementById('flowWatchedOnly')?.checked ?? false;
+
+    if (currentTokenTxs.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">No token transfer data loaded yet. Refresh to load data.</td></tr>';
+      return;
+    }
+
+    // Build sender→receiver pairs map
+    const pairs = new Map();
+    for (const tx of currentTokenTxs) {
+      if (DEX_ACCOUNTS.includes(tx.from) || DEX_ACCOUNTS.includes(tx.to)) continue;
+      const key = `${tx.from}||${tx.to}`;
+      if (!pairs.has(key)) pairs.set(key, { from: tx.from, to: tx.to, totalAmt: 0, count: 0 });
+      const p = pairs.get(key);
+      p.totalAmt += tx.amount;
+      p.count++;
+    }
+
+    let sorted = [...pairs.values()].sort((a, b) => b.totalAmt - a.totalAmt);
+
+    if (watchedOnly) {
+      sorted = sorted.filter(p => isWatched(p.from) || isWatched(p.to));
+    }
+
+    const top15 = sorted.slice(0, 15);
+
+    if (top15.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">No wallet flows found' + (watchedOnly ? ' for watched wallets' : '') + '.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = top15.map((p, i) => `<tr>
+      <td style="color:var(--muted);font-size:.78rem">${i + 1}</td>
+      <td><span class="flow-sender" onclick="openWalletInspector('${esc(p.from)}')">${esc(p.from)}</span>${isWatched(p.from) ? ' <span class="watched-badge">👁</span>' : ''}</td>
+      <td class="flow-arrow">→</td>
+      <td><span class="flow-receiver" onclick="openWalletInspector('${esc(p.to)}')">${esc(p.to)}</span>${isWatched(p.to) ? ' <span class="watched-badge">👁</span>' : ''}</td>
+      <td class="th-r flow-amount">${fmtNum(p.totalAmt)}</td>
+      <td class="th-r flow-count">${p.count}</td>
+    </tr>`).join('');
+  }
+
+  /* ═══════════════════════ PORTFOLIO TRACKER ════════════ */
+  async function loadPortfolio() {
+    const walletInput = document.getElementById('portfolioWallet');
+    const wallet = (walletInput?.value ?? '').trim().toLowerCase();
+    if (!wallet) { showToast('Please enter a wallet name'); return; }
+    localStorage.setItem('pj_portfolio_wallet', wallet);
+
+    const content = document.getElementById('portfolioContent');
+    content.innerHTML = '<div class="state-box"><div class="spinner"></div><p>Loading portfolio for ' + esc(wallet) + '…</p></div>';
+
+    try {
+      const [balResult, nftResult] = await Promise.allSettled([
+        fetchWIBalances(wallet),
+        fetchWINFTs(wallet),
+      ]);
+
+      const balances = balResult.status === 'fulfilled' ? (balResult.value ?? []) : [];
+      const nftInfo  = nftResult.status  === 'fulfilled' ? nftResult.value  : null;
+
+      // Parse key balances
+      const getBalance = (sym) => {
+        const b = balances.find(b => (b.currency ?? '').toUpperCase() === sym);
+        return b ? parseFloat(b.amount ?? 0) : 0;
+      };
+
+      const pxjBal    = getBalance('PXJ');
+      const wpixalBal = getBalance('WPIXAL');
+      const waxBal    = getBalance('WAX');
+      const nftCount  = nftInfo?.assets ?? 0;
+
+      // Estimate USD total
+      const pxjUSD    = estimateUSD(pxjBal,    'PXJ')    ?? 0;
+      const wpixalUSD = estimateUSD(wpixalBal, 'WPIXAL') ?? 0;
+      const waxUSD    = waxBal * (priceCache.WAX.priceUSD || 0);
+      const totalUSD  = pxjUSD + wpixalUSD + waxUSD;
+
+      const cards = [
+        { label: 'PXJ Balance',    value: fmtNum(pxjBal)    + ' PXJ',    usd: pxjUSD,    color: 'var(--accent2)' },
+        { label: 'WPIXAL Balance', value: fmtNum(wpixalBal) + ' WPIXAL', usd: wpixalUSD, color: 'var(--green)' },
+        { label: 'WAX Balance',    value: fmtNum(waxBal)    + ' WAX',    usd: waxUSD,    color: 'var(--gold)' },
+        { label: 'NFT Count',      value: nftCount.toLocaleString() + ' NFTs', usd: 0, color: 'var(--accent)' },
+      ];
+
+      const gridHtml = cards.map(c => `
+        <div class="portfolio-card">
+          <div class="p-label">${c.label}</div>
+          <div class="p-value" style="color:${c.color}">${c.value}</div>
+          ${c.usd > 0 ? `<div class="p-usd">${fmtUSD(c.usd)}</div>` : ''}
+        </div>`).join('');
+
+      const totalHtml = totalUSD > 0 ? `
+        <div class="portfolio-total">
+          <div class="pt-label">Estimated Total Portfolio Value</div>
+          <div class="pt-val">${fmtUSD(totalUSD)}</div>
+        </div>` : '';
+
+      // Other tokens
+      const otherTokens = balances.filter(b => !['PXJ','WPIXAL','WAX'].includes((b.currency ?? '').toUpperCase()));
+      let otherHtml = '';
+      if (otherTokens.length > 0) {
+        otherHtml = `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-top:0">
+          <div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;font-weight:700">Other Tokens</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            ${otherTokens.map(b => `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.78rem;font-family:monospace;color:var(--text)">${esc(b.amount)} ${esc(b.currency ?? '')}</span>`).join('')}
+          </div>
+        </div>`;
+      }
+
+      content.innerHTML = `
+        <div style="margin-bottom:8px;font-size:.78rem;color:var(--muted)">Portfolio for: <strong style="color:var(--accent2);font-family:monospace">${esc(wallet)}</strong> · Last loaded: ${new Date().toLocaleTimeString()}</div>
+        ${totalHtml}
+        <div class="portfolio-grid">${gridHtml}</div>
+        ${otherHtml}`;
+
+    } catch(e) {
+      content.innerHTML = `<div class="state-box"><div class="icon">⚠️</div><p>${esc(e.message)}</p></div>`;
+    }
+  }
+
+  /* ═══════════════════════ COPY TRADE SIGNALS ════════════ */
+  function updateCopyTradeSignals() {
+    // Find top 3 large buys from wallets NOT in watchlist
+    const tthresh = getThreshToken();
+    const signals = currentTokenTxs
+      .filter(tx => {
+        if (isWatched(tx.from) || isWatched(tx.to)) return false;
+        if (DEX_ACCOUNTS.includes(tx.from)) return false; // spot buy from DEX
+        // classify as buy: receiver gets tokens from DEX, or large transfer
+        const cls = classifyTx(tx);
+        return (cls.cls === 'buy' || tx.isWhale) && tx.amount >= tthresh * 0.5;
+      })
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 3);
+
+    // Insert/update the copy trade signals card in Token tab
+    const listTokens = document.getElementById('listTokens');
+    if (!listTokens) return;
+    let signalCard = document.getElementById('copyTradeSignalCard');
+
+    if (signals.length === 0) {
+      if (signalCard) signalCard.remove();
+      return;
+    }
+
+    const rows = signals.map(tx => {
+      const isBuyer = DEX_ACCOUNTS.includes(tx.from);
+      const wallet = isBuyer ? tx.to : tx.from;
+      return `<div class="copy-signal-row">
+        <span class="copy-signal-wallet" onclick="openWalletInspector('${esc(wallet)}')">${esc(wallet)}</span>
+        <span class="copy-signal-amt">${esc(tx.quantity)}</span>
+        <span class="copy-signal-time">${timeAgo(tx.ts)}</span>
+        <button class="btn" style="padding:3px 8px;font-size:.68rem;flex-shrink:0" onclick="addToWatchlist('${esc(wallet)}')">+ Watch</button>
+      </div>`;
+    }).join('');
+
+    const html = `<div class="copy-trade-card" id="copyTradeSignalCard">
+      <div class="copy-trade-header">📡 Copy Trade Signals <span style="font-size:.72rem;color:var(--muted);font-weight:400">Top ${signals.length} large buys by unmonitored wallets</span></div>
+      ${rows}
+    </div>`;
+
+    if (signalCard) {
+      signalCard.outerHTML = html;
+    } else {
+      listTokens.insertAdjacentHTML('afterbegin', html);
+    }
+  }
+
   /* ═══════════════════════ INIT ══════════════════════════ */
   loadSettings();
   const _s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
   document.body.classList.toggle('hide-badges', !(_s.badges ?? true));
   document.body.classList.toggle('hide-logos',  !(_s.logos  ?? true));
   renderWatchlistChips();
+  renderPriceAlerts();
+  // Pre-populate portfolio wallet input if saved
+  const _savedPortWallet = localStorage.getItem('pj_portfolio_wallet');
+  if (_savedPortWallet) {
+    const _pwInput = document.getElementById('portfolioWallet');
+    if (_pwInput) _pwInput.value = _savedPortWallet;
+  }
   refreshAll();
 </script>
 </body>
